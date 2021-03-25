@@ -97,7 +97,7 @@ return [
     |
     */
 
-    'templates'         => 'adminlte-templates',
+    'templates'         => 'coreui-templates',
 
     /*
     |--------------------------------------------------------------------------
@@ -174,7 +174,7 @@ return [
 
         'tests'         => true,
 
-        'datatables'    => false,
+        'datatables'    => true,
 
         'menu'          => [
 
