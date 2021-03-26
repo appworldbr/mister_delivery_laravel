@@ -33,3 +33,6 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
 
+
+
+Route::resource('tests', App\Http\Controllers\TestController::class);

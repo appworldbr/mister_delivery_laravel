@@ -13,9 +13,9 @@
     },
     {
         "name": "name",
-        "dbType": "string",
+        "dbType": "string,27",
         "htmlType": "text",
-        "validations": "",
+        "validations": "max:27",
         "searchable": true,
         "fillable": true,
         "primary": false,

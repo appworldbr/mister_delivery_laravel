@@ -31,3 +31,6 @@ Route::middleware(['auth:api'])->get('/user', function (Request $request) {
 
 
 
+
+
+Route::resource('tests', App\Http\Controllers\API\TestAPIController::class);

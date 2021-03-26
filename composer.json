@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "ahmed-aliraqi/laravel-media-uploader": "^6.0",
         "doctrine/dbal": "~2.3",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
@@ -16,6 +17,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "laravelcollective/html": "^6.2",
+        "spatie/laravel-medialibrary": "9.0.0",
         "yajra/laravel-datatables": "^1.5"
     },
     "require-dev": {
