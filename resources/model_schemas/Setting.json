@@ -12,10 +12,10 @@
         "inView": false
     },
     {
-        "name": "name",
-        "dbType": "string,27",
-        "htmlType": "text",
-        "validations": "max:27",
+        "name": "key",
+        "dbType": "string:unique",
+        "htmlType": null,
+        "validations": "",
         "searchable": true,
         "fillable": true,
         "primary": false,
@@ -24,9 +24,9 @@
         "inView": true
     },
     {
-        "name": "description",
-        "dbType": "text",
-        "htmlType": "textarea",
+        "name": "value",
+        "dbType": "string:default,''",
+        "htmlType": null,
         "validations": "",
         "searchable": true,
         "fillable": true,
