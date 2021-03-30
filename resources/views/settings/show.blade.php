@@ -3,7 +3,7 @@
 @section('content')
      <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('settings.index') }}">Setting</a>
+                <a href="{{ route('settings.index') }}">Configurações   </a>
             </li>
             <li class="breadcrumb-item active">Detail</li>
      </ol>

@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateSettingRequest;
 use App\Repositories\SettingRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Setting;
 use Response;
 
 class SettingController extends AppBaseController
@@ -53,8 +54,9 @@ class SettingController extends AppBaseController
     {
 
         $input = $request->all();
-        update_settings($input, ['name', 'description','time_work' ]);
-
+        
+        update_settings($input, ['name', 'description','time_work','adress']);
+        upload_setting('logo');
         // $setting = $this->settingRepository->create($input);
 
         Flash::success('Setting saved successfully.');

@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use AhmedAliraqi\LaravelMediaUploader\Entities\Concerns\HasUploader;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * Class Setting
@@ -14,9 +17,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $key
  * @property string $value
  */
-class Setting extends Model
+class Setting extends Model implements HasMedia
 {
     use SoftDeletes;
+    use InteractsWithMedia;
+    use HasUploader;
 
     use HasFactory;
 

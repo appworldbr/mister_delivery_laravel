@@ -86,12 +86,12 @@
 </div>
 <footer class="app-footer">
     <div>
-        <a href="https://infyom.com">InfyOm </a>
-        <span>&copy; 2019 InfyOmLabs.</span>
+        <a href="https://infyom.com">Mister Delivery </a>
+        <span>&copy; <?php echo date("Y"); ?> AppWorld.</span>
     </div>
     <div class="ml-auto">
-        <span>Powered by</span>
-        <a href="https://coreui.io">CoreUI</a>
+        <span>Distribuído pela</span>
+        <a href="https://appworld.com.br" target="_blank">Appworld</a>
     </div>
 </footer>
 </body>
