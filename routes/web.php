@@ -21,22 +21,8 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Route::resource('settings', App\Http\Controllers\SettingController::class);
+
+Route::resource('userAddresses', App\Http\Controllers\UserAddressController::class);
+
+Route::resource('users', App\Http\Controllers\UserController::class)->middleware('auth');

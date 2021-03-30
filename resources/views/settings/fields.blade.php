@@ -21,7 +21,6 @@ $setting = setting([
             accept="image/jpeg,image/png,image/jpg,image/gif"
     ></file-uploader>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/laravel-file-uploader"></script>
 <script>
