@@ -126,6 +126,10 @@ class UserController extends AppBaseController
         } else {
             unset($input['password']);
         }
+        if (!isset($input['is_admin'])){
+            $input['is_admin'] = false;
+        }
+
         $user = $this->userRepository->update($input, $id);
 
         Flash::success('User updated successfully.');

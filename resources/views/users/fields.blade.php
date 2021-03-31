@@ -1,6 +1,3 @@
-@php
-   $is_admin = false
-@endphp
 
 <!-- Name Field -->
 <div class="form-group col-sm-6">
@@ -26,10 +23,12 @@
     {!! Form::password('password_confirmation', ['class' => 'form-control']) !!}
 </div>
 
+<!-- Is Admin -->
 <div class="form-group col-sm-6">
     {!! Form::label('is_admin', 'Administrador') !!}
-    {!! Form::password('is_admin',  ['class' => 'form-control']) !!}
+    {!! Form::checkbox('is_admin', 1, null) !!}
 </div>
+
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
     {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}

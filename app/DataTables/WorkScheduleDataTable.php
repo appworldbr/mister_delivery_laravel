@@ -2,13 +2,13 @@
 
 namespace App\DataTables;
 
-use App\Models\UserAddress;
+use App\Models\WorkSchedule;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 
-class UserAddressDataTable extends DataTable
+class WorkScheduleDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -20,16 +20,16 @@ class UserAddressDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'user_addresses.datatables_actions');
+        return $dataTable->addColumn('action', 'work_schedules.datatables_actions');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\UserAddress $model
+     * @param \App\Models\WorkSchedule $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(UserAddress $model)
+    public function query(WorkSchedule $model)
     {
         return $model->newQuery();
     }
@@ -42,12 +42,13 @@ class UserAddressDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('user_addresses-table')
+            ->setTableId('work_schedules-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
             ->orderBy(0, 'desc')
             ->buttons(
+                Button::make('create'),
                 Button::make('export'),
                 Button::make('print'),
                 Button::make('reset'),
@@ -68,25 +69,13 @@ class UserAddressDataTable extends DataTable
      */
     protected function getColumns()
     {
-       //@TODO: Colocar função para exibir o conteudo na tabela dos enreços de usuário.
         /*
-        'name',
-            'zip',
-            'state',
-            'city',
-            'district',
-            'address',
-            'number',
-            'complement',
-            'is_default' => ['searchable' => false],
-            'use_id'
+        'weekday',
+            'start-time',
+            'end_time'
         */
         return [
-            
-            // Column::make('user_id')->
-            Column::make('name')->title('Nome'),
-            Column::make('address')->title('Endereço'),
-            Column::make('number')->title('Numero'),
+            Column::make('...')->title('...'),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
@@ -102,6 +91,6 @@ class UserAddressDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'user_addresses_datatable_' . date('YmdHis');
+        return 'work_schedules_datatable_' . date('YmdHis');
     }
 }

@@ -40,3 +40,5 @@ Route::middleware(['auth:api'])->get('/user', function (Request $request) {
 Route::resource('settings', App\Http\Controllers\API\SettingAPIController::class);
 
 Route::resource('user_addresses', App\Http\Controllers\API\UserAddressAPIController::class);
+
+Route::resource('work_schedules', App\Http\Controllers\API\WorkScheduleAPIController::class);
