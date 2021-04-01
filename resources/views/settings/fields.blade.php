@@ -50,10 +50,7 @@ $setting = setting([
     {!! Form::textarea('time_work', $setting['time_work'], ['class' => 'form-control','maxlength' => 200]) !!}
 </div>
 
-<div class="form-group col-sm-6">
-    {!! Form::label('time_work', 'Horarios de Funcionamentos:') !!}
-    {!! Form::textarea('time_work', $setting['time_work'], ['class' => 'form-control','maxlength' => 200]) !!}
-</div>
+
 
 
 <!-- Submit Field -->

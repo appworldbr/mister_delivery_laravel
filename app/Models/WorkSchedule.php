@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class WorkSchedule
  * @package App\Models
- * @version March 31, 2021, 8:55 pm UTC
+ * @version April 1, 2021, 7:04 pm UTC
  *
- * @property string $weekday
- * @property number $start-time
- * @property number $end_time
+ * @property tinyInteger $weekday
+ * @property time $start_time
+ * @property time $end_time
  */
 class WorkSchedule extends Model
 {
@@ -30,7 +30,7 @@ class WorkSchedule extends Model
 
     public $fillable = [
         'weekday',
-        'start-time',
+        'start_time',
         'end_time'
     ];
 
@@ -40,8 +40,7 @@ class WorkSchedule extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'weekday' => 'string'
+        'id' => 'integer'
     ];
 
     /**
@@ -50,10 +49,22 @@ class WorkSchedule extends Model
      * @var array
      */
     public static $rules = [
-        'weekday' => 'required|max:20',
-        'start-time' => 'required|max:4',
-        'end_time' => 'required'
+        'weekday' => 'required|min:0|max:6',
+        'start_time' => 'required'
     ];
 
-    
+    public function getWeeknameAttribute(){
+
+        $weekNames = [
+            'Domingo', 
+            'Segunda', 
+            'Terça', 
+            'Quarta', 
+            'Quinta', 
+            'Sexta', 
+            'Sábado'
+        ];
+
+        return $weekNames[$this->weekday];
+    }
 }

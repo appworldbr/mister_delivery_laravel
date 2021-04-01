@@ -23,7 +23,7 @@ class WorkScheduleFactory extends Factory
     {
         return [
             'weekday' => $this->faker->word,
-        'start-time' => $this->faker->word,
+        'start_time' => $this->faker->word,
         'end_time' => $this->faker->word,
         'created_at' => $this->faker->date('Y-m-d H:i:s'),
         'updated_at' => $this->faker->date('Y-m-d H:i:s')

@@ -25,7 +25,12 @@ Route::resource('settings', App\Http\Controllers\SettingController::class);
 
 Route::resource('userAddresses', App\Http\Controllers\UserAddressController::class);
 
+Route::resource('workSchedules', App\Http\Controllers\WorkScheduleController::class);
+
 Route::resource('users', App\Http\Controllers\UserController::class)->middleware('auth');
+
+
+
 
 
 Route::resource('workSchedules', App\Http\Controllers\WorkScheduleController::class);

@@ -1,19 +1,30 @@
-<!-- Weekday Field -->
+@php
+
+$weeks = [
+    'Domingo',
+    'Segunda',
+    'Terça',
+    'Quarta',
+    'Quinta',
+    'Sexta',
+    'Sábado',
+];
+
+@endphp
+
 <div class="form-group col-sm-6">
     {!! Form::label('weekday', 'Weekday:') !!}
-    {!! Form::select('weekday', ], null, ['class' => 'form-control']) !!}
+    {!! Form::select('weekday', $weeks, null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Start-Time Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('start-time', 'Start-Time:') !!}
-    {!! Form::select('start-time', ], null, ['class' => 'form-control']) !!}
+    {!! Form::label('start_time', 'Hora Início:') !!}
+    {!! Form::text('start_time', null, ['class' => 'form-control','maxlength' => 127]) !!}
 </div>
 
-<!-- End Time Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('end_time', 'End Time:') !!}
-    {!! Form::select('end_time', ], null, ['class' => 'form-control']) !!}
+    {!! Form::label('end_time', 'Hora Término:') !!}
+    {!! Form::text('end_time', null, ['class' => 'form-control','maxlength' => 127]) !!}
 </div>
 
 <!-- Submit Field -->

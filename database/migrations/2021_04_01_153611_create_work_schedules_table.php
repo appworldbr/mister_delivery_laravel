@@ -16,9 +16,9 @@ class CreateWorkSchedulesTable extends Migration
     {
         Schema::create('work_schedules', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('weekday');
-            $table->number('start-time');
-            $table->number('end_time');
+            $table->tinyInteger('weekday');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -23,6 +23,6 @@
 <li class="nav-item {{ Request::is('workSchedules*') ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('workSchedules.index') }}">
         <i class="nav-icon icon-cursor"></i>
-        <span>Work Schedules</span>
+        <span>Horarios de trabalho</span>
     </a>
 </li>

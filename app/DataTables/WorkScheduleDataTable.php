@@ -20,7 +20,11 @@ class WorkScheduleDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'work_schedules.datatables_actions');
+        return $dataTable
+        ->addColumn('action', 'work_schedules.datatables_actions')
+        ->editColumn('weekday', function($model){
+            return $model->weekname;
+        });
     }
 
     /**
@@ -71,11 +75,13 @@ class WorkScheduleDataTable extends DataTable
     {
         /*
         'weekday',
-            'start-time',
+            'start_time',
             'end_time'
         */
         return [
-            Column::make('...')->title('...'),
+            Column::make('weekday')->title('weekday'),
+            Column::make('start_time')->title('start_time'),
+            Column::make('end_time')->title('end_time'),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)

@@ -8,7 +8,7 @@ use App\Repositories\BaseRepository;
 /**
  * Class WorkScheduleRepository
  * @package App\Repositories
- * @version March 31, 2021, 8:55 pm UTC
+ * @version April 1, 2021, 7:04 pm UTC
 */
 
 class WorkScheduleRepository extends BaseRepository
@@ -18,7 +18,7 @@ class WorkScheduleRepository extends BaseRepository
      */
     protected $fieldSearchable = [
         'weekday',
-        'start-time',
+        'start_time',
         'end_time'
     ];
 

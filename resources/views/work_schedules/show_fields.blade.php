@@ -4,10 +4,10 @@
     <p>{{ $workSchedule->weekday }}</p>
 </div>
 
-<!-- Start-Time Field -->
+<!-- Start Time Field -->
 <div class="form-group">
-    {!! Form::label('start-time', 'Start-Time:') !!}
-    <p>{{ $workSchedule->start-time }}</p>
+    {!! Form::label('start_time', 'Start Time:') !!}
+    <p>{{ $workSchedule->start_time }}</p>
 </div>
 
 <!-- End Time Field -->
