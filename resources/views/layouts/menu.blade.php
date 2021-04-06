@@ -26,3 +26,15 @@
         <span>Horarios de trabalho</span>
     </a>
 </li>
+<li class="nav-item {{ Request::is('deliveryAreas*') ? 'active' : '' }}">
+    <a class="nav-link" href="{{ route('deliveryAreas.index') }}">
+        <i class="nav-icon icon-cursor"></i>
+        <span>Delivery Areas</span>
+    </a>
+</li>
+<li class="nav-item {{ Request::is('foodCategories*') ? 'active' : '' }}">
+    <a class="nav-link" href="{{ route('foodCategories.index') }}">
+        <i class="nav-icon icon-cursor"></i>
+        <span>Food Categories</span>
+    </a>
+</li>

@@ -50,21 +50,25 @@ class WorkSchedule extends Model
      */
     public static $rules = [
         'weekday' => 'required|min:0|max:6',
-        'start_time' => 'required'
+        'start_time' => 'required|date_format:G:i',
+        'end_time' => 'required|date_format:G:i'
     ];
 
     public function getWeeknameAttribute(){
 
         $weekNames = [
             'Domingo', 
-            'Segunda', 
-            'Terça', 
-            'Quarta', 
-            'Quinta', 
-            'Sexta', 
+            'Segunda-feira', 
+            'Terça-feira', 
+            'Quarta-feira', 
+            'Quinta-feira', 
+            'Sexta-feira', 
             'Sábado'
         ];
 
         return $weekNames[$this->weekday];
     }
+     public static function isOpen(){
+        //@TODO fazer a logica para sempre o campo de end_time ser maior que o de start_time
+     }
 }

@@ -8,6 +8,7 @@ use App\Models\WorkSchedule;
 use App\Repositories\WorkScheduleRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use App\Http\Resources\WorkScheduleCollection;
 use Response;
 
 /**
@@ -37,10 +38,10 @@ class WorkScheduleAPIController extends AppBaseController
         $workSchedules = $this->workScheduleRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
-            $request->get('limit')
+            $request->get('limit'),
         );
 
-        return $this->sendResponse($workSchedules->toArray(), 'Work Schedules retrieved successfully');
+        return $this->sendResponse(new WorkScheduleCollection($workSchedules), 'Work Schedules retrieved successfully');
     }
 
     /**

@@ -18,27 +18,12 @@ Route::middleware(['auth:api'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Route::resource('settings', App\Http\Controllers\API\SettingAPIController::class);
 
 Route::resource('user_addresses', App\Http\Controllers\API\UserAddressAPIController::class);
 
 Route::resource('work_schedules', App\Http\Controllers\API\WorkScheduleAPIController::class);
+
+Route::resource('delivery_areas', App\Http\Controllers\API\DeliveryAreaAPIController::class);
+
+Route::resource('food_categories', App\Http\Controllers\API\FoodCategoryAPIController::class);

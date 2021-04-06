@@ -34,3 +34,7 @@ Route::resource('users', App\Http\Controllers\UserController::class)->middleware
 
 
 Route::resource('workSchedules', App\Http\Controllers\WorkScheduleController::class);
+
+Route::resource('deliveryAreas', App\Http\Controllers\DeliveryAreaController::class);
+
+Route::resource('foodCategories', App\Http\Controllers\FoodCategoryController::class);

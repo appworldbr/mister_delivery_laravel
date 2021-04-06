@@ -18,7 +18,9 @@
         "laravel/ui": "^3.2",
         "laravelcollective/html": "^6.2",
         "spatie/laravel-medialibrary": "9.0.0",
-        "yajra/laravel-datatables": "^1.5"
+        "yajra/laravel-datatables": "^1.5",
+        "appointer/swaggervel": "dev-master",
+        "infyomlabs/swagger-generator": "dev-master"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
