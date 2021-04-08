@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class DeliveryArea
@@ -22,19 +22,15 @@ class DeliveryArea extends Model
 
     use HasFactory;
 
-
     public $table = 'delivery_areas';
-    
 
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'initial_zip',
         'final_zip',
         'price',
-        'prevent'
+        'prevent',
     ];
 
     /**
@@ -47,7 +43,7 @@ class DeliveryArea extends Model
         'initial_zip' => 'string',
         'final_zip' => 'string',
         'price' => 'decimal:2',
-        'prevent' => 'boolean'
+        'prevent' => 'boolean',
     ];
 
     /**
@@ -56,17 +52,19 @@ class DeliveryArea extends Model
      * @var array
      */
     public static $rules = [
-        'initial_zip' =>'required|max:9',
-        'final_zip' =>'required|max:9',
-        'price'=> 'nullable'
-        
+        'initial_zip' => 'required|max:9',
+        'final_zip' => 'required|max:9',
+        'price' => 'nullable',
+
     ];
 
-    public function getIsPreventAttribute(){
-        return $this->prevent?'Sim':'Não';
+    public function getIsPreventAttribute()
+    {
+        return $this->prevent ? 'Sim' : 'Não';
     }
 
-    public function ValidationZip($zip){
+    public function ValidationZip($zip)
+    {
         $area = DeliveryArea::where('initial_zip', '<=', $zip)
             ->where('final_zip', '>=', $zip)
             ->orderBy('prevent', 'desc')
@@ -79,6 +77,5 @@ class DeliveryArea extends Model
         }
         return $area;
     }
-     
-}
 
+}

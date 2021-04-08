@@ -20,7 +20,10 @@ class DeliveryAreaDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
+        
+
         return $dataTable->addColumn('action', 'delivery_areas.datatables_actions')
+                        ->editColumn('price', '{{float_to_price($price)}}')
                         ->editColumn('prevent', function($model){
                             return $model->is_prevent;
                         });
@@ -71,7 +74,7 @@ class DeliveryAreaDataTable extends DataTable
      * @return array
      */
     protected function getColumns()
-    {
+    { 
         /*
         'initial_zip',
             'final_zip',

@@ -35,7 +35,7 @@ class WorkScheduleDataTable extends DataTable
      */
     public function query(WorkSchedule $model)
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy('weekday')->orderBy('start_time');
     }
 
     /**
@@ -79,9 +79,9 @@ class WorkScheduleDataTable extends DataTable
             'end_time'
         */
         return [
-            Column::make('weekday')->title('weekday'),
-            Column::make('start_time')->title('start_time'),
-            Column::make('end_time')->title('end_time'),
+            Column::make('weekday')->title('Dia da Semana'),
+            Column::make('start_time')->title('Inicio Do Expediente'),
+            Column::make('end_time')->title('Final do Expediente'),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)

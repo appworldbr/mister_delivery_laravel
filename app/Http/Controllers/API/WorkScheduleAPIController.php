@@ -41,6 +41,8 @@ class WorkScheduleAPIController extends AppBaseController
             $request->get('limit'),
         );
 
+      
+
         return $this->sendResponse(new WorkScheduleCollection($workSchedules), 'Work Schedules retrieved successfully');
     }
 

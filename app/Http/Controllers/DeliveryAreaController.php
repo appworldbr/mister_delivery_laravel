@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\DeliveryAreaDataTable;
-use App\Http\Requests;
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\CreateDeliveryAreaRequest;
 use App\Http\Requests\UpdateDeliveryAreaRequest;
+use App\Models\DeliveryArea;
 use App\Repositories\DeliveryAreaRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
 
 class DeliveryAreaController extends AppBaseController
@@ -52,7 +52,9 @@ class DeliveryAreaController extends AppBaseController
     public function store(CreateDeliveryAreaRequest $request)
     {
         $input = $request->all();
-
+        $input['inital_zip'] = price_to_float($input['initial_zip']);
+        $input['final_zip'] = zip_to_float($input['final_zip']);
+        $input['price'] = zip_to_float($input['price']);
         $deliveryArea = $this->deliveryAreaRepository->create($input);
 
         Flash::success('Delivery Area saved successfully.');
@@ -69,7 +71,8 @@ class DeliveryAreaController extends AppBaseController
      */
     public function show($id)
     {
-        $deliveryArea = $this->deliveryAreaRepository->find($id);
+        
+        $deliveryArea = $this->deliveryAreaRepository->find($id);        
 
         if (empty($deliveryArea)) {
             Flash::error('Delivery Area not found');
@@ -117,8 +120,13 @@ class DeliveryAreaController extends AppBaseController
 
             return redirect(route('deliveryAreas.index'));
         }
-
-        $deliveryArea = $this->deliveryAreaRepository->update($request->all(), $id);
+        $data = $request->all();
+        $data['price'] = price_to_float($data['price']);
+        $data['initial_zip'] = zip_to_float($data['initial_zip']);
+        dd($data['initial_zip']);
+        $data['final_zip'] = zip_to_float($data['final_zip']);
+        
+        $deliveryArea = $this->deliveryAreaRepository->update($data, $id);
 
         Flash::success('Delivery Area updated successfully.');
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -68,7 +69,42 @@ class WorkSchedule extends Model
 
         return $weekNames[$this->weekday];
     }
-     public static function isOpen(){
-        //@TODO fazer a logica para sempre o campo de end_time ser maior que o de start_time
-     }
+     public static function isOpen($weekday = null, $hour = null){
+        if($weekday == null){
+            $weekday = date('w');
+        }
+        if($hour == null){
+            $hour = date('H:i');
+        }
+        return self::where('weekday', $weekday)
+            ->whereTime('start_time', '<=', $hour)
+            ->whereTime('end_time', '>', $hour)
+            ->exists();
+    }
+    public static function nextTimeOpen($weekday = null, $hour = null){
+        if($weekday == null){
+            $weekday = date('w');
+        }
+        
+        if($hour == null){
+            $hour = date('H:i');
+        }
+
+        $nextTimeOpen = self::where(function($query) use ($weekday, $hour){
+            $query->where('weekday', $weekday)
+                ->where('start_time', '>=', $hour);
+        })->Orwhere(function($query) use ($weekday){
+            $query->where('weekday', '>', $weekday);
+        })->orderBy('weekday')
+            ->orderBy('start_time')
+            ->firstOr(function(){
+                return self::orderBy('weekday')->orderBy('start_time')->first();
+            }
+        );
+        
+        return [
+            'weekname' => $nextTimeOpen->weekname,
+            'next_hour' => (new Carbon($nextTimeOpen->start_time))->format('H:i')
+        ];
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\WorkSchedule;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class WorkScheduleCollection extends ResourceCollection
@@ -14,13 +15,18 @@ class WorkScheduleCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return [
+        $isOpen = WorkSchedule::isOpen(3, '12:00');
+        // $isOpen = WorkSchedule::isOpen(4, '20:00');
+
+        $output = [
             'schedule' => $this->collection,
-            'isOpen' => true,
-            'nextOpenHour' => [
-                'week' => 3,
-                'hour' => '12:12'
-            ]
+            'isOpen' => $isOpen,
         ];
+
+        if(!$isOpen){
+            $output['nextTimeOpen'] = WorkSchedule::nextTimeOpen();
+        }
+
+        return $output;
     }
 }

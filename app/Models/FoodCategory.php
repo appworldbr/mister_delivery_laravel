@@ -56,5 +56,9 @@ class FoodCategory extends Model
         'description' => 'max:10000'
     ];
 
+    public function getHasDetailsAttribute(){
+        return $this->has_details?'Sim':'Não';
+    }
+
     
 }

@@ -18,8 +18,8 @@ class WorkScheduleResource extends JsonResource
         return [
             'id' => $this->id,
             'weekday' => $this->weekname,
-            'start_time' => (new Carbon($this->start_time))->format('G:m'),
-            'end_time' => (new Carbon($this->end_time))->format('G:m')
+            'start_time' => (new Carbon($this->start_time))->format('H:i'),
+            'end_time' => (new Carbon($this->end_time))->format('H:i')
         ];
     }
 }
