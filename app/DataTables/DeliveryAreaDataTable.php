@@ -24,6 +24,8 @@ class DeliveryAreaDataTable extends DataTable
 
         return $dataTable->addColumn('action', 'delivery_areas.datatables_actions')
                         ->editColumn('price', '{{float_to_price($price)}}')
+                        ->editColumn('initial_zip', '{{zip_format($initial_zip)}}')
+                        ->editColumn('final_zip', '{{zip_format($final_zip)}}')
                         ->editColumn('prevent', function($model){
                             return $model->is_prevent;
                         });

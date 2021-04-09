@@ -95,7 +95,7 @@ if (!function_exists('float_to_price')) {
 if (!function_exists('zip_db_format')) {
     function zip_db_format($zip)
     {
-        return str_replace('/[^0-9]/', '', $zip);
+        return preg_replace('/[^0-9]/', '', $zip);
     }
 }
 

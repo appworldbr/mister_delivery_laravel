@@ -1,13 +1,13 @@
 <!-- Initial Zip Field -->
 <div class="form-group">
     {!! Form::label('initial_zip', 'Cep Inicial:') !!}
-    <p>{{ $deliveryArea->initial_zip }}</p>
+    <p>{{ zip_format($deliveryArea->initial_zip) }}</p>
 </div>
 
 <!-- Final Zip Field -->
 <div class="form-group">
     {!! Form::label('final_zip', 'Cep Final:') !!}
-    <p>{{ $deliveryArea->final_zip }}</p>
+    <p>{{ zip_format($deliveryArea->final_zip) }}</p>
 </div>
 
 <!-- Price Field -->

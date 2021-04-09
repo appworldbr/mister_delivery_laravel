@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class DeliveryArea
@@ -18,13 +17,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class DeliveryArea extends Model
 {
-    use SoftDeletes;
-
     use HasFactory;
 
     public $table = 'delivery_areas';
-
-    protected $dates = ['deleted_at'];
 
     public $fillable = [
         'initial_zip',
