@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\DataTables\DeliveryAreaDataTable;
 use App\Http\Controllers\AppBaseController;
-use App\Http\Requests\CreateDeliveryAreaRequest;
-use App\Http\Requests\UpdateDeliveryAreaRequest;
 use App\Models\DeliveryArea;
 use App\Repositories\DeliveryAreaRepository;
 use Flash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Response;
 
 class DeliveryAreaController extends AppBaseController
@@ -45,16 +45,19 @@ class DeliveryAreaController extends AppBaseController
     /**
      * Store a newly created DeliveryArea in storage.
      *
-     * @param CreateDeliveryAreaRequest $request
+     * @param Request $request
      *
      * @return Response
      */
-    public function store(CreateDeliveryAreaRequest $request)
+    public function store(Request $request)
     {
         $input = $request->all();
-        $input['inital_zip'] = zip_db_format($input['initial_zip']);
+        $input['initial_zip'] = zip_db_format($input['initial_zip']);
         $input['final_zip'] = zip_db_format($input['final_zip']);
         $input['price'] = price_to_float($input['price']);
+
+        Validator::make($input, DeliveryArea::getRules())->validate();
+
         $deliveryArea = $this->deliveryAreaRepository->create($input);
 
         Flash::success('Delivery Area saved successfully.');
@@ -107,11 +110,11 @@ class DeliveryAreaController extends AppBaseController
      * Update the specified DeliveryArea in storage.
      *
      * @param  int              $id
-     * @param UpdateDeliveryAreaRequest $request
+     * @param Request $request
      *
      * @return Response
      */
-    public function update($id, UpdateDeliveryAreaRequest $request)
+    public function update($id, Request $request)
     {
         $deliveryArea = $this->deliveryAreaRepository->find($id);
 
@@ -124,6 +127,8 @@ class DeliveryAreaController extends AppBaseController
         $data['initial_zip'] = zip_db_format($data['initial_zip']);
         $data['final_zip'] = zip_db_format($data['final_zip']);
         $data['price'] = price_to_float($data['price']);
+
+        Validator::make($data, DeliveryArea::getRules($id))->validate();
 
         $deliveryArea = $this->deliveryAreaRepository->update($data, $id);
 

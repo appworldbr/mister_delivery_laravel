@@ -18,7 +18,7 @@
 
 <!-- Prevent Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('prevent', 'Area de risco:') !!}
+    {!! Form::label('prevent', 'Não entregar nessa área:') !!}
     <label class="checkbox-inline">
         {!! Form::hidden('prevent', 0) !!}
         {!! Form::checkbox('prevent', '1', null) !!}

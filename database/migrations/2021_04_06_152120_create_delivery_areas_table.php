@@ -20,6 +20,8 @@ class CreateDeliveryAreasTable extends Migration
             $table->string('final_zip', 20)->unique();
             $table->decimal('price', 8, 2);
             $table->boolean('prevent')->default(1);
+            $table->timestamps();
+            
         });
     }
 

@@ -37,40 +37,47 @@ class DeliveryArea extends Model
         'id' => 'integer',
         'initial_zip' => 'string',
         'final_zip' => 'string',
-        'price' => 'decimal:2',
+        'price' => 'float',
         'prevent' => 'boolean',
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'initial_zip' => 'required|max:9',
-        'final_zip' => 'required|max:9',
-        'price' => 'nullable',
+    public static function getRules($id = null){
+        $initialZipRuleUnique = 'unique:delivery_areas,initial_zip';
+        if($id){
+            $initialZipRuleUnique .= ",$id";
+        }
 
-    ];
+        $finalZipRuleUnique = 'unique:delivery_areas,final_zip';
+        if($id){
+            $finalZipRuleUnique .= ",$id";
+        }
+
+        return [
+            'initial_zip' => "required|max:9|lte:final_zip|$initialZipRuleUnique",
+            'final_zip' => "required|max:9|gte:initial_zip|$finalZipRuleUnique",
+            'price' => 'nullable',
+        ];
+    }
 
     public function getIsPreventAttribute()
     {
         return $this->prevent ? 'Sim' : 'Não';
     }
 
-    public function ValidationZip($zip)
+    public static function validationZip($zip)
     {
-        $area = DeliveryArea::where('initial_zip', '<=', $zip)
+        $area = self::where('initial_zip', '<=', $zip)
             ->where('final_zip', '>=', $zip)
             ->orderBy('prevent', 'desc')
             ->orderBy('initial_zip', 'desc')
             ->orderBy('final_zip', 'desc')
             ->first();
 
-        if ($area && $area->prevent) {
-            return false;
+        if ($area && !$area->prevent) {
+            return $area;
         }
-        return $area;
+
+        return false;
     }
 
 }

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateDeliveryAreaAPIRequest;
 use App\Http\Requests\API\UpdateDeliveryAreaAPIRequest;
 use App\Models\DeliveryArea;
 use App\Repositories\DeliveryAreaRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use Response;
 
 /**
@@ -34,13 +34,22 @@ class DeliveryAreaAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $deliveryAreas = $this->deliveryAreaRepository->all(
-            $request->except(['skip', 'limit']),
-            $request->get('skip'),
-            $request->get('limit')
-        );
+        $zip = $request->get('zip');
+        $area = DeliveryArea::validationZip($zip);
 
-        return $this->sendResponse($deliveryAreas->toArray(), 'Delivery Areas retrieved successfully');
+        $deliverable = false;
+        $price = 0;
+
+        if($area){
+            $deliverable = true;
+            $price = $area->price;
+        }
+
+
+        return $this->sendResponse([
+            'deliverable' => $deliverable,
+            'price' => $price
+        ], 'Delivery Areas retrieved successfully');
     }
 
     /**
