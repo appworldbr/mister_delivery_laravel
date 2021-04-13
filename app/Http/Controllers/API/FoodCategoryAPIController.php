@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
+use App\Http\Controllers\FoodCategoryController;
 use App\Http\Requests\API\CreateFoodCategoryAPIRequest;
 use App\Http\Requests\API\UpdateFoodCategoryAPIRequest;
+use App\Http\Resources\FoodCategoryCollection;
 use App\Models\FoodCategory;
 use App\Repositories\FoodCategoryRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use Response;
 
 /**
@@ -34,13 +36,13 @@ class FoodCategoryAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
+
         $foodCategories = $this->foodCategoryRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
             $request->get('limit')
         );
-
-        return $this->sendResponse($foodCategories->toArray(), 'Food Categories retrieved successfully');
+        return $this->sendResponse(new FoodCategoryCollection($foodCategories), 'Food Categories retrieved successfully');
     }
 
     /**

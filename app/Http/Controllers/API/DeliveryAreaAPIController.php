@@ -8,6 +8,7 @@ use App\Http\Requests\API\UpdateDeliveryAreaAPIRequest;
 use App\Models\DeliveryArea;
 use App\Repositories\DeliveryAreaRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Response;
 
 /**
@@ -34,22 +35,22 @@ class DeliveryAreaAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $zip = $request->get('zip');
-        $area = DeliveryArea::validationZip($zip);
+        $validator = Validator::make($request->all(), [
+            'zip' => 'size:8',
+        ]);
 
-        $deliverable = false;
-        $price = 0;
-
-        if($area){
-            $deliverable = true;
-            $price = $area->price;
+        if ($validator->fails()) {
+            return $this->sendError("Tamanho de CEP Inválido", 400);
         }
 
+        $zip = $request->get('zip');
+        $area = DeliveryArea::validationZip($zip);
+        $responseData = [
+            'deliverable' => !!$area,
+            'price' => $area ? $area->price : 0,
+        ];
 
-        return $this->sendResponse([
-            'deliverable' => $deliverable,
-            'price' => $price
-        ], 'Delivery Areas retrieved successfully');
+        return $this->sendResponse($responseData, 'Delivery Areas retrieved successfully');
     }
 
     /**

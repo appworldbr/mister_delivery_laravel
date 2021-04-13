@@ -2,7 +2,7 @@
 
 @section('content')
     <ol class="breadcrumb">
-        <li class="breadcrumb-item">User Addresses</li>
+        <li class="breadcrumb-item">Endereços dos Usuarios</li>
     </ol>
     <div class="container-fluid">
         <div class="animated fadeIn">
@@ -12,7 +12,7 @@
                      <div class="card">
                          <div class="card-header">
                              <i class="fa fa-align-justify"></i>
-                             UserAddresses
+                             Endereços dos Usuarios
                              
                          </div>
                          <div class="card-body">

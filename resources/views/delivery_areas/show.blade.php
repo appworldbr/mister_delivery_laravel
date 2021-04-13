@@ -5,7 +5,7 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('deliveryAreas.index') }}">Delivery Area</a>
             </li>
-            <li class="breadcrumb-item active">Detail</li>
+            <li class="breadcrumb-item active">Detalhes</li>
      </ol>
      <div class="container-fluid">
           <div class="animated fadeIn">

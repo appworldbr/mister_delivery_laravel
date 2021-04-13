@@ -41,14 +41,15 @@ class DeliveryArea extends Model
         'prevent' => 'boolean',
     ];
 
-    public static function getRules($id = null){
+    public static function getRules($id = null)
+    {
         $initialZipRuleUnique = 'unique:delivery_areas,initial_zip';
-        if($id){
+        if ($id) {
             $initialZipRuleUnique .= ",$id";
         }
 
         $finalZipRuleUnique = 'unique:delivery_areas,final_zip';
-        if($id){
+        if ($id) {
             $finalZipRuleUnique .= ",$id";
         }
 
@@ -61,6 +62,7 @@ class DeliveryArea extends Model
 
     public function getIsPreventAttribute()
     {
+
         return $this->prevent ? 'Sim' : 'Não';
     }
 

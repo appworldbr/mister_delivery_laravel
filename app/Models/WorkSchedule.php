@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class WorkSchedule
@@ -23,16 +23,13 @@ class WorkSchedule extends Model
     use HasFactory;
 
     public $table = 'work_schedules';
-    
 
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'weekday',
         'start_time',
-        'end_time'
+        'end_time',
     ];
 
     /**
@@ -41,7 +38,7 @@ class WorkSchedule extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer'
+        'id' => 'integer',
     ];
 
     /**
@@ -52,59 +49,66 @@ class WorkSchedule extends Model
     public static $rules = [
         'weekday' => 'required|min:0|max:6',
         'start_time' => 'required|date_format:G:i',
-        'end_time' => 'required|date_format:G:i'
+        'end_time' => 'required|date_format:G:i',
     ];
 
-    public function getWeeknameAttribute(){
+    public function getWeeknameAttribute()
+    {
 
         $weekNames = [
-            'Domingo', 
-            'Segunda-feira', 
-            'Terça-feira', 
-            'Quarta-feira', 
-            'Quinta-feira', 
-            'Sexta-feira', 
-            'Sábado'
+            'Domingo',
+            'Segunda-feira',
+            'Terça-feira',
+            'Quarta-feira',
+            'Quinta-feira',
+            'Sexta-feira',
+            'Sábado',
         ];
 
         return $weekNames[$this->weekday];
     }
-     public static function isOpen($weekday = null, $hour = null){
-        if($weekday == null){
+    public static function isOpen($weekday = null, $time = null)
+    {
+        if ($weekday == null) {
             $weekday = date('w');
         }
-        if($hour == null){
-            $hour = date('H:i');
+        if ($time == null) {
+            $time = date('H:i');
         }
         return self::where('weekday', $weekday)
-            ->whereTime('start_time', '<=', $hour)
-            ->whereTime('end_time', '>', $hour)
+            ->whereTime('start_time', '<=', $time)
+            ->whereTime('end_time', '>', $time)
             ->exists();
     }
-    public static function nextTimeOpen($weekday = null, $hour = null){
-        if($weekday == null){
+    public static function nextTimeOpen($weekday = null, $time = null)
+    {
+        if ($weekday == null) {
             $weekday = date('w');
         }
-        
-        if($hour == null){
-            $hour = date('H:i');
+
+        if ($time == null) {
+            $time = date('H:i');
         }
 
-        $nextTimeOpen = self::where(function($query) use ($weekday, $hour){
+        $nextTimeOpen = self::where(function ($query) use ($weekday, $time) {
             $query->where('weekday', $weekday)
-                ->where('start_time', '>=', $hour);
-        })->Orwhere(function($query) use ($weekday){
+                ->where('start_time', '>=', $time);
+        })->Orwhere(function ($query) use ($weekday) {
             $query->where('weekday', '>', $weekday);
         })->orderBy('weekday')
             ->orderBy('start_time')
-            ->firstOr(function(){
+            ->firstOr(function () {
                 return self::orderBy('weekday')->orderBy('start_time')->first();
             }
-        );
-        
+            );
+
+        if (!$nextTimeOpen) {
+            return false;
+        }
+
         return [
             'weekname' => $nextTimeOpen->weekname,
-            'next_hour' => (new Carbon($nextTimeOpen->start_time))->format('H:i')
+            'next_hour' => (new Carbon($nextTimeOpen->start_time))->format('H:i'),
         ];
     }
 }

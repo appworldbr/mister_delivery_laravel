@@ -1,16 +1,16 @@
 <!-- Name Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('name', 'Name:') !!}
+    {!! Form::label('name', 'Nome:') !!}
     {!! Form::text('name', null, ['class' => 'form-control','maxlength' => 127]) !!}
 </div>
 
 <!-- Description Field -->
-<div class="form-group col-sm-12 col-lg-12">
-    {!! Form::label('description', 'Description:') !!}
+<div class="form-group col-sm-6 col-lg-6">
+    {!! Form::label('description', 'Descrição:') !!}
     {!! Form::textarea('description', null, ['class' => 'form-control','maxlength' => 10000]) !!}
 </div>
 
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-6 ">
     {!! Form::label('has_details', 'Esse produto tem detalhes:') !!}
     <label class="checkbox-inline">
         {!! Form::hidden('has_details', 0) !!}

@@ -15,16 +15,28 @@ class WorkScheduleCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        $isOpen = WorkSchedule::isOpen(3, '12:00');
-        // $isOpen = WorkSchedule::isOpen(4, '20:00');
+        $weekday = $request->query('weekday');
+        $hour = $request->query('hour');
+        $minute = $request->query('minute');
+        $time = null;
+
+        if ($weekday) {
+            $weekday = (int) $weekday;
+        }
+
+        if ($hour) {
+            $time = $minute ? "$hour:$minute" : "$hour:00";
+        }
+
+        $isOpen = WorkSchedule::isOpen($weekday, $time);
 
         $output = [
             'schedule' => $this->collection,
             'isOpen' => $isOpen,
         ];
 
-        if(!$isOpen){
-            $output['nextTimeOpen'] = WorkSchedule::nextTimeOpen();
+        if (!$isOpen) {
+            $output['nextTimeOpen'] = WorkSchedule::nextTimeOpen($weekday, $time);
         }
 
         return $output;

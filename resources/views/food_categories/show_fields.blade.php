@@ -1,30 +1,20 @@
 <!-- Name Field -->
 <div class="form-group">
-    {!! Form::label('name', 'Name:') !!}
+    {!! Form::label('name', 'Nome:') !!}
     <p>{{ $foodCategory->name }}</p>
 </div>
 
 <!-- Description Field -->
 <div class="form-group">
-    {!! Form::label('description', 'Description:') !!}
+    {!! Form::label('description', 'Descrição:') !!}
     <p>{{ $foodCategory->description }}</p>
 </div>
 
 <!-- Has Details Field -->
 <div class="form-group">
-    {!! Form::label('has_details', 'Has Details:') !!}
-    <p>{{ $foodCategory->has_details }}</p>
+    {!! Form::label('has_details', 'Tem detalhes:') !!}
+    <p>{{ $foodCategory->has_detailst?'Sim':'Não' }}</p>
 </div>
 
-<!-- Created At Field -->
-<div class="form-group">
-    {!! Form::label('created_at', 'Created At:') !!}
-    <p>{{ $foodCategory->created_at }}</p>
-</div>
 
-<!-- Updated At Field -->
-<div class="form-group">
-    {!! Form::label('updated_at', 'Updated At:') !!}
-    <p>{{ $foodCategory->updated_at }}</p>
-</div>
 

@@ -20,7 +20,10 @@ class FoodCategoryDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'food_categories.datatables_actions');
+        return $dataTable->addColumn('action', 'food_categories.datatables_actions')
+                        ->editColumn('has_details', function($model){
+                            return $model->details;
+                        });
     }
 
     /**

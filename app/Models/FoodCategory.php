@@ -24,10 +24,6 @@ class FoodCategory extends Model
     public $table = 'food_categories';
     
 
-    protected $dates = ['deleted_at'];
-
-
-
     public $fillable = [
         'name',
         'description',
@@ -56,8 +52,9 @@ class FoodCategory extends Model
         'description' => 'max:10000'
     ];
 
-    public function getHasDetailsAttribute(){
-        return $this->has_details?'Sim':'Não';
+    public function getDetailsAttribute()
+    {
+        return $this->has_details ? 'Sim' : 'Não';
     }
 
     

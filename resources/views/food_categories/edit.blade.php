@@ -3,9 +3,9 @@
 @section('content')
     <ol class="breadcrumb">
           <li class="breadcrumb-item">
-             <a href="{!! route('foodCategories.index') !!}">Food Category</a>
+             <a href="{!! route('foodCategories.index') !!}">Categoria de Comida</a>
           </li>
-          <li class="breadcrumb-item active">Edit</li>
+          <li class="breadcrumb-item active">Editar</li>
         </ol>
     <div class="container-fluid">
          <div class="animated fadeIn">
@@ -15,7 +15,7 @@
                       <div class="card">
                           <div class="card-header">
                               <i class="fa fa-edit fa-lg"></i>
-                              <strong>Editar Food Category</strong>
+                              <strong>Editar Catgoria de Comida</strong>
                           </div>
                           <div class="card-body">
                               {!! Form::model($foodCategory, ['route' => ['foodCategories.update', $foodCategory->id], 'method' => 'patch']) !!}

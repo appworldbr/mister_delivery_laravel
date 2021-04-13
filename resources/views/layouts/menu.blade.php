@@ -10,14 +10,14 @@
 <li class="nav-item {{ Request::is('userAddresses*') ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('userAddresses.index') }}">
         <i class="nav-icon icon-cursor"></i>
-        <span>User Addresses</span>
+        <span>Endereço de Usuarios</span>
     </a>
 </li>
 
 <li class="nav-item {{ Request::is('users*') ? 'active' : '' }}">
     <a class="nav-link" href="{!! route('users.index') !!}">
         <i class="nav-icon icon-cursor"></i>
-        <span>Users</span>
+        <span>Usuarios</span>
     </a>
 </li>
 <li class="nav-item {{ Request::is('workSchedules*') ? 'active' : '' }}">
@@ -35,6 +35,6 @@
 <li class="nav-item {{ Request::is('foodCategories*') ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('foodCategories.index') }}">
         <i class="nav-icon icon-cursor"></i>
-        <span>Food Categories</span>
+        <span>Categorias de Comidas</span>
     </a>
 </li>

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateWorkScheduleAPIRequest;
 use App\Http\Requests\API\UpdateWorkScheduleAPIRequest;
+use App\Http\Resources\WorkScheduleCollection;
 use App\Models\WorkSchedule;
 use App\Repositories\WorkScheduleRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
-use App\Http\Resources\WorkScheduleCollection;
 use Response;
 
 /**
@@ -40,8 +40,6 @@ class WorkScheduleAPIController extends AppBaseController
             $request->get('skip'),
             $request->get('limit'),
         );
-
-      
 
         return $this->sendResponse(new WorkScheduleCollection($workSchedules), 'Work Schedules retrieved successfully');
     }

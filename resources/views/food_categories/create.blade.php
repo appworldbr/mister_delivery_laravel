@@ -3,9 +3,9 @@
 @section('content')
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-         <a href="{!! route('foodCategories.index') !!}">Food Category</a>
+         <a href="{!! route('foodCategories.index') !!}">Categorias de Comidas</a>
       </li>
-      <li class="breadcrumb-item active">Create</li>
+      <li class="breadcrumb-item active">Criar</li>
     </ol>
      <div class="container-fluid">
           <div class="animated fadeIn">
@@ -15,13 +15,11 @@
                         <div class="card">
                             <div class="card-header">
                                 <i class="fa fa-plus-square-o fa-lg"></i>
-                                <strong>Create Food Category</strong>
+                                <strong>Criar Categoria de Comida</strong>
                             </div>
                             <div class="card-body">
                                 {!! Form::open(['route' => 'foodCategories.store']) !!}
-
                                    @include('food_categories.fields')
-
                                 {!! Form::close() !!}
                             </div>
                         </div>
