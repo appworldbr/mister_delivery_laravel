@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class UserAddress
@@ -29,11 +29,15 @@ class UserAddress extends Model
     use HasFactory;
 
     public $table = 'user_addresses';
-    
 
     protected $dates = ['deleted_at'];
 
-
+    protected $hidden = [
+        'user_id',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 
     public $fillable = [
         'name',
@@ -45,7 +49,7 @@ class UserAddress extends Model
         'number',
         'complement',
         'is_default',
-        'use_id'
+        'user_id',
     ];
 
     /**
@@ -63,7 +67,7 @@ class UserAddress extends Model
         'address' => 'string',
         'number' => 'string',
         'complement' => 'string',
-        'is_default' => 'boolean'
+        'is_default' => 'boolean',
     ];
 
     /**
@@ -80,8 +84,11 @@ class UserAddress extends Model
         'address' => 'required|max:127',
         'number' => 'required|max:127',
         'complement' => 'nullable|max:127',
-        'is_default' => 'boolean'
+        'is_default' => 'boolean',
     ];
 
-    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

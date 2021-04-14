@@ -40,7 +40,7 @@ class DeliveryAreaAPIController extends AppBaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError("Tamanho de CEP Inválido", 400);
+            return $this->sendError($validator->errors()->all(), 400);
         }
 
         $zip = $request->get('zip');
