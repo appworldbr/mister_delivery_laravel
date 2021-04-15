@@ -22,11 +22,13 @@ Route::prefix('user')->group(function () {
     Route::post('/register', [App\Http\Controllers\API\Auth\RegisterAPIController::class, 'create']);
 });
 
-Route::middleware('auth:sanctum')->prefix('user')->group(function () {
-    Route::get('/address', [App\Http\Controllers\API\UserAPIController::class, 'getAddress']);
-    Route::post('/address', [App\Http\Controllers\API\UserAPIController::class, 'storeAddress']);
-    Route::patch('/address/{id}', [App\Http\Controllers\API\UserAPIController::class, 'updateAddress']);
-    Route::delete('/address/{id}', [App\Http\Controllers\API\UserAPIController::class, 'deleteAddress']);
+Route::middleware('auth:sanctum')->prefix('address')->group(function () {
+    Route::get('/', [App\Http\Controllers\API\AddressAPIController::class, 'index']);
+    Route::get('/{id}', [App\Http\Controllers\API\AddressAPIController::class, 'show']);
+    Route::post('/', [App\Http\Controllers\API\AddressAPIController::class, 'store']);
+    Route::patch('/{id}', [App\Http\Controllers\API\AddressAPIController::class, 'update']);
+    Route::put('/default/{id}', [App\Http\Controllers\API\AddressAPIController::class, 'default']);
+    Route::delete('/{id}', [App\Http\Controllers\API\AddressAPIController::class, 'delete']);
 });
 
 Route::resource('settings', App\Http\Controllers\API\SettingAPIController::class);

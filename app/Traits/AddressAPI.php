@@ -48,4 +48,11 @@ trait AddressAPI
             'user_id' => $user->id,
         ]);
     }
+
+    private function setDefaultAddress($user, $address)
+    {
+        $user->address()->update(['is_default' => false]);
+        $address->is_default = true;
+        $address->save();
+    }
 }
