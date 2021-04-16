@@ -2,85 +2,106 @@
 
 namespace App\Models;
 
+use App\ModelTable;
 use Carbon\Carbon;
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * Class WorkSchedule
- * @package App\Models
- * @version April 1, 2021, 7:04 pm UTC
- *
- * @property tinyInteger $weekday
- * @property time $start_time
- * @property time $end_time
- */
-class WorkSchedule extends Model
+class WorkSchedule extends ModelTable
 {
-    use SoftDeletes;
-
     use HasFactory;
 
-    public $table = 'work_schedules';
+    protected $guarded = [];
 
-    protected $dates = ['deleted_at'];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 
-    public $fillable = [
+    static $sortBy = 'weekday';
+
+    static $columns = [
+        'id',
         'weekday',
-        'start_time',
-        'end_time',
+        'start',
+        'finish',
     ];
 
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'id' => 'integer',
+    static $sortableColumns = [
+        'weekday',
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'weekday' => 'required|min:0|max:6',
-        'start_time' => 'required|date_format:G:i',
-        'end_time' => 'required|date_format:G:i',
-    ];
+    static $searchable = false;
 
-    public function getWeeknameAttribute()
+    public static function table($paginate, $sortBy, $sortDirection, $search = '')
     {
-
-        $weekNames = [
-            'Domingo',
-            'Segunda-feira',
-            'Terça-feira',
-            'Quarta-feira',
-            'Quinta-feira',
-            'Sexta-feira',
-            'Sábado',
-        ];
-
-        return $weekNames[$this->weekday];
+        return static::ordered($sortBy, $sortDirection)->paginate($paginate);
     }
-    public static function isOpen($weekday = null, $time = null)
+
+    public static function getFormRoute($id = null)
+    {
+        if (!$id) {
+            return route('workSchedule.form');
+        }
+        return route('workSchedule.form', [
+            'workSchedule' => $id,
+        ]);
+    }
+
+    public function getWeekdayAttribute($value)
+    {
+        return [
+            __("Sunday"),
+            __("Monday"),
+            __("Tuesday"),
+            __("Wednesday"),
+            __("Thursday"),
+            __("Friday"),
+            __("Saturday"),
+        ][$value];
+    }
+
+    public function getStartAttribute($value)
+    {
+        return Carbon::createFromFormat('H:i:s', $value)->format('H:i');
+    }
+
+    public function setStartAttribute($value)
+    {
+        $this->attributes['start'] = Carbon::createFromFormat('H:i', $value)->format('H:i:s');
+    }
+
+    public function setFinishAttribute($value)
+    {
+        $this->attributes['finish'] = Carbon::createFromFormat('H:i', $value)->format('H:i:s');
+    }
+
+    public function getFinishAttribute($value)
+    {
+        return Carbon::createFromFormat('H:i:s', $value)->format('H:i');
+    }
+
+    public function scopeOrdered($query, $sortBy = "weekday", $sortDirection = "asc")
+    {
+        return $query->orderBy($sortBy, $sortDirection)->orderBy('id');
+    }
+
+    public function scopeIsOpen($query, $weekday = null, $time = null)
     {
         if ($weekday == null) {
             $weekday = date('w');
         }
+
         if ($time == null) {
             $time = date('H:i');
         }
-        return self::where('weekday', $weekday)
-            ->whereTime('start_time', '<=', $time)
-            ->whereTime('end_time', '>', $time)
+
+        return $query->where('weekday', $weekday)
+            ->whereTime('start', '<=', $time)
+            ->whereTime('finish', '>', $time)
             ->exists();
     }
-    public static function nextTimeOpen($weekday = null, $time = null)
+
+    public function scopeNextTimeOpen($query, $weekday = null, $time = null)
     {
         if ($weekday == null) {
             $weekday = date('w');
@@ -90,25 +111,24 @@ class WorkSchedule extends Model
             $time = date('H:i');
         }
 
-        $nextTimeOpen = self::where(function ($query) use ($weekday, $time) {
+        $nextTimeOpen = $query->where(function ($query) use ($weekday, $time) {
             $query->where('weekday', $weekday)
-                ->where('start_time', '>=', $time);
+                ->where('start', '>=', $time);
         })->Orwhere(function ($query) use ($weekday) {
             $query->where('weekday', '>', $weekday);
         })->orderBy('weekday')
-            ->orderBy('start_time')
+            ->orderBy('start')
             ->firstOr(function () {
-                return self::orderBy('weekday')->orderBy('start_time')->first();
-            }
-            );
+                return self::orderBy('weekday')->orderBy('start')->first();
+            });
 
         if (!$nextTimeOpen) {
             return false;
         }
 
         return [
-            'weekname' => $nextTimeOpen->weekname,
-            'next_hour' => (new Carbon($nextTimeOpen->start_time))->format('H:i'),
+            'weekday' => $nextTimeOpen->weekday,
+            'nextHour' => $nextTimeOpen->start,
         ];
     }
 }

@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\WorkScheduleController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,30 +13,14 @@ use App\Http\Controllers\HomeController;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
-
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-Route::resource('settings', App\Http\Controllers\SettingController::class);
-
-Route::resource('userAddresses', App\Http\Controllers\UserAddressController::class);
-
-Route::resource('workSchedules', App\Http\Controllers\WorkScheduleController::class);
-
-Route::resource('users', App\Http\Controllers\UserController::class)->middleware('auth');
-
-
-
-
-
-Route::resource('workSchedules', App\Http\Controllers\WorkScheduleController::class);
-
-Route::resource('deliveryAreas', App\Http\Controllers\DeliveryAreaController::class);
-
-Route::resource('foodCategories', App\Http\Controllers\FoodCategoryController::class);
+Route::middleware(['auth:sanctum', 'verified'])->prefix('/dashboard')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/work-schedule', [WorkScheduleController::class, 'index'])->name('workSchedule.index');
+    Route::get('/work-schedule/form/{workSchedule?}', [WorkScheduleController::class, 'form'])->name('workSchedule.form');
+});
