@@ -74,12 +74,14 @@ class User extends Authenticatable
 
     public function getDeletable($user = null)
     {
-        if ($user && $user->hasRole('admin')) {
-            return false;
+        if ($this->id) {
+            if (Auth::user()->hasRole('admin')) {
+                return Auth::id() !== $this->id;
+            }
         }
 
-        if ($this->id) {
-            return Auth::id() !== $this->id;
+        if ($user && $user->hasRole('admin')) {
+            return false;
         }
 
         return $this->deletable;

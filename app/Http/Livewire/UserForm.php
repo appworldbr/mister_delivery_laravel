@@ -67,8 +67,10 @@ class UserForm extends Component
     {
         $this->authorize('user:delete');
 
-        if ($this->user->hasRole('admin')) {
-            abort(403);
+        if (!Auth::user()->hasRole('admin')) {
+            if ($this->user->hasRole('admin')) {
+                abort(403);
+            }
         }
 
         if ($this->user->id == Auth::id()) {
@@ -76,7 +78,7 @@ class UserForm extends Component
         }
 
         $this->user->delete();
-        return redirect()->route("workSchedule.index");
+        return redirect()->route("users.index");
     }
 
     public function mount()

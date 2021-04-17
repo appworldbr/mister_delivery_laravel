@@ -30,7 +30,8 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('/dashboard')->group(fun
     });
 
     Route::prefix('/work-schedule')->group(function () {
-        Route::get('/', [WorkScheduleController::class, 'index'])->name('workSchedule.index');
-        Route::get('/form/{workSchedule?}', [WorkScheduleController::class, 'form'])->name('workSchedule.form');
+        Route::get('/', [WorkScheduleController::class, 'index'])->middleware('can:workSchedule:read')->name('workSchedule.index');
+        Route::get('/form', [WorkScheduleController::class, 'form'])->middleware('can:workSchedule:create')->name('workSchedule.form.create');
+        Route::get('/form/{workSchedule}', [WorkScheduleController::class, 'form'])->middleware('can:workSchedule:update')->name('workSchedule.form.update');
     });
 });
