@@ -21,8 +21,19 @@
             <x-jet-input id="password" type="password" class="mt-1 block w-full" wire:model.defer="state.password" />
             <x-jet-input-error for="password" class="mt-2" />
         </div>
-
-        {{-- @if ($user)
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="permissions" value="{{ __('Roles') }}" />
+            <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                @foreach (\Spatie\Permission\Models\Role::all() as $role)
+                    <label class="flex items-center">
+                        <x-jet-checkbox wire:model.defer="state.roles" :value="$role->name" />
+                        <span class="ml-2 text-sm text-gray-600">{{ __("$role->name") }}</span>
+                    </label>
+                @endforeach
+            </div>
+        </div>
+        @if (auth()->user()->can('user:delete') &&
+    $user)
             <x-jet-confirmation-modal wire:model="confirmingDelete">
                 <x-slot name="title">
                     {{ __('Delete') }}
@@ -42,14 +53,15 @@
                     </x-jet-danger-button>
                 </x-slot>
             </x-jet-confirmation-modal>
-        @endif --}}
+        @endif
     </x-slot>
     <x-slot name="actions">
-        {{-- @if ($workSchedule)
+        @if (auth()->user()->can('user:delete') &&
+    $user)
             <x-jet-danger-button type="button" wire:click="$toggle('confirmingDelete')">
                 {{ __('Delete') }}
             </x-jet-danger-button>
-        @endif --}}
+        @endif
         <x-jet-button class="ml-4">
             {{ __('Save') }}
         </x-jet-button>

@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Auth;
 use Str;
 
 trait HasTable
@@ -9,6 +10,7 @@ trait HasTable
     public $searchField = 'name';
 
     public $columns = [];
+    public $columnsName = [];
     public $sortableColumns = [];
 
     public $sortBy = 'id';
@@ -44,6 +46,12 @@ trait HasTable
     public function addSortableField($field)
     {
         $this->sortableColumns[] = $field;
+        return $this;
+    }
+
+    public function addColumnName($field, $name)
+    {
+        $this->columnsName[$field] = $name;
         return $this;
     }
 
@@ -83,16 +91,29 @@ trait HasTable
         return $this;
     }
 
+    public function getName()
+    {
+        return Str::camel(class_basename(static::class));
+    }
+
+    public function validatePermission($type)
+    {
+        if (Auth::check()) {
+            return Auth::user()->hasPermissionTo($this->getName() . ':' . $type);
+        }
+        return false;
+    }
+
     public function getFormRoute()
     {
-        $routeName = Str::camel(class_basename(static::class));
+        $name = $this->getName();
 
         if (!$this->id) {
-            return route("$routeName.form");
+            return route("$name.form.create");
         }
 
-        return route("$routeName.form", [
-            $routeName => $this->id,
+        return route("$name.form.update", [
+            $name => $this->id,
         ]);
     }
 

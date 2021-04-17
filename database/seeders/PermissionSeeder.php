@@ -17,22 +17,51 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
+        $this->clearRoles();
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $this->createAdminUser($adminRole);
         $this->createPermissions('user', $adminRole);
         $this->createPermissions('workSchedule', $adminRole);
+
+        $managerRole = Role::firstOrCreate(['name' => 'manager']);
+        $this->createManagerUser($managerRole);
+        $this->createPermissions('user', $managerRole, [
+            "create" => true,
+            "read" => true,
+            "update" => true,
+            "delete" => true,
+        ]);
+    }
+
+    protected function clearRoles()
+    {
+        Role::query()->delete();
     }
 
     protected function createAdminUser($role)
     {
-        $user = User::firstOrCreate([
-            'email' => 'admin@admin.com',
-        ]);
-        $user->name = "Admin";
-        $user->password = Hash::make('password');
-        $user->save();
+        $user = User::where('email', 'admin@admin.com')->first();
+        if (!$user) {
+            $user = User::create([
+                'email' => 'admin@admin.com',
+                'name' => 'Admin',
+                'password' => Hash::make('password'),
+            ]);
+        }
         $user->assignRole($role);
-        return $user;
+    }
+
+    protected function createManagerUser($role)
+    {
+        $user = User::where('email', 'manager@manager.com')->first();
+        if (!$user) {
+            $user = User::create([
+                'email' => 'manager@manager.com',
+                'name' => 'Manager',
+                'password' => Hash::make('password'),
+            ]);
+        }
+        $user->assignRole($role);
     }
 
     protected function createPermissions($modelName, $role, $permissions = [

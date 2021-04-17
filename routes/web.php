@@ -24,8 +24,9 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('/dashboard')->group(fun
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('/users')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('users.index');
-        Route::get('/form/{user?}', [UserController::class, 'form'])->name('user.form');
+        Route::get('/', [UserController::class, 'index'])->middleware('can:user:read')->name('users.index');
+        Route::get('/form', [UserController::class, 'form'])->middleware('can:user:create')->name('user.form.create');
+        Route::get('/form/{user}', [UserController::class, 'form'])->middleware('can:user:update')->name('user.form.update');
     });
 
     Route::prefix('/work-schedule')->group(function () {

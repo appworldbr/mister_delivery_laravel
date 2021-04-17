@@ -7,12 +7,19 @@ use App\Traits\Table\WithDelete;
 use App\Traits\Table\WithPerPage;
 use App\Traits\Table\WithSearch;
 use App\Traits\Table\WithSort;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Table extends Component
 {
-    use WithPagination, WithSort, WithPerPage, WithSearch, WithBulkDelete, WithDelete;
+    use WithPagination;
+    use WithSort;
+    use WithPerPage;
+    use WithSearch;
+    use WithBulkDelete;
+    use WithDelete;
+    use AuthorizesRequests;
 
     public $model;
 

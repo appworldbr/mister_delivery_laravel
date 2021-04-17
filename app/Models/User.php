@@ -66,6 +66,17 @@ class User extends Authenticatable
 
     public function defineTable()
     {
-        $this->addColumns(['name', 'email'], ['name']);
+        $this->setSortBy('name')
+            ->addColumns(['name', 'email', 'rolesInStr'], ['name'])
+            ->addColumnName('rolesInStr', 'roles');
+    }
+
+    public function getRolesInStrAttribute()
+    {
+        $rolesNames = $this->getRoleNames();
+        if (count($rolesNames)) {
+            return $this->getRoleNames()->implode(', ');
+        }
+        return '-';
     }
 }

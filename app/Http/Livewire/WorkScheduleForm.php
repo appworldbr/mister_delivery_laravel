@@ -4,24 +4,21 @@ namespace App\Http\Livewire;
 
 use App\Models\WorkSchedule;
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use \Manny;
 
 class WorkScheduleForm extends Component
 {
+    use AuthorizesRequests;
+
     public $workSchedule;
     public $confirmingDelete = false;
 
     public $state = [
         'weekday' => 0,
     ];
-
-    public function delete()
-    {
-        $this->workSchedule->delete();
-        return redirect()->route("workSchedule.index");
-    }
 
     public function saveWorkSchedule()
     {
@@ -34,11 +31,20 @@ class WorkScheduleForm extends Component
         ])->validate();
 
         if (!$this->workSchedule) {
+            $this->authorize('workSchedule:create', $this->state);
             $this->workSchedule = WorkSchedule::create($this->state);
         } else {
+            $this->authorize('workSchedule:update', $this->state);
             $this->workSchedule->update($this->state);
         }
 
+        return redirect()->route("workSchedule.index");
+    }
+
+    public function delete()
+    {
+        $this->authorize('workSchedule:delete', $this->state);
+        $this->workSchedule->delete();
         return redirect()->route("workSchedule.index");
     }
 
