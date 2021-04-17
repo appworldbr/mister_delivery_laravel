@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Traits\HasTable;
+use Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -69,6 +70,19 @@ class User extends Authenticatable
         $this->setSortBy('name')
             ->addColumns(['name', 'email', 'rolesInStr'], ['name'])
             ->addColumnName('rolesInStr', 'roles');
+    }
+
+    public function getDeletable($user = null)
+    {
+        if ($user && $user->hasRole('admin')) {
+            return false;
+        }
+
+        if ($this->id) {
+            return Auth::id() !== $this->id;
+        }
+
+        return $this->deletable;
     }
 
     public function getRolesInStrAttribute()

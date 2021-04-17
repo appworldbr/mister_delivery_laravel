@@ -31,10 +31,10 @@ class WorkScheduleForm extends Component
         ])->validate();
 
         if (!$this->workSchedule) {
-            $this->authorize('workSchedule:create', $this->state);
+            $this->authorize('workSchedule:create');
             $this->workSchedule = WorkSchedule::create($this->state);
         } else {
-            $this->authorize('workSchedule:update', $this->state);
+            $this->authorize('workSchedule:update');
             $this->workSchedule->update($this->state);
         }
 
@@ -43,7 +43,7 @@ class WorkScheduleForm extends Component
 
     public function delete()
     {
-        $this->authorize('workSchedule:delete', $this->state);
+        $this->authorize('workSchedule:delete');
         $this->workSchedule->delete();
         return redirect()->route("workSchedule.index");
     }

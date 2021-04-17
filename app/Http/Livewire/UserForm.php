@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Actions\Fortify\PasswordValidationRules;
 use App\Models\User;
+use Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -65,6 +66,15 @@ class UserForm extends Component
     public function delete()
     {
         $this->authorize('user:delete');
+
+        if ($this->user->hasRole('admin')) {
+            abort(403);
+        }
+
+        if ($this->user->id == Auth::id()) {
+            abort(403);
+        }
+
         $this->user->delete();
         return redirect()->route("workSchedule.index");
     }

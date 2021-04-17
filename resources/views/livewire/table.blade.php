@@ -9,7 +9,7 @@
                     <option value="20">20</option>
                 </x-select>
             </div>
-            @if ($model->searchable)
+            @if ($model->getSearchable())
                 <div class="col-span-6 ml-4 sm:col-span-4">
                     <x-jet-label for="search" value="{{ __('Search') }}" />
                     <x-jet-input id="search" type="text" class="block w-full text-xs"
@@ -18,7 +18,7 @@
             @endif
         </div>
         <div class="flex flex-row w-full justify-between items-end mb-4 md:w-auto">
-            @if ($model->validatePermission('delete') && $model->bulkDeletable)
+            @if ($model->validatePermission('delete') && $model->getBulkDeletable())
                 @if (count($deleteList))
                     <x-jet-danger-button wire:click="$toggle('confirmingBulkDelete')">
                         {{ __('Bulk Delete') }}
@@ -159,13 +159,13 @@
                                         </td>
                                     @endforeach
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        @if ($model->validatePermission('delete') && $model->deletable)
+                                        @if ($model->validatePermission('delete') && $item->getDeletable($item, $item->id))
                                             <button wire:click="showDeleteModal({{ $item->id }})"
                                                 class="px-3 py-1 inline-flex text-xs  font-semibold rounded bg-red-500 text-white opacity-25 hover:opacity-100 hover:bg-red-600 focus:border-red-700 active:bg-red-600 transition">
                                                 {{ __('Delete') }}
                                             </button>
                                         @endif
-                                        @if ($model->validatePermission('update') && $model->editable)
+                                        @if ($model->validatePermission('update') && $item->getEditable($item, $item->id))
                                             <a href="{{ $item->getFormRoute() }}"
                                                 class="px-3 py-1 inline-flex text-xs  font-semibold rounded bg-blue-500 text-white hover:bg-blue-600 focus:border-blue-700 active:bg-red-600 transition">
                                                 {{ __('Edit') }}
@@ -182,7 +182,7 @@
     </div>
     {{ $items->links() }}
 
-    @if ($model->validatePermission('delete') && $model->bulkDeletable)
+    @if ($model->validatePermission('delete') && $model->getBulkDeletable())
         <x-jet-confirmation-modal wire:model="confirmingBulkDelete">
             <x-slot name="title">
                 {{ __('Bulk Delete') }}
@@ -204,7 +204,7 @@
         </x-jet-confirmation-modal>
     @endif
 
-    @if ($model->validatePermission('delete') && $model->deletable)
+    @if ($model->validatePermission('delete') && $model->getDeletable())
         <x-jet-confirmation-modal wire:model="confirmingDelete">
             <x-slot name="title">
                 {{ __('Delete') }}

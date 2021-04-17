@@ -32,8 +32,7 @@
                 @endforeach
             </div>
         </div>
-        @if (auth()->user()->can('user:delete') &&
-    $user)
+        @if ($user && $user->getDeletable())
             <x-jet-confirmation-modal wire:model="confirmingDelete">
                 <x-slot name="title">
                     {{ __('Delete') }}
@@ -56,8 +55,7 @@
         @endif
     </x-slot>
     <x-slot name="actions">
-        @if (auth()->user()->can('user:delete') &&
-    $user)
+        @if ($user && $user->getDeletable($user))
             <x-jet-danger-button type="button" wire:click="$toggle('confirmingDelete')">
                 {{ __('Delete') }}
             </x-jet-danger-button>

@@ -32,7 +32,7 @@
             <x-jet-input-error for="finish" class="mt-2" />
         </div>
 
-        @if ($workSchedule)
+        @if ($workSchedule && $workSchedule->isDeletable())
             <x-jet-confirmation-modal wire:model="confirmingDelete">
                 <x-slot name="title">
                     {{ __('Delete') }}
@@ -55,7 +55,7 @@
         @endif
     </x-slot>
     <x-slot name="actions">
-        @if ($workSchedule)
+        @if ($workSchedule && $workSchedule->isDeletable($workSchedule))
             <x-jet-danger-button type="button" wire:click="$toggle('confirmingDelete')">
                 {{ __('Delete') }}
             </x-jet-danger-button>

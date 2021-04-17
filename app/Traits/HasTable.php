@@ -16,10 +16,10 @@ trait HasTable
     public $sortBy = 'id';
     public $sortDirection = 'asc';
 
-    public $searchable = true;
-    public $editable = true;
-    public $deletable = true;
-    public $bulkDeletable = true;
+    protected $searchable = true;
+    protected $editable = true;
+    protected $deletable = true;
+    protected $bulkDeletable = true;
 
     protected function initializeHasTable()
     {
@@ -73,10 +73,20 @@ trait HasTable
         return $this;
     }
 
+    public function getSearchable()
+    {
+        return $this->searchable;
+    }
+
     public function isEditable($value)
     {
         $this->editable = $value;
         return $this;
+    }
+
+    public function getEditable($model = null, $id = null)
+    {
+        return $this->editable;
     }
 
     public function isDeletable($value)
@@ -85,10 +95,20 @@ trait HasTable
         return $this;
     }
 
+    public function getDeletable($model = null, $id = null)
+    {
+        return $this->deletable;
+    }
+
     public function isBulkDeletable($value)
     {
         $this->bulkDeletable = $value;
         return $this;
+    }
+
+    public function getBulkDeletable()
+    {
+        return $this->bulkDeletable;
     }
 
     public function getName()
@@ -98,10 +118,10 @@ trait HasTable
 
     public function validatePermission($type)
     {
-        if (Auth::check()) {
-            return Auth::user()->hasPermissionTo($this->getName() . ':' . $type);
+        if (!Auth::user()->hasPermissionTo($this->getName() . ':' . $type)) {
+            abort(403);
         }
-        return false;
+        return true;
     }
 
     public function getFormRoute()
