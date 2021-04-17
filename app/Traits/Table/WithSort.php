@@ -25,11 +25,11 @@ trait WithSort
 
     public function setSortBy()
     {
-        $this->sortBy = $this->model::$sortBy;
+        $this->sortBy = $this->model->sortBy;
     }
 
     public function setSortDirection()
     {
-        $this->sortDirection = $this->model::$sortDirection;
+        $this->sortDirection = $this->model->sortDirection;
     }
 }

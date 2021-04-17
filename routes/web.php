@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkScheduleController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,14 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->prefix('/dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/work-schedule', [WorkScheduleController::class, 'index'])->name('workSchedule.index');
-    Route::get('/work-schedule/form/{workSchedule?}', [WorkScheduleController::class, 'form'])->name('workSchedule.form');
+
+    Route::prefix('/users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::get('/form/{user?}', [UserController::class, 'form'])->name('user.form');
+    });
+
+    Route::prefix('/work-schedule')->group(function () {
+        Route::get('/', [WorkScheduleController::class, 'index'])->name('workSchedule.index');
+        Route::get('/form/{workSchedule?}', [WorkScheduleController::class, 'form'])->name('workSchedule.form');
+    });
 });

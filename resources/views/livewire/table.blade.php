@@ -9,7 +9,7 @@
                     <option value="20">20</option>
                 </x-select>
             </div>
-            @if ($searchable)
+            @if ($model->searchable)
                 <div class="col-span-6 ml-4 sm:col-span-4">
                     <x-jet-label for="search" value="{{ __('Search') }}" />
                     <x-jet-input id="search" type="text" class="block w-full text-xs"
@@ -18,7 +18,7 @@
             @endif
         </div>
         <div class="flex flex-row w-full justify-between items-end mb-4 md:w-auto">
-            @if ($bulkDeletable)
+            @if ($model->bulkDeletable)
                 @if (count($deleteList))
                     <x-jet-danger-button wire:click="$toggle('confirmingBulkDelete')">
                         {{ __('Bulk Delete') }}
@@ -29,7 +29,7 @@
                     </x-jet-danger-button>
                 @endif
             @endif
-            <a href="{{ $model::getFormRoute() }}"
+            <a href="{{ $model->getFormRoute() }}"
                 class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition' ml-2">
                 {{ __('Add') }}
             </a>
@@ -76,13 +76,13 @@
                                         </div>
                                     </th>
                                 @endif
-                                @foreach ($model::$columns as $column)
+                                @foreach ($model->columns as $column)
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        @if (in_array($column, $model::$sortableColumns))
+                                        @if (in_array($column, $model->sortableColumns))
                                             <button class="flex flex-row uppercase items-center focus:outline-none"
                                                 wire:click="sortBy('{{ $column }}')">
-                                                {{ $column }}
+                                                {{ __($column) }}
                                                 @if ($column == $sortBy)
                                                     @if ($sortDirection == 'asc')
                                                         <div class="ml-3 p-2">
@@ -112,7 +112,7 @@
                                                 @endif
                                             </button>
                                         @else
-                                            {{ $column }}
+                                            {{ __($column) }}
                                         @endif
                                     </th>
                                 @endforeach
@@ -151,20 +151,20 @@
                                             </div>
                                         </td>
                                     @endif
-                                    @foreach ($model::$columns as $column)
+                                    @foreach ($model->columns as $column)
                                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                                             {{ $item->$column }}
                                         </td>
                                     @endforeach
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        @if ($deletable)
+                                        @if ($model->deletable)
                                             <button wire:click="showDeleteModal({{ $item->id }})"
                                                 class="px-3 py-1 inline-flex text-xs  font-semibold rounded bg-red-500 text-white opacity-25 hover:opacity-100 hover:bg-red-600 focus:border-red-700 active:bg-red-600 transition">
                                                 {{ __('Delete') }}
                                             </button>
                                         @endif
-                                        @if ($editable)
-                                            <a href="{{ $model::getFormRoute($item->id) }}"
+                                        @if ($model->editable)
+                                            <a href="{{ $item->getFormRoute() }}"
                                                 class="px-3 py-1 inline-flex text-xs  font-semibold rounded bg-blue-500 text-white hover:bg-blue-600 focus:border-blue-700 active:bg-red-600 transition">
                                                 {{ __('Edit') }}
                                             </a>
@@ -180,7 +180,7 @@
     </div>
     {{ $items->links() }}
 
-    @if ($bulkDeletable)
+    @if ($model->bulkDeletable)
         <x-jet-confirmation-modal wire:model="confirmingBulkDelete">
             <x-slot name="title">
                 {{ __('Bulk Delete') }}
@@ -202,7 +202,7 @@
         </x-jet-confirmation-modal>
     @endif
 
-    @if ($deletable)
+    @if ($model->deletable)
         <x-jet-confirmation-modal wire:model="confirmingDelete">
             <x-slot name="title">
                 {{ __('Delete') }}

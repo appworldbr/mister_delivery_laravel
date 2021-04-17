@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use App\ModelTable;
+use App\Traits\HasTable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class WorkSchedule extends ModelTable
+class WorkSchedule extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTable;
 
     protected $guarded = [];
 
@@ -17,34 +18,28 @@ class WorkSchedule extends ModelTable
         'updated_at',
     ];
 
-    static $sortBy = 'weekday';
-
-    static $columns = [
-        'id',
-        'weekday',
-        'start',
-        'finish',
-    ];
-
-    static $sortableColumns = [
-        'weekday',
-    ];
-
-    static $searchable = false;
-
-    public static function table($paginate, $sortBy, $sortDirection, $search = '')
+    public function defineTable()
     {
-        return static::ordered($sortBy, $sortDirection)->paginate($paginate);
+        $this->setSortBy('weekday')
+            ->addColumns([
+                'id',
+                'weekday',
+                'start',
+                'finish',
+            ], [
+                'weekday',
+            ])
+            ->isSearchable(false);
     }
 
-    public static function getFormRoute($id = null)
+    public function scopeTable($query, $paginate, $sortBy, $sortDirection, $search = '')
     {
-        if (!$id) {
-            return route('workSchedule.form');
-        }
-        return route('workSchedule.form', [
-            'workSchedule' => $id,
-        ]);
+        return $query->ordered($sortBy, $sortDirection)->paginate($paginate);
+    }
+
+    public function scopeOrdered($query, $sortBy = "weekday", $sortDirection = "asc")
+    {
+        return $query->orderBy($sortBy, $sortDirection)->orderBy('id');
     }
 
     public function getWeekdayAttribute($value)
@@ -78,11 +73,6 @@ class WorkSchedule extends ModelTable
     public function getFinishAttribute($value)
     {
         return Carbon::createFromFormat('H:i:s', $value)->format('H:i');
-    }
-
-    public function scopeOrdered($query, $sortBy = "weekday", $sortDirection = "asc")
-    {
-        return $query->orderBy($sortBy, $sortDirection)->orderBy('id');
     }
 
     public function scopeIsOpen($query, $weekday = null, $time = null)
