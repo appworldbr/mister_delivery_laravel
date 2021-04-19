@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\API\AddressAPIController;
+use App\Http\Controllers\API\Auth\LoginAPIController;
+use App\Http\Controllers\API\Auth\RegisterAPIController;
 use App\Http\Controllers\API\SettingsApiController;
 use App\Http\Controllers\API\WorkScheduleApiController;
 use Illuminate\Http\Request;
@@ -21,6 +24,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('/v1.0')->group(function () {
+
+    Route::prefix('/user')->group(function () {
+        Route::post('/login', [LoginAPIController::class, 'login']);
+        Route::post('/register', [RegisterAPIController::class, 'create']);
+    });
+
     Route::get('/workSchedule', [WorkScheduleApiController::class, 'index']);
     Route::get('/settings', [SettingsApiController::class, 'index']);
+
+    Route::middleware('auth:sanctum')->prefix('/address')->group(function () {
+        Route::get('/', [AddressAPIController::class, 'index']);
+        Route::get('/{id}', [AddressAPIController::class, 'show']);
+        Route::post('/', [AddressAPIController::class, 'store']);
+        Route::patch('/{id}', [AddressAPIController::class, 'update']);
+        Route::put('/default/{id}', [AddressAPIController::class, 'default']);
+        Route::delete('/{id}', [AddressAPIController::class, 'delete']);
+    });
 });
