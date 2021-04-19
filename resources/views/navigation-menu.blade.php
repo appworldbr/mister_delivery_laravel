@@ -15,15 +15,23 @@
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
+
                     @can('user:read')
                         <x-jet-nav-link href="{{ route('users.index') }}">
                             {{ __('Users') }}
                         </x-jet-nav-link>
                     @endcan
+
                     @can('workSchedule:read')
                         <x-jet-nav-link href="{{ route('workSchedule.index') }}"
                             :active="request()->routeIs('workSchedule.index')">
                             {{ __('Work Schedule') }}
+                        </x-jet-nav-link>
+                    @endcan
+
+                    @can('settings:update')
+                        <x-jet-nav-link href="{{ route('settings.form') }}" :active="request()->routeIs('settings.form')">
+                            {{ __('Settings') }}
                         </x-jet-nav-link>
                     @endcan
                 </div>

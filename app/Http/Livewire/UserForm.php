@@ -17,7 +17,9 @@ class UserForm extends Component
     use AuthorizesRequests;
 
     public $user;
-    public $state = [];
+    public $state = [
+        'roles' => [],
+    ];
     public $confirmingDelete = false;
 
     public function saveUser()

@@ -7,7 +7,7 @@ use Str;
 
 trait HasTable
 {
-    public $searchField = 'name';
+    public $searchFields = [];
 
     public $columns = [];
     public $columnsName = [];
@@ -24,6 +24,20 @@ trait HasTable
     protected function initializeHasTable()
     {
         $this->defineTable();
+    }
+
+    public function addSearchFields($fields)
+    {
+        foreach ($fields as $field) {
+            $this->addSearchField($field);
+        }
+        return $this;
+    }
+
+    public function addSearchField($field)
+    {
+        $this->searchFields[] = $field;
+        return $this;
     }
 
     public function addColumns($fields, $sortable = [])
@@ -139,7 +153,10 @@ trait HasTable
 
     public function scopeTable($query, $paginate, $sortBy, $sortDirection, $search = '')
     {
-        return $query->where($this->searchField, 'like', "%$search%")->orderBy($sortBy, $sortDirection)->paginate($paginate);
+        foreach ($this->searchFields as $searchField) {
+            $query = $query->orWhere($searchField, 'like', "%$search%");
+        }
+        return $query->orderBy($sortBy, $sortDirection)->paginate($paginate);
     }
 
     abstract public function defineTable();

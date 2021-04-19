@@ -18,19 +18,18 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         $this->clearRoles();
+
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $this->createAdminUser($adminRole);
         $this->createPermissions('user', $adminRole);
         $this->createPermissions('workSchedule', $adminRole);
+        $this->createPermissions('settings', $adminRole, ['read', 'update']);
 
         $managerRole = Role::firstOrCreate(['name' => 'manager']);
         $this->createManagerUser($managerRole);
-        $this->createPermissions('user', $managerRole, [
-            "create" => true,
-            "read" => true,
-            "update" => true,
-            "delete" => true,
-        ]);
+        $this->createPermissions('user', $managerRole);
+        $this->createPermissions('workSchedule', $managerRole);
+        $this->createPermissions('settings', $adminRole, ['update']);
     }
 
     protected function clearRoles()
@@ -64,17 +63,11 @@ class PermissionSeeder extends Seeder
         $user->assignRole($role);
     }
 
-    protected function createPermissions($modelName, $role, $permissions = [
-        "create" => true,
-        "read" => true,
-        "update" => true,
-        "delete" => true,
-    ]) {
-        foreach ($permissions as $type => $active) {
-            if ($active) {
-                $permission = Permission::firstOrCreate(['name' => "$modelName:$type"]);
-                $role->givePermissionTo($permission);
-            }
+    protected function createPermissions($modelName, $role, $permissions = ["create", "read", "update", "delete"])
+    {
+        foreach ($permissions as $type) {
+            $permission = Permission::firstOrCreate(['name' => "$modelName:$type"]);
+            $role->givePermissionTo($permission);
         }
     }
 }

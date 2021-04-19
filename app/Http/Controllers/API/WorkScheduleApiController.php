@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\WorkSchedule;
 use Illuminate\Http\Request;
 
-class WorkScheduleController extends Controller
+class WorkScheduleApiController extends Controller
 {
     public function index(Request $request)
     {

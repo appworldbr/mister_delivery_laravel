@@ -67,7 +67,8 @@ class User extends Authenticatable
 
     public function defineTable()
     {
-        $this->setSortBy('name')
+        $this->addSearchFields(['name', 'email'])
+            ->setSortBy('name')
             ->addColumns(['name', 'email', 'rolesInStr'], ['name'])
             ->addColumnName('rolesInStr', 'roles');
     }

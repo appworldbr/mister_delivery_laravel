@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\API\WorkScheduleController;
+use App\Http\Controllers\API\SettingsApiController;
+use App\Http\Controllers\API\WorkScheduleApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('/v1.0')->group(function () {
-    Route::get('/workSchedule', [WorkScheduleController::class, 'index']);
+    Route::get('/workSchedule', [WorkScheduleApiController::class, 'index']);
+    Route::get('/settings', [SettingsApiController::class, 'index']);
 });
