@@ -38,7 +38,7 @@ Route::prefix('/v1.0')->group(function () {
         Route::get('/{id}', [AddressAPIController::class, 'show']);
         Route::post('/', [AddressAPIController::class, 'store']);
         Route::patch('/{id}', [AddressAPIController::class, 'update']);
-        Route::put('/default/{id}', [AddressAPIController::class, 'default']);
+        Route::put('/default/{id}', [AddressAPIController::class, 'setDefault']);
         Route::delete('/{id}', [AddressAPIController::class, 'delete']);
     });
 });

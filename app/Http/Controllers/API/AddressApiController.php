@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Traits\AddressAPI;
+use App\Models\UserAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AddressAPIController extends Controller
 {
-    use AddressAPI;
-
     public function index()
     {
         $address = Auth::user()->address;
@@ -19,7 +17,7 @@ class AddressAPIController extends Controller
 
     public function show($id)
     {
-        $address = Auth::user()->address()->where('id', $id)->first();
+        $address = UserAddress::get($id);
 
         if (!$address) {
             return response()->json(["errors" => __("Address Not Found")], 404);
@@ -30,16 +28,13 @@ class AddressAPIController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->only(['address_name', 'zip', 'state', 'city', 'district', 'address', 'number', 'complement']);
-        $validator = $this->addressValidator($data);
-        if ($validator->fails()) {
-            return response()->json(["errors" => $validator->errors()->all()], 400);
-        }
+        $data = $request->only(['name', 'zip', 'state', 'city', 'district', 'address', 'number', 'complement']);
 
-        $user = Auth::user();
-        $address = $this->createAddress($user, $data);
+        UserAddress::validator($data);
+        $address = UserAddress::add($data);
+
         if ($request->exists('is_default') && $request->input('is_default')) {
-            $this->setDefaultAddress($user, $address);
+            UserAddress::setDefault($address->id);
         }
 
         return response()->json(compact('address'));
@@ -47,19 +42,14 @@ class AddressAPIController extends Controller
 
     public function update($id, Request $request)
     {
-        $data = $request->only(['address_name', 'zip', 'state', 'city', 'district', 'address', 'number', 'complement']);
-        $validator = $this->addressValidator($data);
-        if ($validator->fails()) {
-            return response()->json($validator->errors()->all(), 400);
-        }
 
-        $data['name'] = $data['address_name'];
-        unset($data['address_name']);
+        $data = $request->only(['name', 'zip', 'state', 'city', 'district', 'address', 'number', 'complement']);
 
-        $user = Auth::user();
-        $address = $user->address()->where('id', $id)->first();
+        UserAddress::validator($data);
+        $address = UserAddress::get($id);
+
         if (!$address) {
-            return response()->json(["errors" => __("Address Not Found")], 404);
+            return response()->json(['message' => __('Address Not Found')], 400);
         }
 
         $address->update($data);
@@ -67,36 +57,19 @@ class AddressAPIController extends Controller
         return response()->json(compact('address'));
     }
 
-    function default($id) {
-        $user = Auth::user();
-        $address = $user->address()->where('id', $id)->first();
-
+    public function setDefault($id)
+    {
+        $address = UserAddress::setDefault($id);
         if (!$address) {
-            return response()->json(["errors" => __("Address Not Found")], 404);
+            return response()->json(["message" => __("Address Not Found")], 404);
         }
-
-        $this->setDefaultAddress($user, $address);
-
         return response()->json(compact('address'));
-
     }
 
     public function delete($id)
     {
-        $user = Auth::user();
-        $address = $user->address()->where('id', $id)->first();
-
-        if (!$address) {
-            return response()->json(["errors" => __("Address Not Found")], 404);
-        }
-
-        if ($address->is_default) {
-            return response()->json(["errors" => __("It is not possible to delete the default address")], 401);
-        }
-
-        $deleted = $address->delete();
-        if (!$deleted) {
-            return response()->json(["errors" => __("Error Not Found, Try Again Later")], 404);
+        if (!UserAddress::remove($id)) {
+            return response()->json(["message" => __("Address Not Found")], 404);
         }
 
         return response()->json(["success" => true]);

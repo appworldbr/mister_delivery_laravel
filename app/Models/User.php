@@ -6,9 +6,11 @@ namespace App\Models;
 
 use App\Traits\HasTable;
 use Auth;
+use Hash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -100,5 +102,30 @@ class User extends Authenticatable
     public function address()
     {
         return $this->hasMany(UserAddress::class);
+    }
+
+    public static function apiLoginValidator($data)
+    {
+        Validator::make($data, [
+            'token_name' => ['required', 'string', 'max:50'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required', 'string', 'min:8'],
+        ])->validate();
+    }
+
+    public static function apiRegisterValidator($data)
+    {
+        Validator::make($data, [
+            'token_name' => ['required', 'string', 'max:50'],
+            'name' => ['required', 'string', 'max: 255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8'],
+        ])->validate();
+    }
+
+    public static function apiLoginVerification($credentials)
+    {
+        $user = User::where('email', $credentials['email'])->first();
+        return $user && Hash::check($credentials['password'], $user->password);
     }
 }

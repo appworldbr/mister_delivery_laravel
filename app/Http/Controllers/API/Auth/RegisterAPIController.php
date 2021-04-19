@@ -3,34 +3,34 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Traits\AddressAPI;
-use App\Traits\RegisterApi;
-use App\Traits\TokenAPI;
+use App\Models\User;
+use App\Models\UserAddress;
+use Hash;
 use Illuminate\Http\Request;
 
 class RegisterAPIController extends Controller
 {
-    use RegisterApi, AddressAPI, TokenAPI;
-
     public function create(Request $request)
     {
-        $userData = $request->only(['name', 'email', 'password']);
+        $userData = $request->only(['token_name', 'name', 'email', 'password']);
         $userAddressData = $request->only(['address_name', 'zip', 'state', 'city', 'district', 'address', 'number', 'complement']);
 
-        $validator = $this->registerValidator($userData);
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()->all()], 400);
-        }
+        $userAddressData['name'] = $userAddressData['address_name'];
+        unset($userAddressData['address_name']);
 
-        $addressValidator = $this->addressValidator($userAddressData);
-        if ($addressValidator->fails()) {
-            return response()->json(['errors' => $validator->errors()->all()], 400);
-        }
+        User::apiRegisterValidator($userData);
+        UserAddress::validator($userAddressData);
 
-        $user = $this->createUser($userData);
-        $this->createAddress($user, $userAddressData, true);
+        $user = User::create([
+            'name' => $userData['name'],
+            'email' => $userData['email'],
+            'password' => Hash::make($userData['password']),
+        ]);
 
-        $token = $this->createToken($user);
+        UserAddress::add($userAddressData, $user);
+
+        $user->tokens()->where('name', $userData['token_name'])->delete();
+        $token = $user->createToken($userData['token_name']);
 
         return response()->json([
             'token' => $token->plainTextToken,
