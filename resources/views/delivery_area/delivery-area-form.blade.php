@@ -1,38 +1,40 @@
-<x-jet-form-section submit="saveWorkSchedule">
+<x-jet-form-section submit="saveDeliveryArea">
     <x-slot name="title">
-        {{ __('Work Schedule') }}
+        {{ __('Delivery Area') }}
     </x-slot>
     <x-slot name="description">
-        {{ __('Create or Update this Work Schedule.') }}
+        {{ __('Create or Update this Delivery Area.') }}
     </x-slot>
     <x-slot name="form">
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="weekday" value="{{ __('Weekday') }}" />
-            <x-select id="weekday" name="weekday" class="mt-1 block w-full" wire:model.defer="state.weekday">
-                <option value="0">{{ __('Sunday') }}</option>
-                <option value="1">{{ __('Monday') }}</option>
-                <option value="2">{{ __('Tuesday') }}</option>
-                <option value="3">{{ __('Wednesday') }}</option>
-                <option value="4">{{ __('Thursday') }}</option>
-                <option value="5">{{ __('Friday') }}</option>
-                <option value="6">{{ __('Saturday') }}</option>
-            </x-select>
-            <x-jet-input-error for="weekday" class="mt-2" />
+            <x-jet-label for="initial" value="{{ __('Initial ZIP') }}" />
+            <x-jet-input id="initial" type="text" class="mt-1 block w-full" wire:model.debounce.500ms="state.initial" />
+            <x-jet-input-error for="initial" class="mt-2" />
         </div>
 
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="start" value="{{ __('Start') }}" />
-            <x-jet-input id="start" type="text" class="mt-1 block w-full" wire:model.debounce.500ms="state.start" />
-            <x-jet-input-error for="start" class="mt-2" />
+            <x-jet-label for="final" value="{{ __('Final ZIP') }}" />
+            <x-jet-input id="final" type="text" class="mt-1 block w-full" wire:model.debounce.500ms="state.final" />
+            <x-jet-input-error for="final" class="mt-2" />
         </div>
 
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="finish" value="{{ __('Finish') }}" />
-            <x-jet-input id="finish" type="text" class="mt-1 block w-full" wire:model.debounce.500ms="state.finish" />
-            <x-jet-input-error for="finish" class="mt-2" />
+            <x-jet-label for="price" value="{{ __('Price') }}" />
+            <x-jet-input id="price" type="text" class="mt-1 block w-full" wire:model.debounce.500ms="state.price" />
+            <x-jet-input-error for="price" class="mt-2" />
         </div>
 
-        @if ($workSchedule && $workSchedule->getDeletable())
+        <div class="col-span-6 sm:col-span-4">
+            <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <label class="flex items-center">
+                    <x-jet-checkbox wire:model.defer="state.prevent" value="1" />
+                    <span class="ml-2 text-sm text-gray-600">{{ __('Preventable') }}</span>
+                </label>
+            </div>
+            <x-jet-input-error for="prevent" class="mt-2" />
+        </div>
+
+        @if ($deliveryArea && $deliveryArea->getDeletable())
             <x-jet-confirmation-modal wire:model="confirmingDelete">
                 <x-slot name="title">
                     {{ __('Delete') }}
@@ -55,7 +57,7 @@
         @endif
     </x-slot>
     <x-slot name="actions">
-        @if ($workSchedule && $workSchedule->getDeletable($workSchedule))
+        @if ($deliveryArea && $deliveryArea->getDeletable($deliveryArea))
             <x-jet-danger-button type="button" wire:click="$toggle('confirmingDelete')">
                 {{ __('Delete') }}
             </x-jet-danger-button>

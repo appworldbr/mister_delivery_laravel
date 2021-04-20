@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\DeliveryArea;
+
+class DeliveryAreaController extends Controller
+{
+    public function index()
+    {
+        return view('delivery_area.index', [
+            'model' => DeliveryArea::class,
+        ]);
+    }
+
+    public function form(DeliveryArea $deliveryArea = null)
+    {
+        return view("delivery_area.form", compact("deliveryArea"));
+    }
+}

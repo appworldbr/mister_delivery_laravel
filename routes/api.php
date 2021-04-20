@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AddressAPIController;
 use App\Http\Controllers\API\Auth\LoginAPIController;
 use App\Http\Controllers\API\Auth\RegisterAPIController;
+use App\Http\Controllers\API\DeliveryAreaApiController;
 use App\Http\Controllers\API\SettingsApiController;
 use App\Http\Controllers\API\WorkScheduleApiController;
 use Illuminate\Http\Request;
@@ -30,6 +31,7 @@ Route::prefix('/v1.0')->group(function () {
         Route::post('/register', [RegisterAPIController::class, 'create']);
     });
 
+    Route::get('/deliveryArea/{zip}', [DeliveryAreaApiController::class, 'index']);
     Route::get('/workSchedule', [WorkScheduleApiController::class, 'index']);
     Route::get('/settings', [SettingsApiController::class, 'index']);
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeliveryAreaController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkScheduleController;
@@ -38,5 +39,11 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('/dashboard')->group(fun
 
     Route::prefix('/settings')->group(function () {
         Route::get('/form', [SettingsController::class, 'form'])->middleware('can:settings:update')->name('settings.form');
+    });
+
+    Route::prefix('/delivery-area')->group(function () {
+        Route::get('/', [DeliveryAreaController::class, 'index'])->middleware('can:deliveryArea:read')->name('deliveryArea.index');
+        Route::get('/form', [DeliveryAreaController::class, 'form'])->middleware('can:deliveryArea:create')->name('deliveryArea.form.create');
+        Route::get('/form/{deliveryArea}', [DeliveryAreaController::class, 'form'])->middleware('can:deliveryArea:update')->name('deliveryArea.form.update');
     });
 });

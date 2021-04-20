@@ -17,8 +17,14 @@
                     </x-jet-nav-link>
 
                     @can('user:read')
-                        <x-jet-nav-link href="{{ route('users.index') }}">
+                        <x-jet-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
                             {{ __('Users') }}
+                        </x-jet-nav-link>
+                    @endcan
+
+                    @can('settings:update')
+                        <x-jet-nav-link href="{{ route('settings.form') }}" :active="request()->routeIs('settings.form')">
+                            {{ __('Settings') }}
                         </x-jet-nav-link>
                     @endcan
 
@@ -29,9 +35,10 @@
                         </x-jet-nav-link>
                     @endcan
 
-                    @can('settings:update')
-                        <x-jet-nav-link href="{{ route('settings.form') }}" :active="request()->routeIs('settings.form')">
-                            {{ __('Settings') }}
+                    @can('deliveryArea:read')
+                        <x-jet-nav-link href="{{ route('deliveryArea.index') }}"
+                            :active="request()->routeIs('deliveryArea.index')">
+                            {{ __('Delivery Area') }}
                         </x-jet-nav-link>
                     @endcan
                 </div>
