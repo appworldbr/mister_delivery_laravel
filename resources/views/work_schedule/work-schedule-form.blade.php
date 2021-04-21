@@ -27,9 +27,9 @@
         </div>
 
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="finish" value="{{ __('Finish') }}" />
-            <x-jet-input id="finish" type="text" class="mt-1 block w-full" wire:model.debounce.500ms="state.finish" />
-            <x-jet-input-error for="finish" class="mt-2" />
+            <x-jet-label for="end" value="{{ __('End') }}" />
+            <x-jet-input id="end" type="text" class="mt-1 block w-full" wire:model.debounce.500ms="state.end" />
+            <x-jet-input-error for="end" class="mt-2" />
         </div>
 
         @if ($workSchedule && $workSchedule->getDeletable())

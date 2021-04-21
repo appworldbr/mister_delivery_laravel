@@ -12,7 +12,7 @@
             <x-jet-input-error for="name" class="mt-2" />
         </div>
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="email" value="{{ __('E-mail') }}" />
+            <x-jet-label for="email" value="{{ __('Email') }}" />
             <x-jet-input id="email" type="email" class="mt-1 block w-full" wire:model.defer="state.email" />
             <x-jet-input-error for="email" class="mt-2" />
         </div>
@@ -27,7 +27,7 @@
                 @foreach (\Spatie\Permission\Models\Role::all() as $role)
                     <label class="flex items-center">
                         <x-jet-checkbox wire:model.defer="state.roles" :value="$role->name" />
-                        <span class="ml-2 text-sm text-gray-600">{{ __("$role->name") }}</span>
+                        <span class="ml-2 text-sm text-gray-600">{{ __(Str::title($role->name)) }}</span>
                     </label>
                 @endforeach
             </div>

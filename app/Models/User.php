@@ -15,6 +15,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Str;
 
 class User extends Authenticatable
 {
@@ -94,7 +95,9 @@ class User extends Authenticatable
     {
         $rolesNames = $this->getRoleNames();
         if (count($rolesNames)) {
-            return $this->getRoleNames()->implode(', ');
+            return $this->getRoleNames()->map(function ($value) {
+                return __(Str::title($value));
+            })->implode(', ');
         }
         return '-';
     }

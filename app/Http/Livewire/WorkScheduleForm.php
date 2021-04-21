@@ -25,7 +25,7 @@ class WorkScheduleForm extends Component
         Validator::make($this->state, [
             'weekday' => ['required', 'min:0', 'max:6'],
             'start' => ['required', 'date_format:H:i'],
-            'finish' => ['required', 'date_format:H:i', 'after:start'],
+            'end' => ['required', 'date_format:H:i', 'after:start'],
         ], [
             'start.date_format' => __('Invalid Field'),
         ])->validate();
@@ -62,10 +62,10 @@ class WorkScheduleForm extends Component
             $this->validateTime('start');
         }
 
-        if ($field == "state.finish") {
-            $this->validateTime('finish');
-            if ($this->state["finish"] == "00:00") {
-                $this->state["finish"] = "23:59";
+        if ($field == "state.end") {
+            $this->validateTime('end');
+            if ($this->state["end"] == "00:00") {
+                $this->state["end"] = "23:59";
             }
         }
     }
@@ -76,7 +76,7 @@ class WorkScheduleForm extends Component
             $this->state = [
                 'weekday' => $this->workSchedule->getRawOriginal('weekday'),
                 'start' => $this->workSchedule->start,
-                'finish' => $this->workSchedule->finish,
+                'end' => $this->workSchedule->end,
             ];
         }
     }

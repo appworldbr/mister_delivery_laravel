@@ -15,6 +15,19 @@ class Setting extends Model
     public $incrementing = false;
     public $timestamps = false;
 
+    public static function defaultData($settings)
+    {
+        if (!strlen($settings['logo'])) {
+            $settings['logo'] = '/default.png';
+        }
+
+        if (!strlen($settings['name'])) {
+            $settings['name'] = __("Company Name");
+        }
+
+        return $settings;
+    }
+
     public static function set($values)
     {
         $settings = [];
@@ -35,6 +48,6 @@ class Setting extends Model
                 $settings[$key] = '';
             }
         }
-        return $settings;
+        return static::defaultData($settings);
     }
 }

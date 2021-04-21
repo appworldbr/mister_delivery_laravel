@@ -10,7 +10,6 @@
             @livewire('user-form', ['user' => $user])
             <x-jet-section-border />
             @livewire('address-form', ['user' => $user])
-            <x-jet-section-border />
         </div>
     </div>
 </x-app-layout>

@@ -17,7 +17,7 @@ class CreateWorkSchedulesTable extends Migration
             $table->id();
             $table->tinyInteger('weekday');
             $table->time('start');
-            $table->time('finish');
+            $table->time('end');
             $table->timestamps();
         });
     }

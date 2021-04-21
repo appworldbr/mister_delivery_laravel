@@ -84,7 +84,7 @@
                                         @if (in_array($column, $model->sortableColumns))
                                             <button class="flex flex-row uppercase items-center focus:outline-none"
                                                 wire:click="sortBy('{{ $column }}')">
-                                                {{ __($model->columnsName[$column] ?? $column) }}
+                                                {{ __(Str::title($model->columnsName[$column] ?? $column)) }}
                                                 @if ($column == $sortBy)
                                                     @if ($sortDirection == 'asc')
                                                         <div class="ml-3 p-2">
@@ -114,7 +114,7 @@
                                                 @endif
                                             </button>
                                         @else
-                                            {{ __($model->columnsName[$column] ?? $column) }}
+                                            {{ __(Str::title($model->columnsName[$column] ?? $column)) }}
                                         @endif
                                     </th>
                                 @endforeach

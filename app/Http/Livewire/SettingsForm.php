@@ -54,6 +54,8 @@ class SettingsForm extends Component
 
         if (strlen($this->state['logo'])) {
             $this->logoUrl = Storage::disk('public')->url($this->state['logo']);
+        } else {
+            $this->logoUrl = Storage::disk('public')->url('/default.png');
         }
     }
 

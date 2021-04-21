@@ -3,7 +3,7 @@
         {{ __('Settings') }}
     </x-slot>
     <x-slot name="description">
-        {{ __('Create or Update your Settings.') }}
+        {{ __('Update your Settings.') }}
     </x-slot>
     <x-slot name="form">
         <div x-data="{logoName: null, logoPreview: null}" class="col-span-6 sm:col-span-4">

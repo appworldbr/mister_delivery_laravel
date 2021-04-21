@@ -22,10 +22,9 @@ class WorkSchedule extends Model
     {
         $this->setSortBy('weekday')
             ->addColumns([
-                'id',
                 'weekday',
                 'start',
-                'finish',
+                'end',
             ], [
                 'weekday',
             ])
@@ -65,12 +64,12 @@ class WorkSchedule extends Model
         $this->attributes['start'] = Carbon::createFromFormat('H:i', $value)->format('H:i:s');
     }
 
-    public function setFinishAttribute($value)
+    public function setendAttribute($value)
     {
-        $this->attributes['finish'] = Carbon::createFromFormat('H:i', $value)->format('H:i:s');
+        $this->attributes['end'] = Carbon::createFromFormat('H:i', $value)->format('H:i:s');
     }
 
-    public function getFinishAttribute($value)
+    public function getendAttribute($value)
     {
         return Carbon::createFromFormat('H:i:s', $value)->format('H:i');
     }
@@ -87,7 +86,7 @@ class WorkSchedule extends Model
 
         return $query->where('weekday', $weekday)
             ->whereTime('start', '<=', $time)
-            ->whereTime('finish', '>', $time)
+            ->whereTime('end', '>', $time)
             ->exists();
     }
 
