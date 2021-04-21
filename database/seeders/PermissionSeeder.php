@@ -25,13 +25,15 @@ class PermissionSeeder extends Seeder
         $this->createPermissions('workSchedule', $adminRole);
         $this->createPermissions('settings', $adminRole, ['update']);
         $this->createPermissions('deliveryArea', $adminRole);
+        $this->createPermissions('foodCategory', $adminRole);
 
         $managerRole = Role::firstOrCreate(['name' => 'manager']);
         $this->createManagerUser($managerRole);
         $this->createPermissions('user', $managerRole);
         $this->createPermissions('workSchedule', $managerRole);
-        $this->createPermissions('settings', $adminRole, ['update']);
-        $this->createPermissions('deliveryArea', $adminRole);
+        $this->createPermissions('settings', $managerRole, ['update']);
+        $this->createPermissions('deliveryArea', $managerRole);
+        $this->createPermissions('foodCategory', $managerRole);
     }
 
     protected function clearRoles()

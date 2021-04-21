@@ -4,9 +4,9 @@ use App\Http\Controllers\API\AddressAPIController;
 use App\Http\Controllers\API\Auth\LoginAPIController;
 use App\Http\Controllers\API\Auth\RegisterAPIController;
 use App\Http\Controllers\API\DeliveryAreaApiController;
+use App\Http\Controllers\API\FoodCategoryApiController;
 use App\Http\Controllers\API\SettingsApiController;
 use App\Http\Controllers\API\WorkScheduleApiController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,10 +20,6 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::prefix('/v1.0')->group(function () {
 
     Route::prefix('/user')->group(function () {
@@ -34,6 +30,7 @@ Route::prefix('/v1.0')->group(function () {
     Route::get('/deliveryArea/{zip}', [DeliveryAreaApiController::class, 'index']);
     Route::get('/workSchedule', [WorkScheduleApiController::class, 'index']);
     Route::get('/settings', [SettingsApiController::class, 'index']);
+    Route::get('/foodCategories', [FoodCategoryApiController::class, 'index']);
 
     Route::middleware('auth:sanctum')->prefix('/address')->group(function () {
         Route::get('/', [AddressAPIController::class, 'index']);
@@ -43,4 +40,5 @@ Route::prefix('/v1.0')->group(function () {
         Route::put('/default/{id}', [AddressAPIController::class, 'setDefault']);
         Route::delete('/{id}', [AddressAPIController::class, 'delete']);
     });
+
 });

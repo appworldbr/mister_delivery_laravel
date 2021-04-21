@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryAreaController;
+use App\Http\Controllers\FoodCategoryController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkScheduleController;
@@ -45,5 +46,11 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('/dashboard')->group(fun
         Route::get('/', [DeliveryAreaController::class, 'index'])->middleware('can:deliveryArea:read')->name('deliveryArea.index');
         Route::get('/form', [DeliveryAreaController::class, 'form'])->middleware('can:deliveryArea:create')->name('deliveryArea.form.create');
         Route::get('/form/{deliveryArea}', [DeliveryAreaController::class, 'form'])->middleware('can:deliveryArea:update')->name('deliveryArea.form.update');
+    });
+
+    Route::prefix('/food-categories')->group(function () {
+        Route::get('/', [FoodCategoryController::class, 'index'])->middleware('can:foodCategory:read')->name('foodCategory.index');
+        Route::get('/form', [FoodCategoryController::class, 'form'])->middleware('can:foodCategory:create')->name('foodCategory.form.create');
+        Route::get('/form/{foodCategory}', [FoodCategoryController::class, 'form'])->middleware('can:foodCategory:update')->name('foodCategory.form.update');
     });
 });
