@@ -52,11 +52,9 @@ class SettingsForm extends Component
     {
         $this->state = Setting::get(['logo', 'name', 'description', 'address']);
 
-        if (strlen($this->state['logo'])) {
-            $this->logoUrl = Storage::disk('public')->url($this->state['logo']);
-        } else {
-            $this->logoUrl = Storage::disk('public')->url('/default.png');
-        }
+        $this->logoUrl = strlen($this->state['logo'])
+        ? Storage::disk('public')->url($this->state['logo'])
+        : Storage::disk('public')->url('/default.png');
     }
 
     public function render()

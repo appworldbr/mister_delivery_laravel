@@ -19,6 +19,15 @@ class FoodCategory extends Model
         'updated_at',
     ];
 
+    protected static function booted()
+    {
+        static::deleting(function ($foodCategory) {
+            foreach ($foodCategory->foods as $food) {
+                $food->delete();
+            }
+        });
+    }
+
     public function defineTable()
     {
         $this->setSortBy('name')
@@ -31,5 +40,10 @@ class FoodCategory extends Model
     public function getIconAttribute($value)
     {
         return __(Str::title($value));
+    }
+
+    public function foods()
+    {
+        return $this->hasMany(Food::class, 'category_id');
     }
 }

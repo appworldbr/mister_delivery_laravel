@@ -32,7 +32,9 @@ trait WithBulkDelete
 
     public function bulkDelete()
     {
-        $this->model->whereIn('id', $this->deleteList)->delete();
+        foreach ($this->model->whereIn('id', $this->deleteList)->get() as $model) {
+            $model->delete();
+        }
         $this->deleteList = [];
         $this->resetPage();
         $this->confirmingBulkDelete = false;

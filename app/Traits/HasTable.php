@@ -98,7 +98,7 @@ trait HasTable
         return $this;
     }
 
-    public function getEditable($model = null, $id = null)
+    public function getEditable()
     {
         return $this->editable;
     }
@@ -109,7 +109,7 @@ trait HasTable
         return $this;
     }
 
-    public function getDeletable($model = null, $id = null)
+    public function getDeletable()
     {
         return $this->deletable;
     }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryAreaController;
 use App\Http\Controllers\FoodCategoryController;
+use App\Http\Controllers\FoodController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkScheduleController;
@@ -52,5 +53,11 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('/dashboard')->group(fun
         Route::get('/', [FoodCategoryController::class, 'index'])->middleware('can:foodCategory:read')->name('foodCategory.index');
         Route::get('/form', [FoodCategoryController::class, 'form'])->middleware('can:foodCategory:create')->name('foodCategory.form.create');
         Route::get('/form/{foodCategory}', [FoodCategoryController::class, 'form'])->middleware('can:foodCategory:update')->name('foodCategory.form.update');
+    });
+
+    Route::prefix('/foods')->group(function () {
+        Route::get('/', [FoodController::class, 'index'])->middleware('can:food:read')->name('food.index');
+        Route::get('/form', [FoodController::class, 'form'])->middleware('can:food:create')->name('food.form.create');
+        Route::get('/form/{food}', [FoodController::class, 'form'])->middleware('can:food:update')->name('food.form.update');
     });
 });

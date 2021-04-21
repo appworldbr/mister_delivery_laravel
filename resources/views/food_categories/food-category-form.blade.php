@@ -49,7 +49,7 @@
         @endif
     </x-slot>
     <x-slot name="actions">
-        @if ($foodCategory && $foodCategory->getDeletable($foodCategory))
+        @if ($foodCategory && $foodCategory->getDeletable())
             <x-jet-danger-button type="button" wire:click="$toggle('confirmingDelete')">
                 {{ __('Delete') }}
             </x-jet-danger-button>

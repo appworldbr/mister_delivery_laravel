@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AddressAPIController;
 use App\Http\Controllers\API\Auth\LoginAPIController;
 use App\Http\Controllers\API\Auth\RegisterAPIController;
 use App\Http\Controllers\API\DeliveryAreaApiController;
+use App\Http\Controllers\API\FoodApiController;
 use App\Http\Controllers\API\FoodCategoryApiController;
 use App\Http\Controllers\API\SettingsApiController;
 use App\Http\Controllers\API\WorkScheduleApiController;
@@ -30,7 +31,9 @@ Route::prefix('/v1.0')->group(function () {
     Route::get('/deliveryArea/{zip}', [DeliveryAreaApiController::class, 'index']);
     Route::get('/workSchedule', [WorkScheduleApiController::class, 'index']);
     Route::get('/settings', [SettingsApiController::class, 'index']);
+
     Route::get('/foodCategories', [FoodCategoryApiController::class, 'index']);
+    Route::get('/foods/{categoryId?}', [FoodApiController::class, 'index']);
 
     Route::middleware('auth:sanctum')->prefix('/address')->group(function () {
         Route::get('/', [AddressAPIController::class, 'index']);

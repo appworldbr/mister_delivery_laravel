@@ -184,6 +184,8 @@ return [
         'address' => 'endereço',
         'start' => 'início',
         'end' => 'término',
+        'category_id' => 'categoria',
+        'image' => 'Imagem',
     ],
 
 ];
