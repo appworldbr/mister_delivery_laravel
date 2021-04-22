@@ -20,7 +20,6 @@ class FoodResource extends JsonResource
             'name' => $this->name,
             'price' => (double) $this->getRawOriginal('price'),
             'description' => $this->description,
-            'active' => $this->getRawOriginal('active'),
         ];
     }
 }

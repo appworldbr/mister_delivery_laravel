@@ -15,13 +15,7 @@ class Food extends Model
     use HasPrice;
     use HasImage;
 
-    protected $table = 'foods';
     protected $guarded = [];
-
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-    ];
 
     public function defineTable()
     {

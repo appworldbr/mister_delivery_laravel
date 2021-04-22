@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Http\UploadedFile;
 use Storage;
+use Str;
 
 trait HasImage
 {
@@ -18,7 +19,7 @@ trait HasImage
     {
         tap($this->image_path, function ($previous) use ($image) {
             $this->forceFill([
-                'image_path' => $image->storePublicly('foods', 'public'),
+                'image_path' => $image->storePublicly(Str::snake(Str::plural(class_basename(static::class))), 'public'),
             ])->save();
 
             if ($previous) {

@@ -82,6 +82,6 @@ class FoodForm extends Component
 
     public function render()
     {
-        return view('foods.food-form');
+        return view('food.food-form');
     }
 }

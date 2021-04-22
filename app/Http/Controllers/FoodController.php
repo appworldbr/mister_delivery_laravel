@@ -8,13 +8,13 @@ class FoodController extends Controller
 {
     public function index()
     {
-        return view('foods.index', [
+        return view('food.index', [
             'model' => Food::class,
         ]);
     }
 
     public function form(Food $food = null)
     {
-        return view("foods.form", compact("food"));
+        return view("food.form", compact("food"));
     }
 }

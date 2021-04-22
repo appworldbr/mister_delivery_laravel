@@ -55,7 +55,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('/dashboard')->group(fun
         Route::get('/form/{foodCategory}', [FoodCategoryController::class, 'form'])->middleware('can:foodCategory:update')->name('foodCategory.form.update');
     });
 
-    Route::prefix('/foods')->group(function () {
+    Route::prefix('/food')->group(function () {
         Route::get('/', [FoodController::class, 'index'])->middleware('can:food:read')->name('food.index');
         Route::get('/form', [FoodController::class, 'form'])->middleware('can:food:create')->name('food.form.create');
         Route::get('/form/{food}', [FoodController::class, 'form'])->middleware('can:food:update')->name('food.form.update');

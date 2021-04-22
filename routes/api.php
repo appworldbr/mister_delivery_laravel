@@ -33,7 +33,7 @@ Route::prefix('/v1.0')->group(function () {
     Route::get('/settings', [SettingsApiController::class, 'index']);
 
     Route::get('/foodCategories', [FoodCategoryApiController::class, 'index']);
-    Route::get('/foods/{categoryId?}', [FoodApiController::class, 'index']);
+    Route::get('/food/{categoryId?}', [FoodApiController::class, 'index']);
 
     Route::middleware('auth:sanctum')->prefix('/address')->group(function () {
         Route::get('/', [AddressAPIController::class, 'index']);

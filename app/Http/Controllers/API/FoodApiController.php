@@ -14,7 +14,7 @@ class FoodApiController extends Controller
         if ($categoryId) {
             $query->where('category_id', $categoryId);
         }
-        $foods = FoodResource::collection($query->get());
-        return response()->json(compact('foods'));
+        $food = FoodResource::collection($query->get());
+        return response()->json(compact('food'));
     }
 }

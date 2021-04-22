@@ -22,7 +22,7 @@ class FoodCategory extends Model
     protected static function booted()
     {
         static::deleting(function ($foodCategory) {
-            foreach ($foodCategory->foods as $food) {
+            foreach ($foodCategory->food as $food) {
                 $food->delete();
             }
         });
@@ -42,7 +42,7 @@ class FoodCategory extends Model
         return __(Str::title($value));
     }
 
-    public function foods()
+    public function food()
     {
         return $this->hasMany(Food::class, 'category_id');
     }
