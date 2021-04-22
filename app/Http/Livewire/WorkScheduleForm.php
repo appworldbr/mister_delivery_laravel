@@ -20,7 +20,7 @@ class WorkScheduleForm extends Component
         'weekday' => 0,
     ];
 
-    public function saveWorkSchedule()
+    public function save()
     {
         Validator::make($this->state, [
             'weekday' => ['required', 'min:0', 'max:6'],

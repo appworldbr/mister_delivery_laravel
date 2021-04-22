@@ -1,43 +1,11 @@
 <x-jet-form-section submit="save">
     <x-slot name="title">
-        {{ __('Food') }}
+        {{ __('Extra') }}
     </x-slot>
     <x-slot name="description">
-        {{ __('Create or Update this Food.') }}
+        {{ __('Create or Update this Extra.') }}
     </x-slot>
     <x-slot name="form">
-
-        <div x-data="{imageName: null, imagePreview: null}" class="col-span-6 sm:col-span-4">
-            <input type="file" class="hidden" wire:model="image" x-ref="image" x-on:change="
-                    imageName = $refs.image.files[0].name;
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        imagePreview = e.target.result;
-                    };
-                    reader.readAsDataURL($refs.image.files[0]);
-            " />
-
-            @if ($food)
-                <div class="mt-2" x-show="!imagePreview">
-                    <img src="{{ $food->image_url }}" alt="{{ __('Image') }}"
-                        class="rounded-lg h-20 w-20 object-cover">
-                </div>
-            @endif
-
-            <div class="mt-2" x-show="imagePreview">
-                <span class="block rounded-lg w-20 h-20"
-                    x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + imagePreview + '\');'">
-                </span>
-            </div>
-
-            <x-jet-label for="image" value="{{ __('Image') }}" />
-
-            <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.image.click()">
-                {{ __('Select a Image') }}
-            </x-jet-secondary-button>
-
-            <x-jet-input-error for="image" class="mt-2" />
-        </div>
 
         <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="name" value="{{ __('Name') }}" />
@@ -47,10 +15,16 @@
         </div>
 
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="description" value="{{ __('Description') }}" />
-            <x-textarea id="description" class="mt-1 block w-full h-32 resize-none"
-                wire:model.defer="state.description" />
-            <x-jet-input-error for="description" class="mt-2" />
+            <x-jet-label for="price" value="{{ __('Price') }}" />
+            <x-jet-input id="price" type="text" class="mt-1 block w-full" wire:model.debounce.500ms="state.price" />
+            <x-jet-input-error for="price" class="mt-2" />
+        </div>
+
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="limit" value="{{ __('Limit') }}" />
+            <x-jet-input id="limit" type="number" step="1" min="1" class="mt-1 block w-full"
+                wire:model.debounce.500ms="state.limit" />
+            <x-jet-input-error for="limit" class="mt-2" />
         </div>
 
         <div class="col-span-6 sm:col-span-4">
@@ -63,11 +37,6 @@
             <x-jet-input-error for="category_id" class="mt-2" />
         </div>
 
-        <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="price" value="{{ __('Price') }}" />
-            <x-jet-input id="price" type="text" class="mt-1 block w-full" wire:model.debounce.500ms="state.price" />
-            <x-jet-input-error for="price" class="mt-2" />
-        </div>
 
         <div class="col-span-6 sm:col-span-4">
             <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -79,7 +48,7 @@
             <x-jet-input-error for="active" class="mt-2" />
         </div>
 
-        @if ($food && $food->getDeletable())
+        @if ($foodExtra && $foodExtra->getDeletable())
             <x-jet-confirmation-modal wire:model="confirmingDelete">
                 <x-slot name="title">
                     {{ __('Delete') }}
@@ -102,7 +71,7 @@
         @endif
     </x-slot>
     <x-slot name="actions">
-        @if ($food && $food->getDeletable())
+        @if ($foodExtra && $foodExtra->getDeletable())
             <x-jet-danger-button type="button" wire:click="$toggle('confirmingDelete')">
                 {{ __('Delete') }}
             </x-jet-danger-button>

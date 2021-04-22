@@ -107,14 +107,13 @@
     "Final Zip": "CEP Final",
     "Preventable": "Evitável",
     "All Food": "Todas as Comidas",
-    "Food": "Comidas",
+    "Food": "Comida",
     "Categories": "Categorias",
     "Food Category": "Categoria de Comida",
     "Food Categories": "Categorias de Comida",
     "Create or Update this Food Category.": "Criar ou Atualizar essa Categoria de Comida.",
     "Icon": "Ícone",
     "Hamburger": "Hamburger",
-    "Food": "Comida",
     "Create or Update this Food.": "Criar ou Atualizar essa Comida.",
     "Japanese": "Japonesa",
     "Pastry": "Pastel",
@@ -123,5 +122,9 @@
     "Active": "Ativo",
     "Image": "Imagem",
     "Select a Image": "Selecione uma Imagem",
-    "Category": "Categoria"
+    "Category": "Categoria",
+    "Extras": "Extras",
+    "Extra": "Extra",
+    "Create or Update this Extra.": "Criar ou Atualizar esse Extra",
+    "Limit": "Limite"
 }

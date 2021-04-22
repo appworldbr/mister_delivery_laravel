@@ -1,4 +1,4 @@
-<x-jet-form-section submit="saveWorkSchedule">
+<x-jet-form-section submit="save">
     <x-slot name="title">
         {{ __('Work Schedule') }}
     </x-slot>

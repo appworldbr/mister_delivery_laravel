@@ -8,13 +8,21 @@ use App\Models\Food;
 
 class FoodApiController extends Controller
 {
-    public function index($categoryId = null)
+    public function index()
     {
-        $query = Food::where('active', 1);
-        if ($categoryId) {
-            $query->where('category_id', $categoryId);
-        }
-        $food = FoodResource::collection($query->get());
+        $food = FoodResource::collection(Food::active()->get());
+        return response()->json(compact('food'));
+    }
+
+    public function show(Food $food)
+    {
+        $food = new FoodResource($food);
+        return response()->json(compact('food'));
+    }
+
+    public function category($categoryId)
+    {
+        $food = FoodResource::collection(Food::active()->where('category_id', $categoryId)->get());
         return response()->json(compact('food'));
     }
 }

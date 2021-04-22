@@ -8,13 +8,13 @@ class DeliveryAreaController extends Controller
 {
     public function index()
     {
-        return view('delivery_area.index', [
+        return view('delivery_areas.index', [
             'model' => DeliveryArea::class,
         ]);
     }
 
     public function form(DeliveryArea $deliveryArea = null)
     {
-        return view("delivery_area.form", compact("deliveryArea"));
+        return view("delivery_areas.form", compact("deliveryArea"));
     }
 }

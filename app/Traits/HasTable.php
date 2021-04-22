@@ -154,7 +154,7 @@ trait HasTable
     public function scopeTable($query, $paginate, $sortBy, $sortDirection, $search = '')
     {
         foreach ($this->searchFields as $searchField) {
-            $query = $query->orWhere($searchField, 'like', "%$search%");
+            $query->orWhere($searchField, 'like', "%$search%");
         }
         return $query->orderBy($sortBy, $sortDirection)->paginate($paginate);
     }

@@ -16,7 +16,7 @@ class DeliveryAreaForm extends Component
     public $deliveryArea;
     public $confirmingDelete = false;
 
-    public function saveDeliveryArea()
+    public function save()
     {
         $data = $this->state;
         if (isset($data['initial'])) {
@@ -99,6 +99,6 @@ class DeliveryAreaForm extends Component
 
     public function render()
     {
-        return view('delivery_area.delivery-area-form');
+        return view('delivery_areas.delivery-area-form');
     }
 }

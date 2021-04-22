@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryAreaController;
 use App\Http\Controllers\FoodCategoryController;
 use App\Http\Controllers\FoodController;
+use App\Http\Controllers\FoodExtraController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkScheduleController;
@@ -43,7 +44,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('/dashboard')->group(fun
         Route::get('/form', [SettingsController::class, 'form'])->middleware('can:settings:update')->name('settings.form');
     });
 
-    Route::prefix('/delivery-area')->group(function () {
+    Route::prefix('/delivery-areas')->group(function () {
         Route::get('/', [DeliveryAreaController::class, 'index'])->middleware('can:deliveryArea:read')->name('deliveryArea.index');
         Route::get('/form', [DeliveryAreaController::class, 'form'])->middleware('can:deliveryArea:create')->name('deliveryArea.form.create');
         Route::get('/form/{deliveryArea}', [DeliveryAreaController::class, 'form'])->middleware('can:deliveryArea:update')->name('deliveryArea.form.update');
@@ -59,5 +60,11 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('/dashboard')->group(fun
         Route::get('/', [FoodController::class, 'index'])->middleware('can:food:read')->name('food.index');
         Route::get('/form', [FoodController::class, 'form'])->middleware('can:food:create')->name('food.form.create');
         Route::get('/form/{food}', [FoodController::class, 'form'])->middleware('can:food:update')->name('food.form.update');
+    });
+
+    Route::prefix('/food-extras')->group(function () {
+        Route::get('/', [FoodExtraController::class, 'index'])->middleware('can:foodExtra:read')->name('foodExtra.index');
+        Route::get('/form', [FoodExtraController::class, 'form'])->middleware('can:foodExtra:create')->name('foodExtra.form.create');
+        Route::get('/form/{foodExtra}', [FoodExtraController::class, 'form'])->middleware('can:foodExtra:update')->name('foodExtra.form.update');
     });
 });

@@ -1,4 +1,4 @@
-<x-jet-form-section submit="saveDeliveryArea">
+<x-jet-form-section submit="save">
     <x-slot name="title">
         {{ __('Delivery Area') }}
     </x-slot>

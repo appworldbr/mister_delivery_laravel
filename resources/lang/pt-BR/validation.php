@@ -186,6 +186,7 @@ return [
         'end' => 'término',
         'category_id' => 'categoria',
         'image' => 'Imagem',
+        'price' => 'preço',
     ],
 
 ];

@@ -2,18 +2,16 @@
 
 namespace App\Models;
 
-use App\Traits\HasImage;
 use App\Traits\HasPrice;
 use App\Traits\HasTable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Food extends Model
+class FoodExtra extends Model
 {
     use HasFactory;
     use HasTable;
     use HasPrice;
-    use HasImage;
 
     protected $guarded = [];
 
@@ -25,9 +23,20 @@ class Food extends Model
                 'name',
                 'categoryName',
                 'price',
+                'limit',
                 'active',
             ], ['name'])
             ->addColumnName('categoryName', 'category');
+    }
+
+    public function getActiveAttribute($value)
+    {
+        return $value ? __("Yes") : __("No");
+    }
+
+    public function getCategoryNameAttribute()
+    {
+        return $this->category->name;
     }
 
     public function scopeTable($query, $paginate, $sortBy, $sortDirection, $search = '')
@@ -47,21 +56,6 @@ class Food extends Model
     public function scopeActive($query)
     {
         return $query->where('active', 1);
-    }
-
-    public function getActiveAttribute($value)
-    {
-        return $value ? __("Yes") : __("No");
-    }
-
-    public function getCategoryNameAttribute()
-    {
-        return $this->category->name;
-    }
-
-    public function getHasDetailsAttribute()
-    {
-        return strlen($this->description) || $this->category->extras()->count();
     }
 
     public function category()

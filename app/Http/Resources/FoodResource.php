@@ -20,6 +20,14 @@ class FoodResource extends JsonResource
             'name' => $this->name,
             'price' => (double) $this->getRawOriginal('price'),
             'description' => $this->description,
+            'has_details' => $this->when(
+                $request->routeIs('food.index') || $request->routeIs('food.category'),
+                $this->has_details
+            ),
+            'extras' => $this->when(
+                $request->routeIs('food.show'),
+                FoodExtraResource::collection($this->category->extras()->active()->get())
+            ),
         ];
     }
 }

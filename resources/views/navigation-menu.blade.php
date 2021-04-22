@@ -70,6 +70,11 @@
                                                 {{ __('Categories') }}
                                             </x-jet-dropdown-link>
                                         @endcan
+                                        @can('foodExtra:read')
+                                            <x-jet-dropdown-link href="{{ route('foodExtra.index') }}">
+                                                {{ __('Extras') }}
+                                            </x-jet-dropdown-link>
+                                        @endcan
                                     </div>
                                 </x-slot>
                             </x-jet-dropdown>

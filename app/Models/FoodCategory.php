@@ -14,11 +14,6 @@ class FoodCategory extends Model
 
     protected $guarded = [];
 
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-    ];
-
     protected static function booted()
     {
         static::deleting(function ($foodCategory) {
@@ -45,5 +40,10 @@ class FoodCategory extends Model
     public function food()
     {
         return $this->hasMany(Food::class, 'category_id');
+    }
+
+    public function extras()
+    {
+        return $this->hasMany(FoodExtra::class, 'category_id');
     }
 }

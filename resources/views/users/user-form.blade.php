@@ -1,4 +1,4 @@
-<x-jet-form-section submit="saveUser">
+<x-jet-form-section submit="save">
     <x-slot name="title">
         {{ __('User') }}
     </x-slot>

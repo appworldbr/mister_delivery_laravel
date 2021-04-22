@@ -22,26 +22,32 @@ class FoodForm extends Component
     ];
     public $confirmingDelete = false;
 
-    public function saveFood()
+    public function save()
     {
+        $data = $this->state;
+        if (isset($data['price'])) {
+            $data['price'] = Food::priceToFloat($data['price']);
+        }
+
         $validatorImage = $this->food
         ? ['nullable', 'mimes:jpg,jpeg,png', 'max:1024']
         : ['required', 'mimes:jpg,jpeg,png', 'max:1024'];
 
-        Validator::make(array_merge($this->state, ['image' => $this->image]), [
+        Validator::make(array_merge($data, ['image' => $this->image]), [
             'image' => $validatorImage,
             'name' => ['required', 'max:100'],
-            'description' => ['required', 'max:300'],
+            'description' => ['nullable', 'max:300'],
             'category_id' => ['required', 'exists:food_categories,id'],
+            'price' => ['required', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
             'active' => ['nullable', 'boolean'],
         ])->validate();
 
         if (!$this->food) {
             $this->authorize('food:create');
-            $this->food = Food::create($this->state);
+            $this->food = Food::create($data);
         } else {
             $this->authorize('food:update');
-            $this->food->update($this->state);
+            $this->food->update($data);
         }
 
         if (isset($this->image)) {

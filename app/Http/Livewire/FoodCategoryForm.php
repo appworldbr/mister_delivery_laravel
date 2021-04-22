@@ -18,7 +18,7 @@ class FoodCategoryForm extends Component
     ];
     public $confirmingDelete = false;
 
-    public function saveFoodCategory()
+    public function save()
     {
         Validator::make($this->state, [
             'name' => ['required', 'max:100'],

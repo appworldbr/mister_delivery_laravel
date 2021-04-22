@@ -22,7 +22,7 @@ class UserForm extends Component
     ];
     public $confirmingDelete = false;
 
-    public function saveUser()
+    public function save()
     {
         $validatorEmail = $this->user
         ? ['required', 'string', 'email', 'max:255', "unique:users,email,{$this->user->id}"]

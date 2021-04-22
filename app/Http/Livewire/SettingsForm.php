@@ -18,7 +18,7 @@ class SettingsForm extends Component
     public $logo;
     public $logoUrl;
 
-    public function saveSettings()
+    public function save()
     {
         $this->authorize('settings:update');
 
