@@ -5,24 +5,33 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FoodResource;
 use App\Models\Food;
+use Illuminate\Http\Request;
 
 class FoodApiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $food = FoodResource::collection(Food::active()->get());
+        $query = Food::active();
+        if ($search = $request->query('q')) {
+            $query->where('name', 'like', "%$search%");
+        }
+        $food = FoodResource::collection($query->get());
+        return response()->json(compact('food'));
+    }
+
+    public function category($categoryId, Request $request)
+    {
+        $query = Food::active()->where('category_id', $categoryId);
+        if ($search = $request->query('q')) {
+            $query->where('name', 'like', "%$search%");
+        }
+        $food = FoodResource::collection($query->get());
         return response()->json(compact('food'));
     }
 
     public function show(Food $food)
     {
         $food = new FoodResource($food);
-        return response()->json(compact('food'));
-    }
-
-    public function category($categoryId)
-    {
-        $food = FoodResource::collection(Food::active()->where('category_id', $categoryId)->get());
         return response()->json(compact('food'));
     }
 }
