@@ -6,6 +6,7 @@ use App\Http\Controllers\API\Auth\RegisterAPIController;
 use App\Http\Controllers\API\DeliveryAreaApiController;
 use App\Http\Controllers\API\FoodApiController;
 use App\Http\Controllers\API\FoodCategoryApiController;
+use App\Http\Controllers\API\FoodFavoriteApiController;
 use App\Http\Controllers\API\SettingsApiController;
 use App\Http\Controllers\API\WorkScheduleApiController;
 use Illuminate\Support\Facades\Route;
@@ -38,13 +39,17 @@ Route::prefix('/v1.0')->group(function () {
     Route::get('/foods/{food}', [FoodApiController::class, 'show'])->name('food.show');
     Route::get('/foods/category/{categoryId}', [FoodApiController::class, 'category'])->name('food.category');
 
-    Route::middleware('auth:sanctum')->prefix('/address')->group(function () {
-        Route::get('/', [AddressAPIController::class, 'index']);
-        Route::get('/{id}', [AddressAPIController::class, 'show']);
-        Route::post('/', [AddressAPIController::class, 'store']);
-        Route::patch('/{id}', [AddressAPIController::class, 'update']);
-        Route::put('/default/{id}', [AddressAPIController::class, 'setDefault']);
-        Route::delete('/{id}', [AddressAPIController::class, 'delete']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/address', [AddressAPIController::class, 'index']);
+        Route::get('/address/{id}', [AddressAPIController::class, 'show']);
+        Route::post('/address', [AddressAPIController::class, 'store']);
+        Route::patch('/address/{id}', [AddressAPIController::class, 'update']);
+        Route::put('/address/default/{id}', [AddressAPIController::class, 'setDefault']);
+        Route::delete('/address/{id}', [AddressAPIController::class, 'delete']);
+
+        Route::get('/favorites', [FoodFavoriteApiController::class, 'index']);
+        Route::post('/favorites/{foodId}', [FoodFavoriteApiController::class, 'store']);
+        Route::delete('/favorites/{foodFavoriteId}', [FoodFavoriteApiController::class, 'delete']);
     });
 
 });

@@ -49,7 +49,7 @@ class AddressAPIController extends Controller
         $address = UserAddress::get($id);
 
         if (!$address) {
-            return response()->json(['message' => __('Address Not Found')], 400);
+            abort(404, __('Address Not Found'));
         }
 
         $address->update($data);
@@ -61,7 +61,7 @@ class AddressAPIController extends Controller
     {
         $address = UserAddress::setDefault($id);
         if (!$address) {
-            return response()->json(["message" => __("Address Not Found")], 404);
+            abort(404, __('Address Not Found'));
         }
         return response()->json(compact('address'));
     }
@@ -69,7 +69,7 @@ class AddressAPIController extends Controller
     public function delete($id)
     {
         if (!UserAddress::remove($id)) {
-            return response()->json(["message" => __("Address Not Found")], 404);
+            abort(404, __('Address Not Found'));
         }
 
         return response()->json(["success" => true]);
