@@ -46,6 +46,7 @@ class UserForm extends Component
                 'password' => Hash::make($this->state['password']),
             ];
             $this->user = User::create($data);
+            session()->flash('flash.banner', __('User successfully created!'));
         } else {
             $this->authorize('user:update');
             $data = [
@@ -56,6 +57,7 @@ class UserForm extends Component
                 $data['password'] = Hash::make($this->state['password']);
             }
             $this->user->update($data);
+            session()->flash('flash.banner', __('User successfully updated!'));
         }
 
         if (isset($this->state['roles'])) {
@@ -80,6 +82,7 @@ class UserForm extends Component
         }
 
         $this->user->delete();
+        session()->flash('flash.banner', __('User successfully deleted!'));
         return redirect()->route("users.index");
     }
 

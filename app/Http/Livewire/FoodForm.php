@@ -45,9 +45,11 @@ class FoodForm extends Component
         if (!$this->food) {
             $this->authorize('food:create');
             $this->food = Food::create($data);
+            session()->flash('flash.banner', __('Food successfully created!'));
         } else {
             $this->authorize('food:update');
             $this->food->update($data);
+            session()->flash('flash.banner', __('Food successfully updated!'));
         }
 
         if (isset($this->image)) {
@@ -61,6 +63,7 @@ class FoodForm extends Component
     {
         $this->authorize('food:delete');
         $this->food->delete();
+        session()->flash('flash.banner', __('Food successfully deleted!'));
         return redirect()->route("food.index");
     }
 

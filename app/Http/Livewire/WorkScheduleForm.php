@@ -33,9 +33,11 @@ class WorkScheduleForm extends Component
         if (!$this->workSchedule) {
             $this->authorize('workSchedule:create');
             $this->workSchedule = WorkSchedule::create($this->state);
+            session()->flash('flash.banner', __('Work Schedule successfully created!'));
         } else {
             $this->authorize('workSchedule:update');
             $this->workSchedule->update($this->state);
+            session()->flash('flash.banner', __('Work Schedule successfully updated!'));
         }
 
         return redirect()->route("workSchedule.index");
@@ -45,6 +47,7 @@ class WorkScheduleForm extends Component
     {
         $this->authorize('workSchedule:delete');
         $this->workSchedule->delete();
+        session()->flash('flash.banner', __('Work Schedule successfully deleted!'));
         return redirect()->route("workSchedule.index");
     }
 

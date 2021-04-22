@@ -37,9 +37,11 @@ class FoodExtraForm extends Component
         if (!$this->foodExtra) {
             $this->authorize('foodExtra:create');
             FoodExtra::create($data);
+            session()->flash('flash.banner', __('Food Extra successfully created!'));
         } else {
             $this->authorize('foodExtra:update');
             $this->foodExtra->update($data);
+            session()->flash('flash.banner', __('Food Extra successfully updated!'));
         }
 
         return redirect()->route("foodExtra.index");
@@ -49,6 +51,7 @@ class FoodExtraForm extends Component
     {
         $this->authorize('foodExtra:delete');
         $this->foodExtra->delete();
+        session()->flash('flash.banner', __('Food Extra successfully deleted!'));
         return redirect()->route("foodExtra.index");
     }
 

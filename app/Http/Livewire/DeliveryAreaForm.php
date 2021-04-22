@@ -55,9 +55,11 @@ class DeliveryAreaForm extends Component
         if (!$this->deliveryArea) {
             $this->authorize('deliveryArea:create');
             DeliveryArea::create($data);
+            session()->flash('flash.banner', __('Delivery Area successfully created!'));
         } else {
             $this->authorize('deliveryArea:update');
             $this->deliveryArea->update($data);
+            session()->flash('flash.banner', __('Delivery Area successfully updated!'));
         }
 
         return redirect()->route("deliveryArea.index");
@@ -82,6 +84,7 @@ class DeliveryAreaForm extends Component
     {
         $this->authorize('deliveryArea:delete');
         $this->deliveryArea->delete();
+        session()->flash('flash.banner', __('Delivery Area successfully deleted!'));
         return redirect()->route("deliveryArea.index");
     }
 

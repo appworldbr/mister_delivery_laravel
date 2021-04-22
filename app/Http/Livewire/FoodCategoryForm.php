@@ -37,9 +37,11 @@ class FoodCategoryForm extends Component
         if (!$this->foodCategory) {
             $this->authorize('foodCategory:create');
             FoodCategory::create($this->state);
+            session()->flash('flash.banner', __('Food Category successfully created!'));
         } else {
             $this->authorize('foodCategory:update');
             $this->foodCategory->update($this->state);
+            session()->flash('flash.banner', __('Food Category successfully updated!'));
         }
 
         return redirect()->route("foodCategory.index");
@@ -49,6 +51,7 @@ class FoodCategoryForm extends Component
     {
         $this->authorize('foodCategory:delete');
         $this->foodCategory->delete();
+        session()->flash('flash.banner', __('Food Category successfully deleted!'));
         return redirect()->route("foodCategory.index");
     }
 
