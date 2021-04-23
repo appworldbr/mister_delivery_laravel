@@ -15,8 +15,8 @@ class CreateFoodFavoritesTable extends Migration
     {
         Schema::create('food_favorites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->onUpdate('cascade')->onDelete('cascade')->constrained();
-            $table->foreignId('food_id')->onUpdate('cascade')->onDelete('cascade')->constrained();
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('food_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->text('observation')->default('');
         });
     }

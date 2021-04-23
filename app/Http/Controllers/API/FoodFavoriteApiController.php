@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FoodFavoriteResource;
+use App\Models\FoodExtra;
+use App\Models\FoodExtraFavorite;
 use App\Models\FoodFavorite;
 use Auth;
 use Illuminate\Http\Request;
@@ -17,25 +19,44 @@ class FoodFavoriteApiController extends Controller
         return response()->json(compact('food'));
     }
 
+    public function show($favoriteId)
+    {
+        $foodFavorite = FoodFavorite::currentUser()->with('food')->with('extras')->where('id', $favoriteId)->first();
+        return response()->json(new FoodFavoriteResource($foodFavorite));
+    }
+
     public function store($foodId, Request $request)
     {
         $favoriteData = $request->only(['observation']);
         $favoriteData['food_id'] = $foodId;
 
-        $extraData = $request->only(['extras']);
+        $extraData = $request->input('extras');
 
-        Validator::make(array_merge($favoriteData, $extraData), [
+        Validator::make(array_merge($favoriteData, ['extras' => $extraData]), [
             'food_id' => ['exists:food,id'],
             'extras' => ['nullable', 'array'],
-            'extras.*.id' => ['exists:food_extras,id'],
+            'extras.*.id' => ['integer', 'min:1'],
             'extras.*.quantity' => ['integer', 'min:1'],
             'observation' => ['nullable', 'string', 'max:100'],
         ])->validate();
 
+        if ($extraData && count($extraData) != FoodExtra::whereIn('id', collect($extraData)->pluck('id'))->count()) {
+            abort(404, "Extra Not Found");
+        }
+
         $favoriteData['user_id'] = Auth::id();
         $foodFavorite = FoodFavorite::create($favoriteData);
 
-        dd($extraData, "Insert the Extras");
+        if ($extraData) {
+            $extraData = array_map(function ($extra) use ($foodFavorite) {
+                return [
+                    'extra_id' => $extra['id'],
+                    'favorite_id' => $foodFavorite->id,
+                    'quantity' => $extra['quantity'],
+                ];
+            }, $extraData);
+            FoodExtraFavorite::insert($extraData);
+        }
 
         return response()->json(["success" => true]);
     }

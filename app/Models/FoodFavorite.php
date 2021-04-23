@@ -10,10 +10,8 @@ class FoodFavorite extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = ['user_id', 'food_id'];
     protected $guarded = [];
     public $timestamps = false;
-    public $incrementing = false;
 
     public function scopeCurrentUser($query)
     {
@@ -23,5 +21,10 @@ class FoodFavorite extends Model
     public function food()
     {
         return $this->belongsTo(Food::class);
+    }
+
+    public function extras()
+    {
+        return $this->hasMany(FoodExtraFavorite::class, 'favorite_id')->with('extra');
     }
 }

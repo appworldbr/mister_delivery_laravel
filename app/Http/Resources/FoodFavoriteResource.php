@@ -17,7 +17,8 @@ class FoodFavoriteResource extends JsonResource
         return [
             'id' => $this->id,
             'food' => new FoodResource($this->food),
-            'observation' => $this->observation,
+            'extras' => FoodFavoriteExtraResource::collection($this->whenLoaded("extras")),
+            'observation' => $this->when($request->routeIs('favorite.show'), $this->observation),
         ];
     }
 }

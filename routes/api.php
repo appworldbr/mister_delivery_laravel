@@ -36,7 +36,7 @@ Route::prefix('/v1.0')->group(function () {
     Route::get('/foodCategories', [FoodCategoryApiController::class, 'index']);
 
     Route::get('/foods', [FoodApiController::class, 'index'])->name('food.index');
-    Route::get('/foods/{food}', [FoodApiController::class, 'show'])->name('food.show');
+    Route::get('/foods/{foodId}', [FoodApiController::class, 'show'])->name('food.show');
     Route::get('/foods/category/{categoryId}', [FoodApiController::class, 'category'])->name('food.category');
 
     Route::middleware('auth:sanctum')->group(function () {
@@ -47,9 +47,10 @@ Route::prefix('/v1.0')->group(function () {
         Route::put('/address/default/{id}', [AddressAPIController::class, 'setDefault']);
         Route::delete('/address/{id}', [AddressAPIController::class, 'delete']);
 
-        Route::get('/favorites', [FoodFavoriteApiController::class, 'index']);
-        Route::post('/favorites/{foodId}', [FoodFavoriteApiController::class, 'store']);
-        Route::delete('/favorites/{foodFavoriteId}', [FoodFavoriteApiController::class, 'delete']);
+        Route::get('/favorites', [FoodFavoriteApiController::class, 'index'])->name('favorite.index');
+        Route::get('/favorites/{favoriteId}', [FoodFavoriteApiController::class, 'show'])->name('favorite.show');
+        Route::post('/favorites/{foodId}', [FoodFavoriteApiController::class, 'store'])->name('favorite.store');
+        Route::delete('/favorites/{foodFavoriteId}', [FoodFavoriteApiController::class, 'delete'])->name('favorite.delete');
     });
 
 });

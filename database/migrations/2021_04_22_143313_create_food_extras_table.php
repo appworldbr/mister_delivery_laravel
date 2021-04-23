@@ -18,7 +18,7 @@ class CreateFoodExtrasTable extends Migration
             $table->string('name');
             $table->decimal('price');
             $table->unsignedInteger('limit')->default(1);
-            $table->foreignId('category_id')->onDelete('cascade')->onUpdate('cascade')->constrained('food_categories');
+            $table->foreignId('category_id')->constrained('food_categories')->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('active')->default(1);
             $table->timestamps();
         });

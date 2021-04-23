@@ -29,9 +29,9 @@ class FoodApiController extends Controller
         return response()->json(compact('food'));
     }
 
-    public function show(Food $food)
+    public function show($foodId)
     {
-        $food = new FoodResource($food);
+        $food = new FoodResource(Food::with('extras')->find($foodId));
         return response()->json(compact('food'));
     }
 }
