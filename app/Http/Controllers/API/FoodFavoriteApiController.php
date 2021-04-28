@@ -19,9 +19,9 @@ class FoodFavoriteApiController extends Controller
         return response()->json(compact('food'));
     }
 
-    public function show($favoriteId)
+    public function show($foodId)
     {
-        $foodFavorite = FoodFavorite::currentUser()->with('food')->with('extras')->where('id', $favoriteId)->first();
+        $foodFavorite = FoodFavorite::currentUser()->with('food')->with('extras')->where('id', $foodId)->first();
         return response()->json(new FoodFavoriteResource($foodFavorite));
     }
 
@@ -61,9 +61,9 @@ class FoodFavoriteApiController extends Controller
         return response()->json(["success" => true]);
     }
 
-    public function delete($foodFavoriteId)
+    public function delete($foodId)
     {
-        if (!FoodFavorite::currentUser()->where('id', $foodFavoriteId)->delete()) {
+        if (!FoodFavorite::currentUser()->where('id', $foodId)->delete()) {
             abort(404, __("Food Not Found"));
         }
         return response()->json(["success" => true]);

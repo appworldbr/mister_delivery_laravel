@@ -19,20 +19,20 @@ class CartApiController extends Controller
         return response()->json(compact('food'));
     }
 
-    public function show($itemId)
+    public function show($foodId)
     {
-        $cart = Cart::currentUser()->with('food')->with('extras')->where('id', $itemId)->first();
+        $cart = Cart::currentUser()->with('food')->with('extras')->where('id', $foodId)->first();
         return response()->json(new CartResource($cart));
     }
 
     public function store($foodId, Request $request)
     {
-        $favoriteData = $request->only(['observation']);
-        $favoriteData['food_id'] = $foodId;
+        $cartData = $request->only(['observation']);
+        $cartData['food_id'] = $foodId;
 
         $extraData = $request->input('extras');
 
-        Validator::make(array_merge($favoriteData, ['extras' => $extraData]), [
+        Validator::make(array_merge($cartData, ['extras' => $extraData]), [
             'food_id' => ['exists:food,id'],
             'extras' => ['nullable', 'array'],
             'extras.*.id' => ['integer', 'min:1'],
@@ -44,8 +44,8 @@ class CartApiController extends Controller
             abort(404, "Extra Not Found");
         }
 
-        $favoriteData['user_id'] = Auth::id();
-        $cart = Cart::create($favoriteData);
+        $cartData['user_id'] = Auth::id();
+        $cart = Cart::create($cartData);
 
         if ($extraData) {
             $extraData = array_map(function ($extra) use ($cart) {
@@ -61,9 +61,9 @@ class CartApiController extends Controller
         return response()->json(["success" => true]);
     }
 
-    public function delete($itemId)
+    public function delete($foodId)
     {
-        if (!Cart::currentUser()->where('id', $itemId)->delete()) {
+        if (!Cart::currentUser()->where('id', $foodId)->delete()) {
             abort(404, __("Food Not Found"));
         }
         return response()->json(["success" => true]);
