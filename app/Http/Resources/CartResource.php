@@ -18,7 +18,7 @@ class CartResource extends JsonResource
             'id' => $this->id,
             'food' => new FoodResource($this->food),
             'extras' => FoodFavoriteExtraResource::collection($this->whenLoaded("extras")),
-            'observation' => $this->when($request->routeIs('favorite.show'), $this->observation),
+            'observation' => $this->when($request->routeIs('cart.show'), $this->observation),
         ];
     }
 }

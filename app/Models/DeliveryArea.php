@@ -56,7 +56,7 @@ class DeliveryArea extends Model
             ->orderBy('final', 'desc')
             ->first();
 
-        if ($area && !$area->prevent) {
+        if ($area && !$area->getRawOriginal('prevent')) {
             return $area;
         }
 

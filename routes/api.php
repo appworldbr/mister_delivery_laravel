@@ -8,6 +8,7 @@ use App\Http\Controllers\API\DeliveryAreaApiController;
 use App\Http\Controllers\API\FoodApiController;
 use App\Http\Controllers\API\FoodCategoryApiController;
 use App\Http\Controllers\API\FoodFavoriteApiController;
+use App\Http\Controllers\API\OrderApiController;
 use App\Http\Controllers\API\SettingsApiController;
 use App\Http\Controllers\API\WorkScheduleApiController;
 use Illuminate\Support\Facades\Route;
@@ -30,7 +31,7 @@ Route::prefix('/v1.0')->group(function () {
         Route::post('/register', [RegisterAPIController::class, 'create']);
     });
 
-    Route::get('/deliveryAreas/{zip}', [DeliveryAreaApiController::class, 'index']);
+    Route::get('/deliveryArea/{zip}', [DeliveryAreaApiController::class, 'index']);
     Route::get('/workSchedule', [WorkScheduleApiController::class, 'index']);
     Route::get('/settings', [SettingsApiController::class, 'index']);
 
@@ -49,14 +50,21 @@ Route::prefix('/v1.0')->group(function () {
         Route::delete('/address/{id}', [AddressAPIController::class, 'delete']);
 
         Route::get('/favorite', [FoodFavoriteApiController::class, 'index'])->name('favorite.index');
-        Route::get('/favorite/{foodId}', [FoodFavoriteApiController::class, 'show'])->name('favorite.show');
-        Route::post('/favorite/{foodId}', [FoodFavoriteApiController::class, 'store'])->name('favorite.store');
-        Route::delete('/favorite/{foodId}', [FoodFavoriteApiController::class, 'delete'])->name('favorite.delete');
+        Route::get('/favorite/{favoriteId}', [FoodFavoriteApiController::class, 'show'])->name('favorite.show');
+        Route::post('/favorite', [FoodFavoriteApiController::class, 'store'])->name('favorite.store');
+        Route::patch('/favorite/{favoriteId}', [FoodFavoriteApiController::class, 'update'])->name('favorite.update');
+        Route::delete('/favorite/{favoriteId}', [FoodFavoriteApiController::class, 'delete'])->name('favorite.delete');
 
         Route::get('/cart', [CartApiController::class, 'index'])->name('cart.index');
-        Route::get('/cart/{foodId}', [CartApiController::class, 'show'])->name('cart.show');
-        Route::post('/cart/{foodId}', [CartApiController::class, 'store'])->name('cart.store');
-        Route::delete('/cart/{foodId}', [CartApiController::class, 'delete'])->name('cart.delete');
+        Route::get('/cart/{cartId}', [CartApiController::class, 'show'])->name('cart.show');
+        Route::post('/cart', [CartApiController::class, 'store'])->name('cart.store');
+        Route::patch('/cart/{cartId}', [CartApiController::class, 'update'])->name('cart.update');
+        Route::delete('/cart/clear', [CartApiController::class, 'clear'])->name('cart.clear');
+        Route::delete('/cart/{cartId}', [CartApiController::class, 'delete'])->name('cart.delete');
+
+        Route::get('/order', [OrderApiController::class, 'index'])->name('order.index');
+        Route::get('/order/{orderId}', [OrderApiController::class, 'show'])->name('order.show');
+        Route::post('/order', [OrderApiController::class, 'store'])->name('order.store');
     });
 
 });

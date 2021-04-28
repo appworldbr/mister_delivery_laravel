@@ -20,6 +20,11 @@ class UserAddress extends Model
         'user_id',
     ];
 
+    public function scopeCurrentUser($query, $userId = null)
+    {
+        return $query->where('user_id', $userId ?? Auth::id());
+    }
+
     public function setZipAttribute($value)
     {
         $this->attributes['zip'] = preg_replace('/[^0-9]/', '', $value);
@@ -66,13 +71,13 @@ class UserAddress extends Model
         return $user->address()->where('id', $id)->first();
     }
 
-    public static function add($input, $user = null)
+    public static function add($input, $user = null, $isDefault = false)
     {
         if (!$user) {
             $user = Auth::user();
         }
 
-        return static::create(array_merge($input, ['user_id' => $user->id]));
+        return static::create(array_merge($input, ['user_id' => $user->id, 'is_default' => $isDefault]));
     }
 
     public static function remove($id, $user = null)

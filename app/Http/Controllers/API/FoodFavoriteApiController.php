@@ -19,29 +19,39 @@ class FoodFavoriteApiController extends Controller
         return response()->json(compact('food'));
     }
 
-    public function show($foodId)
+    public function show($favoriteId)
     {
-        $foodFavorite = FoodFavorite::currentUser()->with('food')->with('extras')->where('id', $foodId)->first();
+        $foodFavorite = FoodFavorite::currentUser()->with('food')->with('extras')->where('id', $favoriteId)->first();
+        if (!$foodFavorite) {
+            abort(404, __("Food Not Found"));
+        }
         return response()->json(new FoodFavoriteResource($foodFavorite));
     }
 
-    public function store($foodId, Request $request)
+    public function store(Request $request)
     {
-        $favoriteData = $request->only(['observation']);
-        $favoriteData['food_id'] = $foodId;
+        $favoriteData = $request->only(['food_id', 'observation']);
 
         $extraData = $request->input('extras');
 
         Validator::make(array_merge($favoriteData, ['extras' => $extraData]), [
-            'food_id' => ['exists:food,id'],
+            'food_id' => ['required', 'exists:food,id'],
             'extras' => ['nullable', 'array'],
             'extras.*.id' => ['integer', 'min:1'],
             'extras.*.quantity' => ['integer', 'min:1'],
             'observation' => ['nullable', 'string', 'max:100'],
         ])->validate();
 
-        if ($extraData && count($extraData) != FoodExtra::whereIn('id', collect($extraData)->pluck('id'))->count()) {
+        $foodExtras = FoodExtra::whereIn('id', collect($extraData)->pluck('id'))->get();
+
+        if ($extraData && count($extraData) != $foodExtras->count()) {
             abort(404, "Extra Not Found");
+        }
+
+        foreach ($extraData as $extraDataItem) {
+            if ($extraDataItem['quantity'] > $foodExtras->where('id', $extraDataItem['id'])->first()->limit) {
+                abort(404, "Extra Limit Reached");
+            }
         }
 
         $favoriteData['user_id'] = Auth::id();
@@ -61,9 +71,53 @@ class FoodFavoriteApiController extends Controller
         return response()->json(["success" => true]);
     }
 
-    public function delete($foodId)
+    public function update($favoriteId, Request $request)
     {
-        if (!FoodFavorite::currentUser()->where('id', $foodId)->delete()) {
+        $favoriteData = $request->only(['food_id', 'observation']);
+
+        $extraData = $request->input('extras');
+
+        Validator::make(array_merge($favoriteData, ['extras' => $extraData]), [
+            'food_id' => ['exists:food,id'],
+            'extras' => ['nullable', 'array'],
+            'extras.*.id' => ['integer', 'min:1'],
+            'extras.*.quantity' => ['integer', 'min:1'],
+            'observation' => ['nullable', 'string', 'max:100'],
+        ])->validate();
+
+        $foodExtras = FoodExtra::whereIn('id', collect($extraData)->pluck('id'))->get();
+
+        if ($extraData && count($extraData) != $foodExtras->count()) {
+            abort(404, "Extra Not Found");
+        }
+
+        foreach ($extraData as $extraDataItem) {
+            if ($extraDataItem['quantity'] > $foodExtras->where('id', $extraDataItem['id'])->first()->limit) {
+                abort(404, "Extra Limit Reached");
+            }
+        }
+
+        $favoriteData['user_id'] = Auth::id();
+        $foodFavorite = FoodFavorite::currentUser()->where('id', $favoriteId)->first();
+        $foodFavorite->update($favoriteData);
+
+        if ($extraData) {
+            $extraData = array_map(function ($extra) use ($foodFavorite) {
+                return [
+                    'extra_id' => $extra['id'],
+                    'favorite_id' => $foodFavorite->id,
+                    'quantity' => $extra['quantity'],
+                ];
+            }, $extraData);
+            FoodExtraFavorite::upsert($extraData, ['extra_id', 'favorite_id'], ['quantity']);
+        }
+
+        return response()->json(["success" => true]);
+    }
+
+    public function delete($favoriteId)
+    {
+        if (!FoodFavorite::currentUser()->where('id', $favoriteId)->delete()) {
             abort(404, __("Food Not Found"));
         }
         return response()->json(["success" => true]);

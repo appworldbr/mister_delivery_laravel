@@ -14,7 +14,7 @@ class CreateCartExtrasTable extends Migration
     public function up()
     {
         Schema::create('cart_extras', function (Blueprint $table) {
-            $table->foreignId('cart_id')->constrained('carts')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('cart_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('extra_id')->constrained('food_extras')->onUpdate('cascade')->onDelete('cascade');
             $table->primary(['cart_id', 'extra_id']);
             $table->unsignedInteger('quantity')->default(1);

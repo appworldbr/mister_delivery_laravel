@@ -13,9 +13,9 @@ class Cart extends Model
     protected $guarded = [];
     public $timestamps = false;
 
-    public function scopeCurrentUser($query)
+    public function scopeCurrentUser($query, $userId = null)
     {
-        return $query->where('user_id', Auth::id());
+        return $query->where('user_id', $userId ?? Auth::id());
     }
 
     public function food()
