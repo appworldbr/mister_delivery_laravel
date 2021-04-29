@@ -73,6 +73,12 @@ class FoodFavoriteApiController extends Controller
 
     public function update($favoriteId, Request $request)
     {
+        $foodFavorite = FoodFavorite::currentUser()->where('id', $favoriteId)->first();
+
+        if (!$foodFavorite) {
+            abort(404, __("Favorite Not Found"));
+        }
+
         $favoriteData = $request->only(['food_id', 'observation']);
 
         $extraData = $request->input('extras');
@@ -97,8 +103,6 @@ class FoodFavoriteApiController extends Controller
             }
         }
 
-        $favoriteData['user_id'] = Auth::id();
-        $foodFavorite = FoodFavorite::currentUser()->where('id', $favoriteId)->first();
         $foodFavorite->update($favoriteData);
 
         if ($extraData) {

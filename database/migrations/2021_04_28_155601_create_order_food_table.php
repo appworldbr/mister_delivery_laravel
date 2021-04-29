@@ -18,6 +18,7 @@ class CreateOrderFoodTable extends Migration
             $table->foreignId('order_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
             $table->text('observation')->default('');
+            $table->unsignedInteger('quantity');
             $table->decimal('price');
         });
     }

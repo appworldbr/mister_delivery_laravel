@@ -17,6 +17,7 @@ class CreateCartsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('food_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedInteger('quantity');
             $table->text('observation')->default('');
         });
     }

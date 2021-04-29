@@ -27,4 +27,13 @@ class Cart extends Model
     {
         return $this->hasMany(CartExtra::class, 'cart_id')->with('extra');
     }
+
+    public function getTotal($food, $extras)
+    {
+        $foodSum = $this->quantity * (float) $food->getRawOriginal('price');
+        $extraSum = $extras->map(function ($extraItem) {
+            return $extraItem->quantity * (float) $extraItem->extra->getRawOriginal('price');
+        })->sum();
+        return round($foodSum + $extraSum, 2);
+    }
 }

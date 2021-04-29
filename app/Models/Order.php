@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,5 +22,26 @@ class Order extends Model
     public function scopeCurrentUser($query, $userId = null)
     {
         return $query->where('user_id', $userId ?? Auth::id());
+    }
+
+    public function food()
+    {
+        return $this->hasMany(OrderFood::class)->with('extras');
+    }
+
+    public function getTotal($food)
+    {
+        return round($food->map(function ($foodItem) {
+            $foodExtra = $foodItem->extras->map(function ($extraItem) {
+                return $extraItem->quantity * (float) $extraItem->getRawOriginal('price');
+            })->sum();
+            return $foodItem->quantity * (float) $foodItem->getRawOriginal('price') + $foodExtra;
+        })->sum(), 2);
+    }
+
+    public function getCancelableAttribute()
+    {
+        return $this->status == Order::STATUS_WAITING
+        || (new Carbon($this->created_at))->addMinutes(Setting::get('order_canceled_timeout'))->greaterThan(Carbon::now());
     }
 }

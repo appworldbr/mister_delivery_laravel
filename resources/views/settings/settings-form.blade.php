@@ -49,6 +49,12 @@
             <x-jet-input id="address" type="text" class="mt-1 block w-full" wire:model.defer="state.address" />
             <x-jet-input-error for="address" class="mt-2" />
         </div>
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="order_canceled_timeout" value="{{ __('Order Canceled Timeout (minutes)') }}" />
+            <x-jet-input id="order_canceled_timeout" type="number" min="1" class="mt-1 block w-full"
+                wire:model.defer="state.order_canceled_timeout" />
+            <x-jet-input-error for="order_canceled_timeout" class="mt-2" />
+        </div>
     </x-slot>
     <x-slot name="actions">
         <x-jet-action-message class="mr-3" on="saved">

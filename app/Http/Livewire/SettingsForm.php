@@ -31,6 +31,7 @@ class SettingsForm extends Component
             'name' => ['required', 'min:2', 'max:100'],
             'description' => ['max:500'],
             'address' => ['max:150'],
+            'order_canceled_timeout' => ['required', 'integer', 'min:1'],
         ])->validate();
 
         if ($this->logo) {
@@ -50,7 +51,7 @@ class SettingsForm extends Component
 
     public function mount()
     {
-        $this->state = Setting::get(['logo', 'name', 'description', 'address']);
+        $this->state = Setting::get('logo', 'name', 'description', 'address', 'order_canceled_timeout');
 
         $this->logoUrl = strlen($this->state['logo'])
         ? Storage::disk('public')->url($this->state['logo'])

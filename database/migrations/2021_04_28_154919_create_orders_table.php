@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('set null');
             $table->string('name');
             $table->string('email');
             $table->string('zip', 20);
@@ -26,7 +26,9 @@ class CreateOrdersTable extends Migration
             $table->string('number', 127);
             $table->text('complement', 127)->nullable();
             $table->unsignedBigInteger('status')->default(0);
-            $table->decimal('delivery_fee_price');
+            $table->decimal('delivery_fee');
+            $table->string('payment_type');
+            $table->longText('payment_details');
             $table->timestamps();
         });
     }

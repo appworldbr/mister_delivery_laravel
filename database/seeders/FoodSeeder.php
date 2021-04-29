@@ -18,7 +18,7 @@ class FoodSeeder extends Seeder
     {
         $this->clear();
         $this->categories();
-        $this->foods();
+        $this->food();
         $this->extras();
     }
 
@@ -70,7 +70,7 @@ class FoodSeeder extends Seeder
         ]);        
     }
 
-    protected function foods()
+    protected function food()
     {
         $hamburguer = FoodCategory::where('icon', 'hamburguer')->first();
 

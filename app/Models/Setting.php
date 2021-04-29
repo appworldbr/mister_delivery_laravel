@@ -17,12 +17,16 @@ class Setting extends Model
 
     public static function defaultData($settings)
     {
-        if (!strlen($settings['logo'])) {
+        if (isset($settings['logo']) && !strlen($settings['logo'])) {
             $settings['logo'] = '/default.png';
         }
 
-        if (!strlen($settings['name'])) {
+        if (isset($settings['name']) && !strlen($settings['name'])) {
             $settings['name'] = __("Company Name");
+        }
+
+        if (isset($settings['order_canceled_timeout']) && !strlen($settings['order_canceled_timeout'])) {
+            $settings['order_canceled_timeout'] = '10';
         }
 
         return $settings;
@@ -40,7 +44,7 @@ class Setting extends Model
         static::upsert($settings, ['key'], ['value']);
     }
 
-    public static function get($keys)
+    public static function get(...$keys)
     {
         $settings = static::whereIn('key', $keys)->get()->pluck('value', 'key')->toArray();
         foreach ($keys as $key) {
@@ -48,6 +52,12 @@ class Setting extends Model
                 $settings[$key] = '';
             }
         }
-        return static::defaultData($settings);
+
+        $data = static::defaultData($settings);
+
+        if (count($data) == 1) {
+            return $data[$keys[0]];
+        }
+        return $data;
     }
 }

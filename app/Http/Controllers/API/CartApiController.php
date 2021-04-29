@@ -15,7 +15,7 @@ class CartApiController extends Controller
 {
     public function index()
     {
-        $food = CartResource::collection(Cart::with('food')->currentUser()->get());
+        $food = CartResource::collection(Cart::with('extras')->with('food')->currentUser()->get());
         return response()->json(compact('food'));
     }
 
@@ -30,12 +30,13 @@ class CartApiController extends Controller
 
     public function store(Request $request)
     {
-        $cartData = $request->only(['food_id', 'observation']);
+        $cartData = $request->only(['food_id', 'quantity', 'observation']);
 
         $extraData = $request->input('extras');
 
         Validator::make(array_merge($cartData, ['extras' => $extraData]), [
             'food_id' => ['exists:food,id'],
+            'quantity' => ['required', 'integer', 'min:1'],
             'extras' => ['nullable', 'array'],
             'extras.*.id' => ['integer', 'min:1'],
             'extras.*.quantity' => ['integer', 'min:1'],
@@ -73,12 +74,18 @@ class CartApiController extends Controller
 
     public function update($cartId, Request $request)
     {
-        $cartData = $request->only(['food_id', 'observation']);
+        $cart = Cart::currentUser()->where('id', $cartId)->first();
+
+        if (!$cart) {
+            abort(404, __('Food Not Found'));
+        }
+
+        $cartData = $request->only(['quantity', 'observation']);
 
         $extraData = $request->input('extras');
 
         Validator::make(array_merge($cartData, ['extras' => $extraData]), [
-            'food_id' => ['exists:food,id'],
+            'quantity' => ['required', 'integer', 'min:1'],
             'extras' => ['nullable', 'array'],
             'extras.*.id' => ['integer', 'min:1'],
             'extras.*.quantity' => ['integer', 'min:1'],
@@ -97,8 +104,6 @@ class CartApiController extends Controller
             }
         }
 
-        $cartData['user_id'] = Auth::id();
-        $cart = Cart::currentUser()->where('id', $cartId)->first();
         $cart->update($cartData);
 
         if ($extraData) {
@@ -111,6 +116,38 @@ class CartApiController extends Controller
             }, $extraData);
             CartExtra::upsert($extraData, ['extra_id', 'favorite_id'], ['quantity']);
         }
+
+        return response()->json(["success" => true]);
+    }
+
+    public function increment($cartId)
+    {
+        $cart = Cart::currentUser()->where('id', $cartId)->first();
+
+        if (!$cart) {
+            abort(404, __('Food Not Found'));
+        }
+
+        $cart->increment('quantity');
+
+        return response()->json(["success" => true]);
+    }
+
+    public function decrement($cartId)
+    {
+        $cart = Cart::currentUser()->where('id', $cartId)->first();
+
+        if (!$cart) {
+            abort(404, __('Food Not Found'));
+        }
+
+        if ($cart->quantity <= 1) {
+            $cart->quantity = 1;
+            $cart->save();
+            abort(302, __("Quantity can't be less them one"));
+        }
+
+        $cart->decrement('quantity');
 
         return response()->json(["success" => true]);
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderResource;
 use App\Models\Cart;
 use App\Models\DeliveryArea;
 use App\Models\Order;
@@ -12,20 +13,19 @@ use App\Models\UserAddress;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class OrderApiController extends Controller
 {
     public function index()
     {
-        // TODO verificar se é necessário adicionar comidas e extras na query
-        $orders = Order::currentUser()->get();
+        $orders = OrderResource::collection(Order::currentUser()->with('food')->get());
         return response()->json(compact('orders'));
     }
 
     public function show($orderId)
     {
-        // TODO adicionar comidas e extras na query
-        $order = Order::currentUser()->where('id', $orderId)->first();
+        $order = new OrderResource(Order::currentUser()->with('food')->where('id', $orderId)->first());
         if (!$order) {
             abort(404, __("Order Not Found"));
         }
@@ -34,14 +34,16 @@ class OrderApiController extends Controller
 
     public function store(Request $request)
     {
-        $addressId = $request->input('address_id');
+        $data = $request->only(['address_id', 'payment_type', 'payment_details']);
 
-        Validator::make(['address_id' => $addressId], [
+        Validator::make($data, [
             'address_id' => ['required', 'integer', 'min:1'],
+            'payment_type' => ['required', Rule::in(['cash', 'cards'])],
+            'payment_details' => ['required'],
         ])->validate();
 
         $user = Auth::user();
-        $address = UserAddress::currentUser($user->id)->where('id', $addressId)->first();
+        $address = UserAddress::currentUser($user->id)->where('id', $data['address_id'])->first();
 
         if (!$address) {
             abort(404, __("Address Not Found"));
@@ -58,6 +60,30 @@ class OrderApiController extends Controller
             abort(302, __("Area Not Deliverable"));
         }
 
+        $cartTotal = round($cart->map(function ($cartItem) {
+            return $cartItem->getTotal($cartItem->food, $cartItem->extras);
+        })->sum(), 2);
+
+        switch ($data['payment_type']) {
+            case 'cash':
+                Validator::make($data['payment_details'], [
+                    'value' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
+                ])->validate();
+                if ($cartTotal > round((float) $data['payment_details']['value'], 2)) {
+                    abort(302, __("Value Invalid"));
+                }
+                break;
+            case 'cards':
+                Validator::make($data['payment_details'], [
+                    'cards' => ['required', 'array'],
+                    'cards.*.value' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
+                ])->validate();
+                if ($cartTotal != round(collect($data['payment_details']['cards'])->sum('value'), 2)) {
+                    abort(302, __("Value Invalid"));
+                }
+                break;
+        }
+
         $order = Order::create([
             'user_id' => $user->id,
             'name' => $user->name,
@@ -70,15 +96,18 @@ class OrderApiController extends Controller
             'number' => $address->number,
             'complement' => $address->complement,
             'status' => Order::STATUS_WAITING,
-            'delivery_fee_price' => $deliveryArea->getRawOriginal('price'),
+            'delivery_fee' => round($deliveryArea->getRawOriginal('price'), 2),
+            'payment_type' => $data['payment_type'],
+            'payment_details' => json_encode($data['payment_details']),
         ]);
 
         foreach ($cart as $item) {
             $orderFood = OrderFood::create([
                 'order_id' => $order->id,
                 'name' => $item->food->name,
-                'price' => $item->food->getRawOriginal('price'),
+                'price' => round($item->food->getRawOriginal('price'), 2),
                 'observation' => $item->observation,
+                'quantity' => $item->quantity,
             ]);
 
             if ($item->extras) {
@@ -87,13 +116,31 @@ class OrderApiController extends Controller
                         'order_food_id' => $orderFood->id,
                         'name' => $extraItem->extra->name,
                         'quantity' => $extraItem->quantity,
-                        'price' => $extraItem->extra->getRawOriginal('price'),
+                        'price' => round($extraItem->extra->getRawOriginal('price'), 2),
                     ]);
                 }
             }
         }
 
         Cart::currentUser()->delete();
+
+        return response()->json(["success" => true]);
+    }
+
+    public function cancel($orderId)
+    {
+        $order = Order::currentUser()->where('id', $orderId)->first();
+
+        if (!$order) {
+            abort(404, __("Order Not Found"));
+        }
+
+        if (!$order->cancelable) {
+            abort(404, __("Order Not Cancelable"));
+        }
+
+        $order->status = Order::STATUS_CANCELED;
+        $order->save();
 
         return response()->json(["success" => true]);
     }

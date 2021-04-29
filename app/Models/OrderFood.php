@@ -11,4 +11,9 @@ class OrderFood extends Model
 
     protected $guarded = [];
     public $timestamps = false;
+
+    public function extras()
+    {
+        return $this->hasMany(OrderExtra::class);
+    }
 }

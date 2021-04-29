@@ -59,12 +59,15 @@ Route::prefix('/v1.0')->group(function () {
         Route::get('/cart/{cartId}', [CartApiController::class, 'show'])->name('cart.show');
         Route::post('/cart', [CartApiController::class, 'store'])->name('cart.store');
         Route::patch('/cart/{cartId}', [CartApiController::class, 'update'])->name('cart.update');
+        Route::put('/cart/{cartId}/increment', [CartApiController::class, 'increment'])->name('cart.increment');
+        Route::put('/cart/{cartId}/decrement', [CartApiController::class, 'decrement'])->name('cart.decrement');
         Route::delete('/cart/clear', [CartApiController::class, 'clear'])->name('cart.clear');
         Route::delete('/cart/{cartId}', [CartApiController::class, 'delete'])->name('cart.delete');
 
         Route::get('/order', [OrderApiController::class, 'index'])->name('order.index');
         Route::get('/order/{orderId}', [OrderApiController::class, 'show'])->name('order.show');
         Route::post('/order', [OrderApiController::class, 'store'])->name('order.store');
+        Route::put('/order/{orderId}/cancel', [OrderApiController::class, 'cancel'])->name('order.cancel');
     });
 
 });

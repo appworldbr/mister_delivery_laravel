@@ -18,7 +18,7 @@ class DeliveryAreaApiController extends Controller
 
         $responseData = [
             'deliverable' => !!$area,
-            'price' => $area ? (float) $area->getRawOriginal('price') : 0,
+            'price' => $area ? round((float) $area->getRawOriginal('price'), 2) : 0,
         ];
 
         return response()->json($responseData);
