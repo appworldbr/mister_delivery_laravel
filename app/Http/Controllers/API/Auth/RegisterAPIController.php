@@ -27,7 +27,10 @@ class RegisterAPIController extends Controller
             'password' => Hash::make($userData['password']),
         ]);
 
-        UserAddress::add($userAddressData, $user, true);
+        $userAddressData['user_id'] = $user->id;
+        $userAddressData['is_default'] = true;
+
+        UserAddress::create($userAddressData);
 
         $user->tokens()->where('name', $userData['token_name'])->delete();
         $token = $user->createToken($userData['token_name']);

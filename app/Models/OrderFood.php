@@ -16,4 +16,12 @@ class OrderFood extends Model
     {
         return $this->hasMany(OrderExtra::class);
     }
+
+    public function getTotal($extras)
+    {
+        $foodExtra = $extras->map(function ($extraItem) {
+            return $extraItem->quantity * (float) $extraItem->getRawOriginal('price');
+        })->sum();
+        return round($this->quantity * (float) $this->getRawOriginal('price') + $foodExtra, 2);
+    }
 }

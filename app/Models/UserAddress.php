@@ -49,56 +49,6 @@ class UserAddress extends Model
         return [];
     }
 
-    public static function validator($data)
-    {
-        Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'zip' => ['required', 'string', 'size:8'],
-            'state' => ['required', 'string', 'size:2'],
-            'city' => ['required', 'string', 'max:100'],
-            'district' => ['required', 'string', 'max:100'],
-            'address' => ['required', 'string', 'max:255'],
-            'number' => ['required', 'string', 'max:100'],
-            'complement' => ['nullable', 'string', 'max:100'],
-        ])->validate();
-    }
-
-    public static function get($id, $user = null)
-    {
-        if (!$user) {
-            $user = Auth::user();
-        }
-        return $user->address()->where('id', $id)->first();
-    }
-
-    public static function add($input, $user = null, $isDefault = false)
-    {
-        if (!$user) {
-            $user = Auth::user();
-        }
-
-        return static::create(array_merge($input, ['user_id' => $user->id, 'is_default' => $isDefault]));
-    }
-
-    public static function remove($id, $user = null)
-    {
-        if (!$user) {
-            $user = Auth::user();
-        }
-
-        $address = $user->address()->where('id', $id)->first();
-
-        if (!$address) {
-            return false;
-        }
-
-        if ($address->is_default) {
-            return false;
-        }
-
-        return $address->delete();
-    }
-
     public static function setDefault($id, $user = null)
     {
         if (!$user) {
@@ -107,7 +57,11 @@ class UserAddress extends Model
         $address = $user->address->where('id', $id)->first();
 
         if (!$address) {
-            return false;
+            abort(404, __('Address Not Found'));
+        }
+
+        if ($address->is_default) {
+            abort(302, __('Address Is Already The Default'));
         }
 
         $user->address()->update([

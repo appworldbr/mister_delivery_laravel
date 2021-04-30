@@ -9,3 +9,25 @@ input:checked + div {
 input:checked + div svg {
     @apply block;
 }
+
+.thin-scrollbar::-webkit-scrollbar {
+    @apply w-5;
+}
+
+.thin-scrollbar-horizontal::-webkit-scrollbar {
+    @apply w-0 h-5;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+    border: 8px solid transparent;
+    @apply bg-gray-200 rounded-full bg-clip-content;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+    border: 8px solid transparent;
+    @apply bg-gray-300 rounded-full bg-clip-content;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+}

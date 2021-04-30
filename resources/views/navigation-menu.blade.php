@@ -16,6 +16,10 @@
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
 
+                    <x-jet-nav-link href="{{ route('ordersOfTheDay') }}" :active="request()->routeIs('ordersOfTheDay')">
+                        {{ __('Orders Of The Day') }}
+                    </x-jet-nav-link>
+
                     @can('user:read')
                         <x-jet-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
                             {{ __('Users') }}

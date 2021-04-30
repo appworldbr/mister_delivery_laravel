@@ -61,7 +61,8 @@ class AddressForm extends Component
         AddressForm::validator($this->state);
 
         if (!$this->address) {
-            $this->address = UserAddress::add($this->state, $this->user);
+            $data = array_merge($this->state, ['user_id' => $this->user->id, 'is_default' => false]);
+            $this->address = UserAddress::create($data);
         } else {
             $this->address->update($this->state);
         }
@@ -73,10 +74,18 @@ class AddressForm extends Component
     public function deleteAddress()
     {
         $this->authorize('user:update');
-        if (UserAddress::remove($this->addressToDelete, $this->user)) {
-            abort(403);
+
+        $address = UserAddress::currentUser()->where('id', $this->addressToDelete)->first();
+
+        if (!$address) {
+            abort(404, __('Address Not Found'));
         }
-        $this->confirmingAddressDelete = false;
+
+        if ($address->is_default) {
+            abort(302, __('Address Is Default'));
+        }
+
+        $address->delete();
     }
 
     public function clear()

@@ -28,6 +28,8 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->prefix('/dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::get('/ordersOfTheDay', [DashboardController::class, 'ordersOfTheDay'])->name('ordersOfTheDay');
+
     Route::prefix('/users')->group(function () {
         Route::get('/', [UserController::class, 'index'])->middleware('can:user:read')->name('users.index');
         Route::get('/form', [UserController::class, 'form'])->middleware('can:user:create')->name('user.form.create');

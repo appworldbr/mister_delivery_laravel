@@ -51,6 +51,14 @@
     "If you already have an account, you may accept this invitation by clicking the button below:": "Se já tiver uma conta, você pode aceitar esse convite através do botão abaixo:",
     "Accept Invitation": "Aceitar Convite",
     "If you did not expect to receive an invitation to this team, you may discard this email.": "Se você não sabe porque está recebendo um convite para esse time, pode descartar esse email",
+    "Orders Of The Day": "Pedidos do Dia",
+    "Awaiting Approval": "Aguardando Aprovação",
+    "Go To Preparation": "Ir para Preparação",
+    "In Preparation": "Em Preparo",
+    "Go To Delivery": "Ir para Entrega",
+    "In Delivery": "Em Entrega",
+    "Conclude": "Concluir",
+    "Concluded": "Concluído",
     "Order Canceled Timeout (minutes)": "Tempo Limite para Cancelar Pedido (minutos)",
     "Delivery Area successfully created!": "Área de Entrega criado com sucesso!",
     "Delivery Area successfully updated!": "Área de Entrega atualizado com sucesso!",
@@ -147,5 +155,9 @@
     "Extras": "Extras",
     "Extra": "Extra",
     "Create or Update this Extra.": "Criar ou Atualizar esse Extra",
-    "Limit": "Limite"
+    "Limit": "Limite",
+    "Observation": "Observação",
+    "Order": "Pedido",
+    "Please Confirm": "Por Favor, Confirme",
+    "Once changed it will no longer be reversible.": "Uma vez alterado não será mais possível reverter."
 }

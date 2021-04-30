@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\UserAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AddressAPIController extends Controller
 {
@@ -17,10 +18,10 @@ class AddressAPIController extends Controller
 
     public function show($id)
     {
-        $address = UserAddress::get($id);
+        $address = UserAddress::currentUser()->where('id', $id)->first();
 
         if (!$address) {
-            return response()->json(["errors" => __("Address Not Found")], 404);
+            abort(404, __("Address Not Found"));
         }
 
         return response()->json(compact('address'));
@@ -30,23 +31,41 @@ class AddressAPIController extends Controller
     {
         $data = $request->only(['name', 'zip', 'state', 'city', 'district', 'address', 'number', 'complement']);
 
-        UserAddress::validator($data);
-        $address = UserAddress::add($data);
+        Validator::make($data, [
+            'name' => ['required', 'string', 'max:255'],
+            'zip' => ['required', 'string', 'size:8'],
+            'state' => ['required', 'string', 'size:2'],
+            'city' => ['required', 'string', 'max:100'],
+            'district' => ['required', 'string', 'max:100'],
+            'address' => ['required', 'string', 'max:255'],
+            'number' => ['required', 'string', 'max:100'],
+            'complement' => ['nullable', 'string', 'max:100'],
+        ])->validate();
 
-        if ($request->exists('is_default') && $request->input('is_default')) {
-            UserAddress::setDefault($address->id);
-        }
+        $data['user_id'] = Auth::id();
+        $data['is_default'] = false;
+
+        $address = UserAddress::create($data);
 
         return response()->json(compact('address'));
     }
 
     public function update($id, Request $request)
     {
-
         $data = $request->only(['name', 'zip', 'state', 'city', 'district', 'address', 'number', 'complement']);
 
-        UserAddress::validator($data);
-        $address = UserAddress::get($id);
+        Validator::make($data, [
+            'name' => ['required', 'string', 'max:255'],
+            'zip' => ['required', 'string', 'size:8'],
+            'state' => ['required', 'string', 'size:2'],
+            'city' => ['required', 'string', 'max:100'],
+            'district' => ['required', 'string', 'max:100'],
+            'address' => ['required', 'string', 'max:255'],
+            'number' => ['required', 'string', 'max:100'],
+            'complement' => ['nullable', 'string', 'max:100'],
+        ])->validate();
+
+        $address = UserAddress::currentUser()->where('id', $id)->first();
 
         if (!$address) {
             abort(404, __('Address Not Found'));
@@ -68,9 +87,17 @@ class AddressAPIController extends Controller
 
     public function delete($id)
     {
-        if (!UserAddress::remove($id)) {
+        $address = UserAddress::currentUser()->where('id', $id)->first();
+
+        if (!$address) {
             abort(404, __('Address Not Found'));
         }
+
+        if ($address->is_default) {
+            abort(302, __('Address Is Default'));
+        }
+
+        $address->delete();
 
         return response()->json(["success" => true]);
     }

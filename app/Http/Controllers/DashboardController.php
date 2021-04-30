@@ -8,4 +8,9 @@ class DashboardController extends Controller
     {
         return view('dashboard');
     }
+
+    public function ordersOfTheDay()
+    {
+        return view('orders-of-the-day.index');
+    }
 }

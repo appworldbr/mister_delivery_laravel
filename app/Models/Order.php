@@ -24,6 +24,11 @@ class Order extends Model
         return $query->where('user_id', $userId ?? Auth::id());
     }
 
+    public function scopeToday($query)
+    {
+        return $query->where('created_at', '>=', Carbon::today());
+    }
+
     public function food()
     {
         return $this->hasMany(OrderFood::class)->with('extras');
@@ -41,7 +46,14 @@ class Order extends Model
 
     public function getCancelableAttribute()
     {
-        return $this->status == Order::STATUS_WAITING
-        || (new Carbon($this->created_at))->addMinutes(Setting::get('order_canceled_timeout'))->greaterThan(Carbon::now());
+        if ($this->status != Order::STATUS_CANCELED) {
+            return false;
+        }
+
+        if ($this->status == Order::STATUS_WAITING) {
+            return true;
+        }
+
+        return (new Carbon($this->created_at))->addMinutes(Setting::get('order_canceled_timeout'))->greaterThan(Carbon::now());
     }
 }
