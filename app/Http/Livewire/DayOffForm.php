@@ -16,12 +16,21 @@ class DayOffForm extends Component
     public $dayOff;
 
     public $state = [];
+    public $confirmingDelete = false;
 
     public function mount()
     {
-        $this->state = [
-            'day' => Carbon::now()->format('d/m/Y'),
-        ];
+        if ($this->dayOff) {
+            $this->state = [
+                'day' => $this->dayOff->day,
+                'start' => $this->dayOff->start,
+                'end' => $this->dayOff->end,
+            ];
+        } else {
+            $this->state = [
+                'day' => Carbon::now()->format('d/m/Y'),
+            ];
+        }
     }
 
     public function save()

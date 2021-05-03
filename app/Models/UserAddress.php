@@ -6,7 +6,6 @@ use Auth;
 use Http;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
 
 class UserAddress extends Model
 {

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class LoginAPIController extends Controller
 {
@@ -12,9 +14,14 @@ class LoginAPIController extends Controller
     {
         $credentials = $request->only('token_name', 'email', 'password');
 
-        User::apiLoginValidator($credentials);
+        Validator::make($credentials, [
+            'token_name' => ['required', 'string', 'max:50'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required', 'string', 'min:8'],
+        ])->validate();
 
-        if (!User::apiLoginVerification($credentials)) {
+        $user = User::where('email', $credentials['email'])->first();
+        if (!($user && Hash::check($credentials['password'], $user->password))) {
             return response()->json(['messages' => __('User Not Found')], 400);
         }
 

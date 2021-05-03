@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\UserAddress;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Manny;
 
@@ -36,11 +37,7 @@ class AddressForm extends Component
 
     public function editAddress($id)
     {
-        $this->address = UserAddress::get($id, $this->user);
-
-        if (!$this->address) {
-            abort(403);
-        }
+        $this->address = UserAddress::currentUser($this->user->id)->where('id', $id)->firstOrFail();
 
         $this->state = [
             'name' => $this->address->name,
@@ -58,7 +55,16 @@ class AddressForm extends Component
     {
         $this->authorize('user:update');
 
-        AddressForm::validator($this->state);
+        Validator::make($this->state, [
+            'name' => ['required', 'string', 'max:255'],
+            'zip' => ['required', 'regex:/^[0-9]{5}\-[0-9]{3}/'],
+            'state' => ['required', 'string', 'size:2'],
+            'city' => ['required', 'string', 'max:100'],
+            'district' => ['required', 'string', 'max:100'],
+            'address' => ['required', 'string', 'max:255'],
+            'number' => ['required', 'string', 'max:100'],
+            'complement' => ['nullable', 'string', 'max:100'],
+        ])->validate();
 
         if (!$this->address) {
             $data = array_merge($this->state, ['user_id' => $this->user->id, 'is_default' => false]);
@@ -75,17 +81,16 @@ class AddressForm extends Component
     {
         $this->authorize('user:update');
 
-        $address = UserAddress::currentUser()->where('id', $this->addressToDelete)->first();
-
-        if (!$address) {
-            abort(404, __('Address Not Found'));
-        }
+        $address = UserAddress::currentUser($this->user->id)->where('id', $this->addressToDelete)->firstOrFail();
 
         if ($address->is_default) {
             abort(302, __('Address Is Default'));
         }
 
         $address->delete();
+
+        $this->confirmingAddressDelete = false;
+        $this->addressToDelete = null;
     }
 
     public function clear()
@@ -99,7 +104,7 @@ class AddressForm extends Component
     public function setAddressAsDefault($id)
     {
         $this->authorize('user:update');
-        UserAddress::setDefault($this->user, $id);
+        UserAddress::setDefault($id, $this->user);
     }
 
     public function updated($field)

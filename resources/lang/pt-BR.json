@@ -163,5 +163,12 @@
     "Day Off": "Dia de Folga",
     "Day Offs": "Dia de Folgas",
     "Create or Update this Day Off.": "Criar ou Atualizar o Dia de Folga.",
-    "Day": "Dia"
+    "Day": "Dia",
+    "Day Off successfully created!": "Folga criada com sucesso!",
+    "Day Off successfully updated!": "Folga atualizada com sucesso!",
+    "Day Off successfully delete!": "Folga removida com sucesso!",
+    "Telephones Registered": "Telefones Registrados",
+    "Manage the registered telephone.": "Gerenciar os telefones registrados.",
+    "Telephone": "Telefone",
+    "Create or Update a Telephone.": "Criar ou Atualizar o Telefone."
 }

@@ -11,6 +11,6 @@ class DashboardController extends Controller
 
     public function ordersOfTheDay()
     {
-        return view('orders-of-the-day.index');
+        return view('orders_of_the_day.index');
     }
 }

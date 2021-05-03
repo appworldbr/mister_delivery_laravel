@@ -121,7 +121,7 @@ class OrdersOfTheDay extends Component
 
     public function render()
     {
-        return view('orders-of-the-day.orders-of-the-day');
+        return view('orders_of_the_day.orders-of-the-day');
     }
 
 }

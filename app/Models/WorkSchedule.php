@@ -84,6 +84,13 @@ class WorkSchedule extends Model
             $time = date('H:i');
         }
 
+        if (DayOff::whereDate('day', Carbon::today())
+            ->whereTime('start', '<=', $time)
+            ->whereTime('end', '>', $time)
+            ->exists()) {
+            return false;
+        }
+
         return $query->where('weekday', $weekday)
             ->whereTime('start', '<=', $time)
             ->whereTime('end', '>', $time)

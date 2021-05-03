@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\OrderExtra;
 use App\Models\OrderFood;
 use App\Models\UserAddress;
+use App\Models\WorkSchedule;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -34,6 +35,10 @@ class OrderApiController extends Controller
 
     public function store(Request $request)
     {
+        if (!WorkSchedule::isOpen()) {
+            abort(302, __("We are closed today"));
+        }
+
         $data = $request->only(['address_id', 'payment_type', 'payment_details']);
 
         Validator::make($data, [
