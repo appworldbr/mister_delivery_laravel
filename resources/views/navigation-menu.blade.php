@@ -16,7 +16,8 @@
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
 
-                    <x-jet-nav-link href="{{ route('ordersOfTheDay') }}" :active="request()->routeIs('ordersOfTheDay')">
+                    <x-jet-nav-link href="{{ route('ordersOfTheDay') }}"
+                        :active="request()->routeIs('ordersOfTheDay')">
                         {{ __('Orders Of The Day') }}
                     </x-jet-nav-link>
 
@@ -36,6 +37,12 @@
                         <x-jet-nav-link href="{{ route('workSchedule.index') }}"
                             :active="request()->routeIs('workSchedule.index')">
                             {{ __('Work Schedule') }}
+                        </x-jet-nav-link>
+                    @endcan
+
+                    @can('dayOff:read')
+                        <x-jet-nav-link href="{{ route('dayOff.index') }}" :active="request()->routeIs('dayOff.index')">
+                            {{ __('Day Offs') }}
                         </x-jet-nav-link>
                     @endcan
 

@@ -159,5 +159,9 @@
     "Observation": "Observação",
     "Order": "Pedido",
     "Please Confirm": "Por Favor, Confirme",
-    "Once changed it will no longer be reversible.": "Uma vez alterado não será mais possível reverter."
+    "Once changed it will no longer be reversible.": "Uma vez alterado não será mais possível reverter.",
+    "Day Off": "Dia de Folga",
+    "Day Offs": "Dia de Folgas",
+    "Create or Update this Day Off.": "Criar ou Atualizar o Dia de Folga.",
+    "Day": "Dia"
 }

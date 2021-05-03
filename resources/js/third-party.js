@@ -1,0 +1,1 @@
+window.datepicker = require('js-datepicker'); 

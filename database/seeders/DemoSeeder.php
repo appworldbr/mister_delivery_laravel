@@ -7,7 +7,7 @@ use App\Models\FoodCategory;
 use App\Models\FoodExtra;
 use Illuminate\Database\Seeder;
 
-class FoodSeeder extends Seeder
+class DemoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -23,7 +23,7 @@ class FoodSeeder extends Seeder
     }
 
     protected function clear()
-    {        
+    {
         FoodExtra::query()->delete();
         Food::query()->delete();
         FoodCategory::query()->delete();
@@ -67,7 +67,7 @@ class FoodSeeder extends Seeder
             'price' => 3.8,
             'limit' => 1,
             'category_id' => $hamburguer->id,
-        ]);        
+        ]);
     }
 
     protected function food()
@@ -167,5 +167,4 @@ class FoodSeeder extends Seeder
             'icon' => 'candy',
         ]);
     }
-
 }

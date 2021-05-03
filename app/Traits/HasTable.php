@@ -21,6 +21,8 @@ trait HasTable
     protected $deletable = true;
     protected $bulkDeletable = true;
 
+    abstract public function defineTable();
+
     protected function initializeHasTable()
     {
         $this->defineTable();
@@ -158,6 +160,4 @@ trait HasTable
         }
         return $query->orderBy($sortBy, $sortDirection)->paginate($paginate);
     }
-
-    abstract public function defineTable();
 }

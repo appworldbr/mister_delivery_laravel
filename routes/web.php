@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DayOffController;
 use App\Http\Controllers\DeliveryAreaController;
 use App\Http\Controllers\FoodCategoryController;
 use App\Http\Controllers\FoodController;
@@ -40,6 +41,12 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('/dashboard')->group(fun
         Route::get('/', [WorkScheduleController::class, 'index'])->middleware('can:workSchedule:read')->name('workSchedule.index');
         Route::get('/form', [WorkScheduleController::class, 'form'])->middleware('can:workSchedule:create')->name('workSchedule.form.create');
         Route::get('/form/{workSchedule}', [WorkScheduleController::class, 'form'])->middleware('can:workSchedule:update')->name('workSchedule.form.update');
+    });
+
+    Route::prefix('/day-offs')->group(function () {
+        Route::get('/', [DayOffController::class, 'index'])->middleware('can:dayOff:read')->name('dayOff.index');
+        Route::get('/form', [DayOffController::class, 'form'])->middleware('can:dayOff:create')->name('dayOff.form.create');
+        Route::get('/form/{dayOff}', [DayOffController::class, 'form'])->middleware('can:dayOff:update')->name('dayOff.form.update');
     });
 
     Route::prefix('/settings')->group(function () {

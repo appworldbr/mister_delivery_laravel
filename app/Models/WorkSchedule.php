@@ -64,12 +64,12 @@ class WorkSchedule extends Model
         $this->attributes['start'] = Carbon::createFromFormat('H:i', $value)->format('H:i:s');
     }
 
-    public function setendAttribute($value)
+    public function setEndAttribute($value)
     {
         $this->attributes['end'] = Carbon::createFromFormat('H:i', $value)->format('H:i:s');
     }
 
-    public function getendAttribute($value)
+    public function getEndAttribute($value)
     {
         return Carbon::createFromFormat('H:i:s', $value)->format('H:i');
     }

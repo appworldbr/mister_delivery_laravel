@@ -43,6 +43,9 @@
 
     @stack('modals')
 
+    <script src="{{ mix('js/third-party.js') }}"></script>
+    @stack('scripts')
+
     @livewireScripts
 </body>
 
