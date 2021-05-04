@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\UserAddress;
+use App\Models\UserTelephone;
 use Hash;
 use Illuminate\Database\Seeder;
 
@@ -49,6 +50,18 @@ class ClientSeeder extends Seeder
             'complement' => 'Lorem Ipsum Dolor Amet',
             'is_default' => false,
             'user_id' => $user->id,
+        ]);
+
+        $telephone1 = UserTelephone::firstOrCreate([
+            'user_id' => $user->id,
+            'telephone' => '19999999999',
+            'is_default' => true,
+        ]);
+
+        $telephone2 = UserTelephone::firstOrCreate([
+            'user_id' => $user->id,
+            'telephone' => '21987654321',
+            'is_default' => false,
         ]);
     }
 }

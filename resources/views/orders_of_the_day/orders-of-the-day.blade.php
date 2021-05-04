@@ -7,7 +7,9 @@
         </x-slot>
 
         @foreach ($orders->where('status', \App\Models\Order::STATUS_WAITING) as $order)
-            <x-order-card class="bg-gray-200 border-gray-300" :order="$order">
+            <x-order-card class="bg-gray-100 border-gray-300" borderOpenColor="border-gray-600"
+                userButtonColor="border-gray-500 text-gray-500 hover:border-gray-600 hover:text-gray-600"
+                :order="$order">
                 <x-slot name="actions">
                     <x-order-card-button wire:click="showCancelModal({{ $order->id }})"
                         class="bg-red-500 opacity-25 hover:opacity-100">
@@ -28,7 +30,9 @@
         </x-slot>
 
         @foreach ($orders->where('status', \App\Models\Order::STATUS_PREPARATION) as $order)
-            <x-order-card class="bg-yellow-100 border-yellow-200" :order="$order">
+            <x-order-card class="bg-yellow-100 border-yellow-200" borderOpenColor="border-yellow-600"
+                userButtonColor="border-yellow-500 text-yellow-500 hover:border-yellow-600 hover:text-yellow-600"
+                :order="$order">
                 <x-slot name="actions">
                     <x-order-card-button wire:click="showCancelModal({{ $order->id }})"
                         class="bg-red-500 opacity-25 hover:opacity-100">
@@ -49,7 +53,9 @@
         </x-slot>
 
         @foreach ($orders->where('status', \App\Models\Order::STATUS_DELIVERY) as $order)
-            <x-order-card class="bg-blue-200 border-blue-300" :order="$order">
+            <x-order-card class="bg-blue-200 border-blue-300" borderOpenColor="border-blue-600"
+                userButtonColor="border-blue-500 text-blue-500 hover:border-blue-600 hover:text-blue-600"
+                :order="$order">
                 <x-slot name="actions">
                     <x-order-card-button wire:click="showCancelModal({{ $order->id }})"
                         class="bg-red-500 opacity-25 hover:opacity-100">
@@ -70,7 +76,9 @@
         </x-slot>
 
         @foreach ($orders->where('status', \App\Models\Order::STATUS_CONCLUDED) as $order)
-            <x-order-card class="bg-green-300 border-green-400" :order="$order" />
+            <x-order-card class="bg-green-300 border-green-400" borderOpenColor="border-green-600"
+                userButtonColor="border-green-600 text-green-600 hover:border-green-800 hover:text-green-800"
+                :order="$order" />
         @endforeach
     </x-order-column>
 

@@ -55,5 +55,17 @@ class Order extends Model
         }
 
         return (new Carbon($this->created_at))->addMinutes(Setting::get('order_canceled_timeout'))->greaterThan(Carbon::now());
+
     }
+
+    public function scopeIsDefault($query, $isDefault = true)
+    {
+        return $query->where('is_default', $isDefault);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }
