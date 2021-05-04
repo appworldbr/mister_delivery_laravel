@@ -55,37 +55,41 @@
                         </div>
                     </div>
                     <div>
-                        <div class="my-3">
-                            <h4 class="font-bold text-gray-700">
-                                {{ __('Observation') }}:
-                            </h4>
-                            <p>
-                                {{ $food->observation }}
-                            </p>
-                        </div>
-                        <div class="my-3">
-                            <h4 class="font-bold text-gray-700">
-                                {{ __('Extras') }}:
-                            </h4>
-                            <ul>
-                                @foreach ($food->extras as $extra)
-                                    <li>
-                                        <div class="flex justify-between">
-                                            <div class="flex-shrink-0">
-                                                {{ $extra->quantity }}x {{ $extra->name }}
+                        @if (strlen($food->observation))
+                            <div class="my-3">
+                                <h4 class="font-bold text-gray-700">
+                                    {{ __('Observation') }}:
+                                </h4>
+                                <p>
+                                    {{ $food->observation }}
+                                </p>
+                            </div>
+                        @endif
+                        @if ($food->extras && count($food->extras))
+                            <div class="my-3">
+                                <h4 class="font-bold text-gray-700">
+                                    {{ __('Extras') }}:
+                                </h4>
+                                <ul>
+                                    @foreach ($food->extras as $extra)
+                                        <li>
+                                            <div class="flex justify-between">
+                                                <div class="flex-shrink-0">
+                                                    {{ $extra->quantity }}x {{ $extra->name }}
+                                                </div>
+                                                <div class="w-full overflow-hidden mx-2">
+                                                    {{ str_repeat('.', 200) }}
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    R$
+                                                    {{ number_format(round($extra->quantity * $extra->price, 2), 2, ',', '.') }}
+                                                </div>
                                             </div>
-                                            <div class="w-full overflow-hidden mx-2">
-                                                {{ str_repeat('.', 200) }}
-                                            </div>
-                                            <div class="flex-shrink-0">
-                                                R$
-                                                {{ number_format(round($extra->quantity * $extra->price, 2), 2, ',', '.') }}
-                                            </div>
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                     </div>
                 </li>
             @endforeach
