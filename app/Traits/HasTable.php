@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use Auth;
+use Gate;
 use Str;
 
 trait HasTable
@@ -17,6 +17,7 @@ trait HasTable
     public $sortDirection = 'asc';
 
     protected $searchable = true;
+    protected $creatable = true;
     protected $editable = true;
     protected $deletable = true;
     protected $bulkDeletable = true;
@@ -94,6 +95,18 @@ trait HasTable
         return $this->searchable;
     }
 
+    public function isCreatable($value)
+    {
+        $this->creatable = $value;
+        return $this;
+    }
+
+    public function getCreatable()
+    {
+        $name = $this->getName();
+        return $this->creatable && Gate::allows($name . ":create");
+    }
+
     public function isEditable($value)
     {
         $this->editable = $value;
@@ -102,7 +115,8 @@ trait HasTable
 
     public function getEditable()
     {
-        return $this->editable;
+        $name = $this->getName();
+        return $this->editable && Gate::allows($name . ":update");
     }
 
     public function isDeletable($value)
@@ -113,7 +127,8 @@ trait HasTable
 
     public function getDeletable()
     {
-        return $this->deletable;
+        $name = $this->getName();
+        return $this->deletable && Gate::allows($name . ":delete");
     }
 
     public function isBulkDeletable($value)
@@ -124,20 +139,13 @@ trait HasTable
 
     public function getBulkDeletable()
     {
-        return $this->bulkDeletable;
+        $name = $this->getName();
+        return $this->bulkDeletable && Gate::allows($name . ":delete");
     }
 
     public function getName()
     {
         return Str::camel(class_basename(static::class));
-    }
-
-    public function validatePermission($type)
-    {
-        if (!Auth::user()->hasPermissionTo($this->getName() . ':' . $type)) {
-            abort(403);
-        }
-        return true;
     }
 
     public function getFormRoute()

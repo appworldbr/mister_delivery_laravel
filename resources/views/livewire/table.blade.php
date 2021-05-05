@@ -18,7 +18,7 @@
             @endif
         </div>
         <div class="flex flex-row w-full justify-between items-end mb-4 md:w-auto">
-            @if ($model->validatePermission('delete') && $model->getBulkDeletable())
+            @if ($model->getBulkDeletable())
                 @if (count($deleteList))
                     <x-jet-danger-button wire:click="$toggle('confirmingBulkDelete')">
                         {{ __('Bulk Delete') }}
@@ -29,7 +29,7 @@
                     </x-jet-danger-button>
                 @endif
             @endif
-            @if ($model->validatePermission('create'))
+            @if ($model->getCreatable())
                 <a href="{{ $model->getFormRoute() }}"
                     class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition' ml-2">
                     {{ __('Add') }}
@@ -44,7 +44,7 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                @if ($model->validatePermission('delete') && $bulkDeletable)
+                                @if ($model->getBulkDeletable())
                                     <th scope="col" class="px-4 py-3 w-3">
                                         <div class="flex items-center relative">
                                             <input wire:model="pagesSelectedToDelete.{{ $page }}"
@@ -128,7 +128,7 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($items as $item)
                                 <tr>
-                                    @if ($model->validatePermission('delete') && $bulkDeletable)
+                                    @if ($model->getBulkDeletable())
                                         <td scope="col" class="px-4 py-4">
                                             <div class="flex items-center relative">
                                                 <input wire:model="deleteList" type="checkbox"
@@ -159,13 +159,13 @@
                                         </td>
                                     @endforeach
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        @if ($model->validatePermission('delete') && $item->getDeletable($item, $item->id))
+                                        @if ($item->getDeletable())
                                             <button wire:click="showDeleteModal({{ $item->id }})"
                                                 class="px-3 py-1 inline-flex text-xs  font-semibold rounded bg-red-500 text-white opacity-25 hover:opacity-100 hover:bg-red-600 focus:border-red-700 active:bg-red-600 transition">
                                                 {{ __('Delete') }}
                                             </button>
                                         @endif
-                                        @if ($model->validatePermission('update') && $item->getEditable($item, $item->id))
+                                        @if ($item->getEditable())
                                             <a href="{{ $item->getFormRoute() }}"
                                                 class="px-3 py-1 inline-flex text-xs  font-semibold rounded bg-blue-500 text-white hover:bg-blue-600 focus:border-blue-700 active:bg-red-600 transition">
                                                 {{ __('Edit') }}
@@ -182,7 +182,7 @@
     </div>
     {{ $items->links() }}
 
-    @if ($model->validatePermission('delete') && $model->getBulkDeletable())
+    @if ($model->getBulkDeletable())
         <x-jet-confirmation-modal wire:model="confirmingBulkDelete">
             <x-slot name="title">
                 {{ __('Bulk Delete') }}
@@ -204,7 +204,7 @@
         </x-jet-confirmation-modal>
     @endif
 
-    @if ($model->validatePermission('delete') && $model->getDeletable())
+    @if ($model->getDeletable())
         <x-jet-confirmation-modal wire:model="confirmingDelete">
             <x-slot name="title">
                 {{ __('Delete') }}

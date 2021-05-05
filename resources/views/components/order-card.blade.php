@@ -63,7 +63,7 @@
                             {{ $food->quantity }}x {{ $food->name }}
                         </div>
                         <div class="w-full overflow-hidden mx-2">
-                            {{ str_repeat('.', 200) }}
+                            {{ str_repeat('.', 500) }}
                         </div>
                         <div class="flex-shrink-0">
                             R$ {{ number_format($food->getTotal($food->extras), 2, ',', '.') }}
@@ -93,7 +93,7 @@
                                                     {{ $extra->quantity }}x {{ $extra->name }}
                                                 </div>
                                                 <div class="w-full overflow-hidden mx-2">
-                                                    {{ str_repeat('.', 200) }}
+                                                    {{ str_repeat('.', 500) }}
                                                 </div>
                                                 <div class="flex-shrink-0">
                                                     R$

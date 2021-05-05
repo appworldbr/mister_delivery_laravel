@@ -12,6 +12,12 @@ class UserTelephone extends Model
 
     protected $guarded = [];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'user_id',
+    ];
+
     public function scopeCurrentUser($query, $userId = null)
     {
         return $query->where('user_id', $userId ?? Auth::id());

@@ -10,6 +10,8 @@ use App\Http\Controllers\API\FoodCategoryApiController;
 use App\Http\Controllers\API\FoodFavoriteApiController;
 use App\Http\Controllers\API\OrderApiController;
 use App\Http\Controllers\API\SettingsApiController;
+use App\Http\Controllers\API\TelephoneApiController;
+use App\Http\Controllers\API\UserApiController;
 use App\Http\Controllers\API\WorkScheduleApiController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,12 +44,22 @@ Route::prefix('/v1.0')->group(function () {
     Route::get('/food/category/{categoryId}', [FoodApiController::class, 'category'])->name('food.category');
 
     Route::middleware('auth:sanctum')->group(function () {
+
+        Route::get('/user', [UserApiController::class, 'index']);
+
         Route::get('/address', [AddressAPIController::class, 'index']);
         Route::get('/address/{id}', [AddressAPIController::class, 'show']);
         Route::post('/address', [AddressAPIController::class, 'store']);
         Route::patch('/address/{id}', [AddressAPIController::class, 'update']);
         Route::put('/address/default/{id}', [AddressAPIController::class, 'setDefault']);
         Route::delete('/address/{id}', [AddressAPIController::class, 'delete']);
+
+        Route::get('/telephone', [TelephoneApiController::class, 'index']);
+        Route::get('/telephone/{id}', [TelephoneApiController::class, 'show']);
+        Route::post('/telephone', [TelephoneApiController::class, 'store']);
+        Route::patch('/telephone/{id}', [TelephoneApiController::class, 'update']);
+        Route::put('/telephone/default/{id}', [TelephoneApiController::class, 'setDefault']);
+        Route::delete('/telephone/{id}', [TelephoneApiController::class, 'delete']);
 
         Route::get('/favorite', [FoodFavoriteApiController::class, 'index'])->name('favorite.index');
         Route::get('/favorite/{favoriteId}', [FoodFavoriteApiController::class, 'show'])->name('favorite.show');

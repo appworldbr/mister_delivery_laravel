@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasTable;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,8 +17,34 @@ class Order extends Model
     const STATUS_DELIVERY = 4;
 
     use HasFactory;
+    use HasTable;
 
     protected $guarded = [];
+
+    public function defineTable()
+    {
+        $this->setSortBy('created_at')
+            ->addColumns(['id', 'name', 'status_text', 'created_at'], ['id', 'name', 'created_at'])
+            ->addColumnName('created_at', 'Created Day')
+            ->addColumnName('status_text', 'Status')
+            ->addSearchFields(['id', 'name', 'created_at']);
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return (new Carbon($value))->format('d/m/Y');
+    }
+
+    public function getStatusTextAttribute()
+    {
+        return [
+            __('Canceled'),
+            __('Concluded'),
+            __('Waiting'),
+            __('Preparation'),
+            __('Delivery'),
+        ][$this->attributes['status']];
+    }
 
     public function scopeCurrentUser($query, $userId = null)
     {

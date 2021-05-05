@@ -16,7 +16,7 @@ trait WithDelete
 
     public function delete()
     {
-        $this->model->validatePermission('delete');
+        $this->model->getDeletable();
         $this->model->find($this->deleteId)->delete();
         $this->deleteList = [];
         $this->resetPage();

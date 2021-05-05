@@ -16,40 +16,22 @@
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
 
-                    <x-jet-nav-link href="{{ route('ordersOfTheDay') }}"
-                        :active="request()->routeIs('ordersOfTheDay')">
-                        {{ __('Orders Of The Day') }}
-                    </x-jet-nav-link>
+                    @can('order:read')
+                        <x-jet-nav-link href="{{ route('ordersOfTheDay') }}"
+                            :active="request()->routeIs('ordersOfTheDay')">
+                            {{ __('Orders Of The Day') }}
+                        </x-jet-nav-link>
+                    @endcan
+
+                    @can('order:read')
+                        <x-jet-nav-link href="{{ route('order.index') }}" :active="request()->routeIs('order.index')">
+                            {{ __('Orders') }}
+                        </x-jet-nav-link>
+                    @endcan
 
                     @can('user:read')
-                        <x-jet-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
+                        <x-jet-nav-link href="{{ route('user.index') }}" :active="request()->routeIs('user.index')">
                             {{ __('Users') }}
-                        </x-jet-nav-link>
-                    @endcan
-
-                    @can('settings:update')
-                        <x-jet-nav-link href="{{ route('settings.form') }}" :active="request()->routeIs('settings.form')">
-                            {{ __('Settings') }}
-                        </x-jet-nav-link>
-                    @endcan
-
-                    @can('workSchedule:read')
-                        <x-jet-nav-link href="{{ route('workSchedule.index') }}"
-                            :active="request()->routeIs('workSchedule.index')">
-                            {{ __('Work Schedule') }}
-                        </x-jet-nav-link>
-                    @endcan
-
-                    @can('dayOff:read')
-                        <x-jet-nav-link href="{{ route('dayOff.index') }}" :active="request()->routeIs('dayOff.index')">
-                            {{ __('Day Offs') }}
-                        </x-jet-nav-link>
-                    @endcan
-
-                    @can('deliveryArea:read')
-                        <x-jet-nav-link href="{{ route('deliveryArea.index') }}"
-                            :active="request()->routeIs('deliveryArea.index')">
-                            {{ __('Delivery Area') }}
                         </x-jet-nav-link>
                     @endcan
 
@@ -84,6 +66,54 @@
                                         @can('foodExtra:read')
                                             <x-jet-dropdown-link href="{{ route('foodExtra.index') }}">
                                                 {{ __('Extras') }}
+                                            </x-jet-dropdown-link>
+                                        @endcan
+                                    </div>
+                                </x-slot>
+                            </x-jet-dropdown>
+                        </div>
+                    @endcanany
+
+                    @canany(['settings:update', 'workSchedule:read', 'dayOff:read', 'deliveryArea:read'])
+                        <div class="hidden sm:flex sm:items-center sm:ml-6">
+                            <x-jet-dropdown align="right" width="60">
+                                <x-slot name="trigger">
+                                    <button type="button"
+                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
+                                        {{ __('Settings') }}
+
+                                        <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </x-slot>
+                                <x-slot name="content">
+                                    <div class="w-48">
+                                        @can('settings:update')
+                                            <x-jet-dropdown-link href="{{ route('settings.form') }}"
+                                                :active="request()->routeIs('settings.form')">
+                                                {{ __('Basic Settings') }}
+                                            </x-jet-dropdown-link>
+                                        @endcan
+                                        @can('workSchedule:read')
+                                            <x-jet-dropdown-link href="{{ route('workSchedule.index') }}"
+                                                :active="request()->routeIs('workSchedule.index')">
+                                                {{ __('Work Schedule') }}
+                                            </x-jet-dropdown-link>
+                                        @endcan
+                                        @can('dayOff:read')
+                                            <x-jet-dropdown-link href="{{ route('dayOff.index') }}"
+                                                :active="request()->routeIs('dayOff.index')">
+                                                {{ __('Day Offs') }}
+                                            </x-jet-dropdown-link>
+                                        @endcan
+                                        @can('deliveryArea:read')
+                                            <x-jet-dropdown-link href="{{ route('deliveryArea.index') }}"
+                                                :active="request()->routeIs('deliveryArea.index')">
+                                                {{ __('Delivery Area') }}
                                             </x-jet-dropdown-link>
                                         @endcan
                                     </div>
