@@ -14,6 +14,7 @@ class OrderForm extends Component
     public $confirmingChangeToDelivery = false;
     public $confirmingChangeToConclude = false;
     public $confirmingChangeToCancel = false;
+    public $confirmingDelete = false;
 
     public function changeToAwaitingApproval()
     {
@@ -48,6 +49,13 @@ class OrderForm extends Component
         $this->order->status = Order::STATUS_CANCELED;
         $this->order->save();
         $this->confirmingChangeToCancel = false;
+    }
+
+    public function delete()
+    {
+        $this->order->delete();
+        session()->flash('flash.banner', __('Order successfully deleted!'));
+        return redirect()->route("order.index");
     }
 
     public function render()

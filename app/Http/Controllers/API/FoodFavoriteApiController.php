@@ -45,12 +45,12 @@ class FoodFavoriteApiController extends Controller
         $foodExtras = FoodExtra::whereIn('id', collect($extraData)->pluck('id'))->get();
 
         if ($extraData && count($extraData) != $foodExtras->count()) {
-            abort(404, "Extra Not Found");
+            abort(404, __("Extra Not Found"));
         }
 
         foreach ($extraData as $extraDataItem) {
             if ($extraDataItem['quantity'] > $foodExtras->where('id', $extraDataItem['id'])->first()->limit) {
-                abort(404, "Extra Limit Reached");
+                abort(404, __("Extra Limit Reached"));
             }
         }
 
@@ -94,12 +94,12 @@ class FoodFavoriteApiController extends Controller
         $foodExtras = FoodExtra::whereIn('id', collect($extraData)->pluck('id'))->get();
 
         if ($extraData && count($extraData) != $foodExtras->count()) {
-            abort(404, "Extra Not Found");
+            abort(404, __("Extra Not Found"));
         }
 
         foreach ($extraData as $extraDataItem) {
             if ($extraDataItem['quantity'] > $foodExtras->where('id', $extraDataItem['id'])->first()->limit) {
-                abort(404, "Extra Limit Reached");
+                abort(404, __("Extra Limit Reached"));
             }
         }
 

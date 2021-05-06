@@ -31,7 +31,12 @@ class FoodApiController extends Controller
 
     public function show($foodId)
     {
-        $food = new FoodResource(Food::with('extras')->find($foodId));
-        return response()->json(compact('food'));
+        $food = Food::active()->with('extras')->find($foodId);
+        if (!$food) {
+            abort(404, __("Food Not Found"));
+        }
+        return response()->json([
+            'food' => new FoodResource($food),
+        ]);
     }
 }

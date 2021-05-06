@@ -14,6 +14,6 @@ class FoodExtraFavorite extends Model
 
     public function extra()
     {
-        return $this->belongsTo(FoodExtra::class, 'extra_id');
+        return $this->belongsTo(FoodExtra::class, 'extra_id')->active();
     }
 }

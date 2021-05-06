@@ -53,9 +53,9 @@ class FoodExtra extends Model
         return $query->orderBy($sortBy, $sortDirection)->paginate($paginate);
     }
 
-    public function scopeActive($query)
+    public function scopeActive($query, $active = true)
     {
-        return $query->where('active', 1);
+        return $query->where('active', $active);
     }
 
     public function category()

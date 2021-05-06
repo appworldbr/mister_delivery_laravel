@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Models\Cart;
 use App\Models\DeliveryArea;
+use App\Models\Food;
 use App\Models\Order;
 use App\Models\OrderExtra;
 use App\Models\OrderFood;
@@ -35,7 +36,7 @@ class OrderApiController extends Controller
 
     public function store(Request $request)
     {
-        if (!WorkSchedule::isOpen()) {
+        if (!WorkSchedule ::isOpen()) {
             abort(302, __("We are closed today"));
         }
 
@@ -58,6 +59,18 @@ class OrderApiController extends Controller
 
         if ($cart && !count($cart)) {
             abort(404, __("Cart Empty"));
+        }
+
+        $foods = Food::with('extras')->whereIn('id', $cart->pluck('food_id'))->get();
+
+        if ($foods->where('active', false)->count()) {
+            abort(302, __("One item was disabled"));
+        }
+
+        foreach ($foods->pluck('extras') as $extra) {
+            if ($extra->isNotEmpty() && $extra->where('active', false)->count()) {
+                abort(302, __("One extra item was disabled"));
+            }
         }
 
         $deliveryArea = DeliveryArea::validationZip($address->zip);

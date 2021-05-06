@@ -44,9 +44,9 @@ class Food extends Model
         return $query->orderBy($sortBy, $sortDirection)->paginate($paginate);
     }
 
-    public function scopeActive($query)
+    public function scopeActive($query, $active = true)
     {
-        return $query->where('active', 1);
+        return $query->where('active', $active);
     }
 
     public function getActiveAttribute($value)
@@ -71,6 +71,6 @@ class Food extends Model
 
     public function extras()
     {
-        return $this->hasMany(FoodExtra::class, 'category_id', 'category_id');
+        return $this->hasMany(FoodExtra::class, 'category_id', 'category_id')->active();
     }
 }

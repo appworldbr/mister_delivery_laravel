@@ -189,5 +189,10 @@
     "Change Status To Awaiting Approval": "Alterar Status para Aguardando Aprovação",
     "Are you sure you want to change the status to awaiting approval.": "Tem certeza que deseja alterar o status para aguardando aprovação.",
     "Change Status To Cancel": "Alterar Status para Cancelar",
-    "Are you sure you want to change the status to cancel.": "Tem certeza que deseja alterar o status para cancelado."
+    "Are you sure you want to change the status to cancel.": "Tem certeza que deseja alterar o status para cancelado.",
+    "Order successfully deleted!": "Pedido deletado com sucesso!",
+    "More Info": "Mais Informações",
+    "Total Earnings This Month": "Total de Ganho Nesse Mês",
+    "Total Orders This Month": "Total de Pedidos Nesse Mês",
+    "Total News Users This Month": "Total de Novos Usuários Nesse Mês"
 }

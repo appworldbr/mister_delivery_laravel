@@ -20,7 +20,7 @@ class OrderResource extends JsonResource
             'delivery_fee' => (float) $this->getRawOriginal('delivery_fee'),
             'total' => $this->getTotal($this->food),
             'status' => $this->status,
-            'created_at' => $this->created_at,
+            'created_at' => $this->getRawOriginal('created_at'),
         ];
     }
 }

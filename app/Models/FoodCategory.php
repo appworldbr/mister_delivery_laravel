@@ -39,11 +39,11 @@ class FoodCategory extends Model
 
     public function food()
     {
-        return $this->hasMany(Food::class, 'category_id');
+        return $this->hasMany(Food::class, 'category_id')->active();
     }
 
     public function extras()
     {
-        return $this->hasMany(FoodExtra::class, 'category_id');
+        return $this->hasMany(FoodExtra::class, 'category_id')->active();
     }
 }

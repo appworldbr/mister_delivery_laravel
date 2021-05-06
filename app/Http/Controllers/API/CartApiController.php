@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Models\CartExtra;
+use App\Models\Food;
 use App\Models\FoodExtra;
 use Auth;
 use Illuminate\Http\Request;
@@ -35,7 +36,6 @@ class CartApiController extends Controller
         $extraData = $request->input('extras');
 
         Validator::make(array_merge($cartData, ['extras' => $extraData]), [
-            'food_id' => ['exists:food,id'],
             'quantity' => ['required', 'integer', 'min:1'],
             'extras' => ['nullable', 'array'],
             'extras.*.id' => ['integer', 'min:1'],
@@ -43,15 +43,27 @@ class CartApiController extends Controller
             'observation' => ['nullable', 'string', 'max:100'],
         ])->validate();
 
-        $foodExtras = FoodExtra::whereIn('id', collect($extraData)->pluck('id'))->get();
+        $food = Food::find($cartData['food_id']);
 
-        if ($extraData && count($extraData) != $foodExtras->count()) {
-            abort(404, "Extra Not Found");
+        if (!$food) {
+            abort(404, __("Food Not Found"));
         }
 
-        foreach ($extraData as $extraDataItem) {
-            if ($extraDataItem['quantity'] > $foodExtras->where('id', $extraDataItem['id'])->first()->limit) {
-                abort(404, "Extra Limit Reached");
+        if (!$food->getRawOriginal('active')) {
+            abort(302, __("Food Not Active"));
+        }
+
+        if ($extraData) {
+            $foodExtras = FoodExtra::active()->whereIn('id', collect($extraData)->pluck('id'))->get();
+
+            if (count($extraData) != $foodExtras->count()) {
+                abort(404, __("Extra Not Found"));
+            }
+
+            foreach ($extraData as $extraDataItem) {
+                if ($extraDataItem['quantity'] > $foodExtras->where('id', $extraDataItem['id'])->first()->limit) {
+                    abort(404, __("Extra Limit Reached"));
+                }
             }
         }
 
@@ -95,12 +107,12 @@ class CartApiController extends Controller
         $foodExtras = FoodExtra::whereIn('id', collect($extraData)->pluck('id'))->get();
 
         if ($extraData && count($extraData) != $foodExtras->count()) {
-            abort(404, "Extra Not Found");
+            abort(404, __("Extra Not Found"));
         }
 
         foreach ($extraData as $extraDataItem) {
             if ($extraDataItem['quantity'] > $foodExtras->where('id', $extraDataItem['id'])->first()->limit) {
-                abort(404, "Extra Limit Reached");
+                abort(404, __("Extra Limit Reached"));
             }
         }
 
