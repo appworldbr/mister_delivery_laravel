@@ -15,7 +15,7 @@ class DashboardController extends Controller
         $priceTotal = Order::with('food')->whereMonth('created_at', $currentMonth)->where('status', Order::STATUS_CONCLUDED)->get()->sum(function ($order) {
             return $order->getTotal($order->food);
         });
-        $clientCount = User::whereMonth('created_at', $currentMonth)->count();
+        $clientCount = User::role('client')->whereMonth('created_at', $currentMonth)->count();
 
         return view('dashboard', [
             'quantityCount' => $quantityCount,

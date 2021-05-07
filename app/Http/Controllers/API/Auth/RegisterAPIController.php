@@ -49,6 +49,8 @@ class RegisterAPIController extends Controller
             'password' => Hash::make($userData['password']),
         ]);
 
+        $user->assignRole('client');
+
         $userAddressData['user_id'] = $user->id;
         $userAddressData['is_default'] = true;
         UserAddress::create($userAddressData);

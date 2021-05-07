@@ -1,7 +1,7 @@
 <a href="{{ $href }}"
     {{ $attributes->merge(['class' => 'w-1/4 text-white overflow-hidden shadow rounded-lg m-2 group hover:shadow-xl']) }}>
     <div class="p-3">
-        <h3 class="font-bold text-5xl mb-3">
+        <h3 class="font-bold text-3xl mb-3">
             {{ $quantity }}
         </h3>
         <p>

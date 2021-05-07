@@ -42,6 +42,8 @@ class PermissionSeeder extends Seeder
         $this->createPermissions('foodExtra', $managerRole);
         // $this->createPermissions('dayOff', $managerRole);
         $this->createPermissions('order', $managerRole, ['read', 'update']);
+
+        $clientRole = Role::firstOrCreate(['name' => 'client']);
     }
 
     protected function clearRoles()

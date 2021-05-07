@@ -66,7 +66,7 @@
                             {{ str_repeat('.', 500) }}
                         </div>
                         <div class="flex-shrink-0">
-                            R$ {{ number_format($food->getTotal($food->extras), 2, ',', '.') }}
+                            {{ __('Unit.') }} R$ {{ number_format($food->price, 2, ',', '.') }}
                         </div>
                     </div>
                     <div>
@@ -96,8 +96,8 @@
                                                     {{ str_repeat('.', 500) }}
                                                 </div>
                                                 <div class="flex-shrink-0">
-                                                    R$
-                                                    {{ number_format(round($extra->quantity * $extra->price, 2), 2, ',', '.') }}
+                                                    {{ __('Unit.') }} R$
+                                                    {{ number_format(round($extra->price, 2), 2, ',', '.') }}
                                                 </div>
                                             </div>
                                         </li>
