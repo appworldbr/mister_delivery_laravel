@@ -16,11 +16,11 @@ class FoodResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'image_url' => $this->image_url,
+            'imageUrl' => $this->image_url,
             'name' => $this->name,
             'price' => round((float) $this->getRawOriginal('price'), 2),
-            'description' => $this->description,
-            'has_details' => $this->has_details,
+            'description' => $this->description ?? '',
+            'hasDetails' => $this->has_details,
             'extras' => FoodExtraResource::collection($this->whenLoaded('extras')),
         ];
     }

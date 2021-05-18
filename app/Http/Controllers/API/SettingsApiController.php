@@ -10,7 +10,10 @@ class SettingsApiController extends Controller
 {
     public function index()
     {
-        $settings = Setting::get('logo', 'name', 'description', 'address');
+        $settings = Setting::get('logo', 'name', 'description', 'address', 'color');
+
+        $settings['color'] = 'orange';
+
         if (strlen($settings['logo'])) {
             $settings['logo'] = Storage::disk('public')->url($settings['logo']);
         }
