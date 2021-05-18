@@ -43,4 +43,11 @@ trait HasImage
         ? Storage::disk('public')->url($this->image_path)
         : Storage::disk('public')->url('/default.png');
     }
+
+    public function getImageApiResponseAttribute()
+    {
+        return $this->image_path
+        ? Storage::disk('public')->response($this->image_path)
+        : Storage::disk('public')->response('/default.png');
+    }
 }

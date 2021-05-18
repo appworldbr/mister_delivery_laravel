@@ -16,7 +16,7 @@ class FoodResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'imageUrl' => $this->image_url,
+            'imageUrl' => route('food.image', ['foodId' => $this->id]),
             'name' => $this->name,
             'price' => round((float) $this->getRawOriginal('price'), 2),
             'description' => $this->description ?? '',

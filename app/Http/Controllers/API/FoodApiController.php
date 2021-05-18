@@ -19,14 +19,13 @@ class FoodApiController extends Controller
         return response()->json(compact('food'));
     }
 
-    public function category($categoryId, Request $request)
+    public function image($foodId)
     {
-        $query = Food::active()->where('category_id', $categoryId);
-        if ($search = $request->query('q')) {
-            $query->where('name', 'like', "%$search%");
+        $food = Food::active()->find($foodId);
+        if (!$food) {
+            abort(404, __("Food Not Found"));
         }
-        $food = FoodResource::collection($query->get());
-        return response()->json(compact('food'));
+        return $food->image_api_response;
     }
 
     public function show($foodId)
@@ -38,5 +37,15 @@ class FoodApiController extends Controller
         return response()->json([
             'food' => new FoodResource($food),
         ]);
+    }
+
+    public function category($categoryId, Request $request)
+    {
+        $query = Food::active()->where('category_id', $categoryId);
+        if ($search = $request->query('q')) {
+            $query->where('name', 'like', "%$search%");
+        }
+        $food = FoodResource::collection($query->get());
+        return response()->json(compact('food'));
     }
 }
