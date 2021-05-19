@@ -33,8 +33,6 @@ Route::prefix('/v1.0')->group(function () {
         Route::post('/register', [RegisterAPIController::class, 'create']);
     });
 
-    Route::get('/image/{path}', [FoodApiController::class, 'image'])->name('api.image');
-
     Route::get('/deliveryArea/{zip}', [DeliveryAreaApiController::class, 'index']);
     Route::get('/workSchedule', [WorkScheduleApiController::class, 'index']);
     Route::get('/settings', [SettingsApiController::class, 'index']);
