@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\FoodResource;
 use App\Models\Food;
 use Illuminate\Http\Request;
+use Storage;
 
 class FoodApiController extends Controller
 {
@@ -19,13 +20,12 @@ class FoodApiController extends Controller
         return response()->json(compact('food'));
     }
 
-    public function image($foodId)
+    public function image($path)
     {
-        $food = Food::active()->find($foodId);
-        if (!$food) {
-            abort(404, __("Food Not Found"));
+        if (Storage::disk('public')->exists($path)) {
+            return Storage::disk('public')->response($path);
         }
-        return $food->image_api_response;
+        return Storage::disk('public')->response('/default.png');
     }
 
     public function show($foodId)

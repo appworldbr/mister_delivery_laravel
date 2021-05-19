@@ -33,6 +33,8 @@ Route::prefix('/v1.0')->group(function () {
         Route::post('/register', [RegisterAPIController::class, 'create']);
     });
 
+    Route::get('/image/{path}', [FoodApiController::class, 'image'])->name('api.image');
+
     Route::get('/deliveryArea/{zip}', [DeliveryAreaApiController::class, 'index']);
     Route::get('/workSchedule', [WorkScheduleApiController::class, 'index']);
     Route::get('/settings', [SettingsApiController::class, 'index']);
@@ -41,7 +43,6 @@ Route::prefix('/v1.0')->group(function () {
 
     Route::get('/food', [FoodApiController::class, 'index'])->name('food.index');
     Route::get('/food/{foodId}', [FoodApiController::class, 'show'])->name('food.show');
-    Route::get('/food/{foodId}/image', [FoodApiController::class, 'image'])->name('food.image');
     Route::get('/food/category/{categoryId}', [FoodApiController::class, 'category'])->name('food.category');
 
     Route::middleware('auth:sanctum')->group(function () {
