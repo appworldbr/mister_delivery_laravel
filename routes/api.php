@@ -28,10 +28,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/v1.0')->group(function () {
 
-    Route::prefix('/user')->group(function () {
-        Route::post('/login', [LoginAPIController::class, 'login']);
-        Route::post('/register', [RegisterAPIController::class, 'create']);
-    });
+    // TODO: Verificar se será necessário criar essas rotas ou deletar elas
+    // Route::prefix('/user')->group(function () {
+    //     Route::post('/login', [LoginAPIController::class, 'login']);
+    //     Route::post('/register', [RegisterAPIController::class, 'create']);
+    // });
 
     Route::get('/deliveryArea/{zip}', [DeliveryAreaApiController::class, 'index']);
     Route::get('/workSchedule', [WorkScheduleApiController::class, 'index']);

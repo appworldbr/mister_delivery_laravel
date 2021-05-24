@@ -12,10 +12,10 @@ class LoginAPIController extends Controller
 {
     public function login(Request $request)
     {
-        $credentials = $request->only('token_name', 'email', 'password');
+        $credentials = $request->only('tokenName', 'email', 'password');
 
         Validator::make($credentials, [
-            'token_name' => ['required', 'string', 'max:50'],
+            'tokenName' => ['required', 'string', 'max:50'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:8'],
         ])->validate();
@@ -27,8 +27,8 @@ class LoginAPIController extends Controller
 
         $user = User::where('email', $credentials['email'])->first();
 
-        $user->tokens()->where('name', $credentials['token_name'])->delete();
-        $token = $user->createToken($credentials['token_name']);
+        $user->tokens()->where('name', $credentials['tokenName'])->delete();
+        $token = $user->createToken($credentials['tokenName']);
 
         return response()->json([
             'token' => $token->plainTextToken,
