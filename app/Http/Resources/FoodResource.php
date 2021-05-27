@@ -14,9 +14,10 @@ class FoodResource extends JsonResource
      */
     public function toArray($request)
     {
+        $imagePath = explode('/', $this->image_path)[1] ?? 'default.png';
         return [
             'id' => $this->id,
-            'imageUrl' => $this->image_url,
+            'imageUrl' => route('food.image', ['path' => $imagePath]),
             'name' => $this->name,
             'price' => round((float) $this->getRawOriginal('price'), 2),
             'description' => $this->description ?? '',

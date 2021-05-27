@@ -20,6 +20,15 @@ class FoodApiController extends Controller
         return response()->json(compact('food'));
     }
 
+    public function image($path)
+    {
+        if (Storage::disk('public')->exists("/food/$path")) {
+            return Storage::disk('public')->download("/food/$path");
+        }
+
+        return Storage::disk('public')->download("/default/default.png");
+    }
+
     public function show($foodId)
     {
         $food = Food::active()->with('extras')->find($foodId);

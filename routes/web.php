@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\Auth\LoginAPIController;
+use App\Http\Controllers\API\Auth\RegisterAPIController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DayOffController;
 use App\Http\Controllers\DeliveryAreaController;
@@ -25,6 +27,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::prefix('/app')->group(function () {
+    Route::post('/login', [LoginAPIController::class, 'login']);
+    Route::post('/register', [RegisterAPIController::class, 'create']);
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->prefix('/dashboard')->group(function () {
