@@ -31,7 +31,7 @@ class CartApiController extends Controller
 
     public function store(Request $request)
     {
-        $cartData = $request->only(['food_id', 'quantity', 'observation']);
+        $cartData = $request->only(['id', 'quantity', 'observation']);
 
         $extraData = $request->input('extras');
 
@@ -43,32 +43,36 @@ class CartApiController extends Controller
             'observation' => ['nullable', 'string', 'max:100'],
         ])->validate();
 
-        $food = Food::find($cartData['food_id']);
+        $food = Food::find($cartData['id']);
 
         if (!$food) {
-            abort(404, __("Food Not Found"));
+            abort(430, __("Food Not Found"));
         }
 
         if (!$food->getRawOriginal('active')) {
-            abort(302, __("Food Not Active"));
+            abort(431, __("Food Not Active"));
         }
 
         if ($extraData) {
             $foodExtras = FoodExtra::active()->whereIn('id', collect($extraData)->pluck('id'))->get();
 
             if (count($extraData) != $foodExtras->count()) {
-                abort(404, __("Extra Not Found"));
+                abort(432, __("Extra Not Found"));
             }
 
             foreach ($extraData as $extraDataItem) {
                 if ($extraDataItem['quantity'] > $foodExtras->where('id', $extraDataItem['id'])->first()->limit) {
-                    abort(404, __("Extra Limit Reached"));
+                    abort(433, __("Extra Limit Reached"));
                 }
             }
         }
 
-        $cartData['user_id'] = Auth::id();
-        $cart = Cart::create($cartData);
+        $cart = Cart::create([
+            'food_id' => $cartData['id'],
+            'quantity' => $cartData['quantity'],
+            'observation' => $cartData['observation'],
+            'user_id' => Auth::id(),
+        ]);
 
         if ($extraData) {
             $extraData = array_map(function ($extra) use ($cart) {
