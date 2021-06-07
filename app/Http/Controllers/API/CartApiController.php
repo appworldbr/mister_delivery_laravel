@@ -70,7 +70,7 @@ class CartApiController extends Controller
         $cart = Cart::create([
             'food_id' => $cartData['id'],
             'quantity' => $cartData['quantity'],
-            'observation' => $cartData['observation'],
+            'observation' => $cartData['observation'] ?? '',
             'user_id' => Auth::id(),
         ]);
 
