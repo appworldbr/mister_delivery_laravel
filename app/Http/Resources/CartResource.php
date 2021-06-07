@@ -17,8 +17,8 @@ class CartResource extends JsonResource
         return [
             'id' => $this->id,
             'food' => new FoodResource($this->food),
-            'extras' => $this->when($request->routeIs('cart.show'), CartExtraResource::collection($this->extras)),
-            'observation' => $this->when($request->routeIs('cart.show'), $this->observation),
+            'extras' => CartExtraResource::collection($this->extras),
+            'observation' => $this->observation,
             'quantity' => $this->quantity,
             'total' => $this->getTotal($this->food, $this->extras),
         ];
